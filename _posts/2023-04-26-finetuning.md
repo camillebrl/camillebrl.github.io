@@ -4,7 +4,7 @@ title: Fine-tuning
 date: 2023-04-26
 ---
 
-Les modèles de langage ne sont que des modèles de prédiction de mots masqués, de mots suivants, etc. Si on veut les utiliser dans un cas particulier, pour en faire un chatbot, ou autre, il est nécessaire de les fine-tuner, c'est à dire de les réentraîner pour qu'ils répondent à une tâche particulière. Fine-tuner un modèle consiste à le réentraîner, mais cela devient de moins en moins faisable pour les modèles de langages, qui sont de plus en plus gros, et un réentraînement de ces modèles peut être très coûteux. C'est poruquoi plusieurs méthodes ont été mises en place pour contourner ce problème lié à la taille de ces gros modèles.
+**Les modèles de langage ne sont que des modèles de prédiction de mots masqués, de mots suivants, etc. Si on veut les utiliser dans un cas particulier, pour en faire un chatbot, ou autre, il est nécessaire de les fine-tuner, c'est à dire de les réentraîner pour qu'ils répondent à une tâche particulière. Fine-tuner un modèle consiste à le réentraîner, mais cela devient de moins en moins faisable pour les modèles de langages, qui sont de plus en plus gros, et un réentraînement de ces modèles peut être très coûteux. C'est poruquoi plusieurs méthodes ont été mises en place pour contourner ce problème lié à la taille de ces gros modèles.**
 
 # [PEFT : Parameter-Efficient Fine-Tuning](https://github.com/huggingface/peft) 
 PEFT est un outil qui permet d'appliquer des méthodes d'optimisation de la modification des paramètres des modèles.
