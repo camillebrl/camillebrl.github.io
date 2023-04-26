@@ -16,6 +16,8 @@ LoRA permet ainsi de fine-tuner les modèles de langage avec 3x moins de mémoir
 
 ### [Prefix-tuning](https://aclanthology.org/2021.acl-long.353.pdf)
 L'idée du Prefix-tuning est de garder les poids du modèle d'origine, et de n'optimiser que une séquence de "vecteurs continus spécifiques à une tâche", appelés "préfix".
+
 ![prexis-tuning idea](/assets/images/prefix_tuning.png)
+
 Le papier montre qu'en ne modifiant que 0.1% des paramètres, on obitient de bons résultats sur plusieurs tâches.
 D'autres papiers ont étudié la possibilité de n'entraîner que certains paramètres des modèles de langage: insertion de nouveaux modules contenant les paramètres à entraîner, [ajout de couches entre les couches existantes](http://proceedings.mlr.press/v97/houlsby19a.html), [application d'un "task-specific mask"](https://arxiv.org/pdf/2004.12406.pdf), ...
