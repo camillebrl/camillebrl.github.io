@@ -1,0 +1,18 @@
+.custom-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .main-title {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace; /* Choisir une police originale */
+  }
+  
+  .navbar-nav {
+    margin-left: auto;
+  }
