@@ -1,4 +1,10 @@
 title: NLP - ce que je comprends
 description: blog sur ce que je comprends des différents articles de NLP.
-baseurl: ""
+baseurl: "camillebrl.github.io"
 url: "https://camillebrl.github.io"
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
