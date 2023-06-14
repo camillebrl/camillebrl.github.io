@@ -67,4 +67,3 @@ pygmentsUseClasses = true
 
     [params.homeInfoParams]
         title = "Welcome to my blog ! "
-        Content = """

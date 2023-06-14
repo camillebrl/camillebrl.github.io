@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Fine-tune LLMs with LoRA &amp; QLoRA methods | My Blog</title>
+<meta name="keywords" content="Fine-tuning, LoRA, PEFT, LLMs">
+<meta name="description" content="LLMs are becoming larger and larger, and it becomes more and more difficult to adapt them : they are in the hand of a few privileged companies. This is why some research has increased in the last few months on how to allow adapting those models with &ldquo;acceptable&rdquo; (financially speaking) resources. I am presenting here my readings &amp; implementations of some methods allowing to adapt those very big LLMs in an accessible way.">
+<meta name="author" content="Camille Barboule">
+<link rel="canonical" href="https://camillebrl.github.io/post/2023-06-08-lora-fine-tuning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.7d9d550b5ba8603eb2a9ce616fb9a4ad82656baa89055d9171ef6345d3e2268c.css" integrity="sha256-fZ1VC1uoYD6yqc5hb7mkrYJla6qJBV2Rce9jRdPiJow=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://camillebrl.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://camillebrl.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://camillebrl.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://camillebrl.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://camillebrl.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Fine-tune LLMs with LoRA &amp; QLoRA methods" />
+<meta property="og:description" content="LLMs are becoming larger and larger, and it becomes more and more difficult to adapt them : they are in the hand of a few privileged companies. This is why some research has increased in the last few months on how to allow adapting those models with &ldquo;acceptable&rdquo; (financially speaking) resources. I am presenting here my readings &amp; implementations of some methods allowing to adapt those very big LLMs in an accessible way." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://camillebrl.github.io/post/2023-06-08-lora-fine-tuning/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-06-08T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-08T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Fine-tune LLMs with LoRA &amp; QLoRA methods"/>
+<meta name="twitter:description" content="LLMs are becoming larger and larger, and it becomes more and more difficult to adapt them : they are in the hand of a few privileged companies. This is why some research has increased in the last few months on how to allow adapting those models with &ldquo;acceptable&rdquo; (financially speaking) resources. I am presenting here my readings &amp; implementations of some methods allowing to adapt those very big LLMs in an accessible way."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://camillebrl.github.io/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Fine-tune LLMs with LoRA \u0026 QLoRA methods",
+      "item": "https://camillebrl.github.io/post/2023-06-08-lora-fine-tuning/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Fine-tune LLMs with LoRA \u0026 QLoRA methods",
+  "name": "Fine-tune LLMs with LoRA \u0026 QLoRA methods",
+  "description": "LLMs are becoming larger and larger, and it becomes more and more difficult to adapt them : they are in the hand of a few privileged companies. This is why some research has increased in the last few months on how to allow adapting those models with \u0026ldquo;acceptable\u0026rdquo; (financially speaking) resources. I am presenting here my readings \u0026amp; implementations of some methods allowing to adapt those very big LLMs in an accessible way.",
+  "keywords": [
+    "Fine-tuning", "LoRA", "PEFT", "LLMs"
+  ],
+  "articleBody": " LLMs are becoming larger and larger, and it becomes more and more difficult to adapt them : they are in the hand of a few privileged companies. This is why some research has increased in the last few months on how to allow adapting those models with “acceptable” (financially speaking) resources. I am presenting here my readings \u0026 implementations of some methods allowing to adapt those very big LLMs in an accessible way.\nFirst of all, I have recently read and tested LoRA fine-tuning method, which comes from the paper LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS (Hu et al.). LoRA is a very interesting fine-tuning method which is allowing us to fine-tune LLMs (up to 2-3B parameters) on a single A100 GPU - 40GB. Instead of updating all the parameters of the model during fine-tuning, LoRA uses only a small set of trainable parameters (called “adapters”), and so not updating the full model parameters which remain fixed: I will try to explain you how it works in this post.\nAlso, I recently read and tested QLoRA fine-tuning method, which is adding quantization to LoRA fine-tuning method, which comes out from the paper QLORA: Efficient Finetuning of Quantized LLMs. QLoRA is all the more interesting that it can allow us to fine-tune 40B models on a single A100 GPU (of 40GB)!\nI found this image to be the best introdocution of these methods: (Source: https://arxiv.org/pdf/2305.14314.pdf)  Full fine-tuning is the process by which we pass data through a pretrain network and then we update the weights of this pretrain network in the backpropagation process.  With LoRA, the fine-tuning process is a bit different: LoRA fine-tuning does not change the weights within the base model; it is changing the values of some “adapters” only, which are those small rectangles on the image above, corresponding to a reduction of the weight update matrix.  In QLoRA fine-tuning, the memory is even more optimized: the adapters is updated with the gradient calculated from the 4-bit base model, and the optimizer states are stored in cpu, to optimize all the more the GPU memory. QLoRA is has been implemented to allow everyone to run very large models on a single GPU.   General overview of how LoRA works LoRA is a new fine-tuning method. To understand how it works, let’s start with a reminder of how traditional fine-tuning is working. Traditional fine-tuning is the process by which we pass data through a pretrain network and then we update the weights of this pretrain network in the backpropagation process. So it is just like training but starting from a pretrain model. We can actually represent this fine-tuning process differently:\n1.\tIsolation of the weight updates into 1 matrix We can represent fine-tuning by having our frozen pretrain weights, pass data through it, and then we constantly update the weight update (∆W) matrix. Then, they (pretrained weights W \u0026 weight update ∆W) recombine at the final step (output). All in all, here we keep track of it separately.\n2.\tDecomposition of the weight update matrix Pretrain models have very low intrinsic dimension: they can be described as accurately (or almost as accurately) using way less dimensions than they have. Since pretrain models have lower intrinsic dimension, the paper hypotheses that the weights also have low intrinsic rank during adaptation. So it means that we don’t need all the dimensions to describe all that’s going on during fine-tuning. The rank of a matrix isn’t always equal to its dimension: it is equal to the number of linearly independent rows of columns. So a matrix might be 100 x 100, but it might have a rank of 10 or even less. Because of that, we can apply the process of matrix decomposition to represent the large matrix a combination of smaller matrixes. (Source: https://www.youtube.com/watch?v=dA-NhCtrrVE\u0026t=601s) So here, WA \u0026 WB are much smaller than the original matrix: All in all, we have represented the ∆W update weight matrix into 2 smaller matrixes, which means that we do not have to care about the whole ∆W matrix: we only handle the 2 small WA \u0026 WB matrixes for fine-tuning. In the fine-tuning process, we thus do small ingestion in the pretrain model! The rank r is a hyperparameter: it means we can have up to rank r.This is how the process goes: we make the combination (between pretrained weights \u0026 low rank matrixes) after the data go through it. It comes down to a “simple” addition: label = W(input) + WAWBThanks to this method, we can accelerate the fine-tuning process of large models and consume less memory while fine-tuning.\n3. Reconstruction of the model at inference At inference time (after the model has been fine-tuned, when we want to use the model to make predictions), we can recombine the pretrained weights with WA \u0026 WB: 4. Application to LLMs In LLMs, we only compute weight modifications on attention weight with LoRA. So WA \u0026 WB will only represent attention weights modifications. The rest of the architecture of the transformer remains unchanged. More precisely, they focus on the q \u0026 v of attention (query \u0026 value). So we have Wq \u0026 Wv rather than WA \u0026 WB. But it is possible to focus on more weights. Here is a image from LoRA paper representing the accuracy depending on the weight type of the model chosen (Wq and Wv being respectively query \u0026 value attention weights) and on the rank of the weight matrixes chosen: (Source: https://arxiv.org/pdf/2106.09685.pdf)We see that there is no need for very high rank: the intrinsic rank of the weight matrix is potentially super low. Moreover, if we only focus on Wq \u0026 Wv as reduction matrixes for the weight matrix update ∆W, we get very good accuracy with r=1, and the best one with r=8. WikiSQL and MultiNLI are the datasets on which the validation accuracy has been computed. The model fine-tuned here is GPT3-175M.\nConclusion VRAM during training reduction 72% less VRAM consumption for training GPT3 175B parameters with r=4 : from 1.2TB to 350GB.\nCheckpoint size reduction For r=4, reduction of 10 000x of the checkpoint size (for instance, fine-tuning GPT3-OPT 175B will generate a checkpoint of 35MB rather than 350GB)\nFaster training 25% speedup during training\nGo further… This method opens many possibilities, mainly at inference. If we come back to what LoRA method, it all comes down to pass the model to the pretrain one, and just add WAWB to the whole. It means that we could have several versions on the model depending on the task we want to apply to the model. Rather than having different models, we could have only 1 (the pretrained one) and then add the WAWB corresponding to each task to the pretrained model applied to an input to get the label. All in all, all we have to do to switch between tasks is to replace WAWB: Test LoRA fine-tuning We will use the peft library from Huggingface (https://huggingface.co/blog/peft). It is the parameter-efficient fine-tuning library, which gives us access to LoRA fine-tuning method. LoRA is a specific method of peft, which allows to have access to many other parameter-efficient fine-tuning methods (such as suffix-tuning, …).\nInstall dependencies The requirements.txt must be composed as follows:\ngit+https://github.com/huggingface/peft.git git+https://github.com/huggingface/transformersbitsandbytesdatasetsaccelerateloralibLoad model – example of bloom-3b As you do traditionally to load a model from huggingface (here, we will load the model with weights of float 16 precision rather than float32 not save memory):\nfrom transformers import AutoModelForCausalLM, AutoTokenizer model = AutoModelForCausalLM.from_pretrained( \"bigscience/bloom-3b\", torch_dtype=torch.float16 ) tokenizer = AutoTokenizer.from_pretrained(\"bigscience/tokenizer\") Print model to know which weight matrixes we want to decompose In the paper, they advise to chose Wq \u0026 Wv. In bloom, we can see that we do have the query_key_value module: But the name of the module might be different depending on models architecture! Example of cerebras model: This is why we have built a TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING to get the target_module name depending on the model architecture.\nTRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING = { \"t5\": [\"q\", \"v\"], \"mt5\": [\"q\", \"v\"], \"bart\": [\"q_proj\", \"v_proj\"], \"gpt2\": [\"c_attn\"], \"bloom\": [\"query_key_value\"], \"blip-2\": [\"q\", \"v\", \"q_proj\", \"v_proj\"], \"opt\": [\"q_proj\", \"v_proj\"], \"gptj\": [\"q_proj\", \"v_proj\"], \"gpt_neox\": [\"query_key_value\"], \"gpt_neo\": [\"q_proj\", \"v_proj\"], \"bert\": [\"query\", \"value\"], \"roberta\": [\"query\", \"value\"], \"xlm-roberta\": [\"query\", \"value\"], \"electra\": [\"query\", \"value\"], \"deberta-v2\": [\"query_proj\", \"value_proj\"], \"deberta\": [\"in_proj\"], \"layoutlm\": [\"query\", \"value\"], \"llama\": [\"q_proj\", \"v_proj\"], \"chatglm\": [\"query_key_value\"], \"starcoder\": [\"c_attn\"], \"falcon\": [\"query_key_value\"], \"cerebras\": [\"c_attn\"] } Apply LoRA to the model from peft import LoraConfig, get_peft_model config = LoraConfig( r=8, lora_alpha=16, target_modules=[\"query_key_value\"], lora_dropout=0.05, bias=\"none\", task_type=\"CAUSAL_LM\" ) model = get_peft_model(model, config) Here, we first select our rank (here, we chose a rank 8). Then, the target_module will be the weight matrix we want to decompose. This is the only module we will update (on which we will inject things).\nLoad \u0026 preprocess the data for fine-tuning on QA task We will fine-tune our model on the squad_v2 dataset, which is composed of contexts, questions and answers. To get a better idea on how the squad_v2 dataset works: https://huggingface.co/datasets/squad_v2 So here, we want the model to learn this structure: The code to preprocess the data in this way:\nfrom datasets import load_dataset qa_dataset = load_dataset(\"squad_v2\") def create_prompt(context, question, answer): if len(answer[\"text\"]) \" return prompt_template mapped_qa_dataset = qa_dataset.map(lambda samples: tokenizer(create_prompt(samples['context'], samples['question'], samples['answers']))) Train the model We include the model, and train it on 100 steps. If we want to train the model on 1 or more epochs, we can replace “max_steps=100” with “num_train_epochs=1”. Since we loaded the model with a precision of floating point 16, we need to add fp16=True.\nfrom transformers import TrainingArguments, Trainer, DataCollatorForLanguageModeling trainer = Trainer( model=model, train_dataset=mapped_qa_dataset[\"train\"], args=TrainingArguments( per_device_train_batch_size=4, gradient_accumulation_steps=4, warmup_steps=100, max_steps=100, learning_rate=1e-3, fp16=True, logging_steps=1, output_dir=f\"qlora_{model_id.split('/')[-1]}_finetuned_for_penman_generation\", ), data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False) ) model.config.use_cache = False # silence the warnings. Please re-enable for inference! trainer.train() Inference with the model import torch from peft import PeftModel, PeftConfig from transformers import AutoModelForCausalLM, AutoTokenizer peft_model_id = \"lora_fine-tuned_model\" config = PeftConfig.from_pretrained(peft_model_id) model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=False, device_map='auto') tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path) # Load the Lora model qa_model = PeftModel.from_pretrained(model, peft_model_id) What’s very interesting here, is that is model is loaded with first the load of the original model, and then the load of the LoRA model. The LoRA model is not heavy at all: a few MB, so it is easily storable. Let’s imagine we have another model (for graph generation from text for instance), we can load the model just doing:\ngraph_generation_model = PeftModel.from_pretrained(model, peft_graph_generation_model_model_id) Then, you can build a function to process the context / question in the expected format:\nfrom IPython.display import display, Markdown def make_inference(context, question): batch = tokenizer(f\"### CONTEXT\\n{context}\\n\\n### QUESTION\\n{question}\\n\\n### ANSWER\\n\", return_tensors='pt') with torch.cuda.amp.autocast(): output_tokens = qa_model.generate(**batch, max_new_tokens=200) display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))) And just run it!\ncontext = input(\"context: \") question = input(\"question: \") make_inference(context, question) General overview of how QLoRA works What is quantization? Quantization is the process of discretizing an input from a representation that holds more information to a representation with less information. It usally means converting a data to fewer bits, ie from 32-bit floats to 8-bit integers.\nHow does it works? What does it means to convert data from 32-bits to 8-bit?\n First, when quantizing data, you can choose the range of values that the data will be mapped to (what will be the minimum \u0026 maximum values the data can take after quantization?) Then, when quantizing the data, you chose the precision to which you want to quantize your values (2bits, …, 8bits, …) Finally, to ensure that the entire range of the low-bit data type is used, the input data type is commonly rescaled into the target data type range through normalization by the absolute maximum of the input elements, which are usually structured as a tensor.  For example, quantizing a 32-bit Floating Point (FP32) tensor into a Int8 tensor with range [−127, 127] will result into the following: How does quantization applies in QLoRA? In QLoRA, the base-model (“foundation model”) is loaded directly as a 4-bit model (converting all its weights to 4-bit precision weights). Thus, the adapters (weight update matrix) is updated with the gradient calculated from the 4-bit base model, as opposed to what we do in traditional LoRA, which is calculating the gradient from a 16-bits model (1/4 less precision). So, to sum-up, in QLoRA:\n The gradient is computed from a 4-bit model Like for LoRA, the gradient is not pushed during backpropagation into the base-model (here, for QLoRA, the base-model is a 4-bit model): the gradient is pushed during backpropagation into the LoRA weight update (∆W) matrix.  In QLoRA, the memory is all the more optimized that the optimizer states are stored in cpu (this process is called : “Paged Optimizers”), to optimize all the more the GPU memory. QLoRA is has been implemented to allow everyone to run very large models on a single GPU. The optimizer state is all the intermediate values calculated for the backpropagation and that need to be stored to push the gradient backward.\nTo note: there are several experiments in the reduction of the precision of the weights in QLoRA: 8-bit Integer (Int8) vs 4-bit Float (FP4) vs 4- bit NormalFloat (NF4).\nPerformances of QLoRA The paper QLORA: Efficient Finetuning of Quantized LLMs shows that this method is not degrading the performance of LLMs in traditional tasks : Indeed, the papers’s result shows that 4-bit QLORA matches 16-bit full finetuning and 16-bit LoRA finetuning performance on academic benchmarks (GLUE \u0026 Supr-NaturalInstructions (ROugeL)).\nTest QLoRA fine-tuning I will show you as example how to fine-tune falcon40B on PENMAN representation of sentences. Here, the model takes as input a sentence and returns its corresponding PENMAN representation. THe model should thus learn the following structure:\n### SENTENCE \"# ::snt As we predicted , Route 288 is generating residential development in scarcely populated areas all around its exits , overtaxing the local country roads .\" ### PSEUDO_PENMAN \"( generate-01 :ARG0 ( road_0 :name ( name :op1 \\\"Route\\\" :op2 288 ) :part ( exit ) ) :ARG1 ( develop-02 :ARG1 ( residence ) :location ( area :ARG1-of ( populate-01 :mod ( scarce ) ) :location ( around :op1 exit :mod ( all ) ) ) :ARG0-of ( overtax-01 :ARG2 ( road_1 :ARG1-of ( local-02 :ARG2 ( country ) ) ) ) ) :ARG1-of ( predict-01 :ARG0 ( we ) ) )\" Training environment I will show you how to fine-tune this model on this task using Google Colab (premium) with a single A100 GPU (40GB).\nInstall dependencies !pip install -q bitsandbytes datasets accelerate loralib evaluate einops !pip install -q git+https://github.com/huggingface/peft.git git+https://github.com/huggingface/transformers.git Import required libraries import argparse import logging import math import os import sys from dataclasses import dataclass, field from itertools import chain from typing import Optional import datasets import torch from datasets import load_dataset import transformers from transformers import ( MODEL_FOR_CAUSAL_LM_MAPPING, AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, default_data_collator, set_seed, ) from transformers.testing_utils import CaptureLogger from transformers.trainer_utils import get_last_checkpoint from transformers import BitsAndBytesConfig from peft import prepare_model_for_kbit_training from peft import LoraConfig, get_peft_model import json Load the model as a 4-bit model \u0026 configure LoRA (with the right adapter matrix: here query / value for attention modules) TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING = { \"t5\": [\"q\", \"v\"], \"mt5\": [\"q\", \"v\"], \"bart\": [\"q_proj\", \"v_proj\"], \"gpt2\": [\"c_attn\"], \"bloom\": [\"query_key_value\"], \"blip-2\": [\"q\", \"v\", \"q_proj\", \"v_proj\"], \"opt\": [\"q_proj\", \"v_proj\"], \"gptj\": [\"q_proj\", \"v_proj\"], \"gpt_neox\": [\"query_key_value\"], \"gpt_neo\": [\"q_proj\", \"v_proj\"], \"bert\": [\"query\", \"value\"], \"roberta\": [\"query\", \"value\"], \"xlm-roberta\": [\"query\", \"value\"], \"electra\": [\"query\", \"value\"], \"deberta-v2\": [\"query_proj\", \"value_proj\"], \"deberta\": [\"in_proj\"], \"layoutlm\": [\"query\", \"value\"], \"llama\": [\"q_proj\", \"v_proj\"], \"chatglm\": [\"query_key_value\"], \"starcoder\": [\"c_attn\"], \"falcon\": [\"query_key_value\"] } # instantiate training args (update the max_steps to \"num_train_epochs=1\" or more, here it was just for testing purposes) model_type = \"falcon\" model_id = \"tiiuae/falcon-40b\" matrix_order = 8 training_args = TrainingArguments( auto_find_batch_size=True, gradient_accumulation_steps=1, max_steps=1000, logging_steps=1, learning_rate=2e-5, fp16=True, save_total_limit=4, output_dir=f\"./{model_id.split('/')[-1]}_qlora_finetuned\", save_strategy='epoch', optim=\"paged_adamw_8bit\", lr_scheduler_type = 'cosine', warmup_ratio = 0.05, ) def read_data(file_path): data = [] with open(file_path, 'r') as f: for line in f: try: data.append(json.loads(line)) except json.JSONDecodeError as e: print(f'Error parsing JSON for line: {line}') print(f'Error: {str(e)}') return data # Setup logging logger = logging.getLogger(__name__) logging.basicConfig( format=\"%(asctime)s - %(levelname)s - %(name)s - %(message)s\", datefmt=\"%m/%d/%Y %H:%M:%S\", handlers=[logging.StreamHandler(sys.stdout)], ) log_level = training_args.get_process_log_level() logger.setLevel(log_level) datasets.utils.logging.set_verbosity(log_level) transformers.utils.logging.set_verbosity(log_level) transformers.utils.logging.enable_default_handler() transformers.utils.logging.enable_explicit_format() # Log on each process the small summary: logger.warning( f\"Process rank (distributed): {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}\" + f\"distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}\" ) # Detecting last checkpoint. last_checkpoint = None if os.path.isdir(training_args.output_dir) and not training_args.overwrite_output_dir: last_checkpoint = get_last_checkpoint(training_args.output_dir) if last_checkpoint is None and len(os.listdir(training_args.output_dir))  0: raise ValueError( f\"Output directory ({training_args.output_dir}) already exists and is not empty. \" \"Use --overwrite_output_dir to overcome.\" ) elif last_checkpoint is not None and training_args.resume_from_checkpoint is None: logger.info( f\"Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change \" \"the `--output_dir` or add `--overwrite_output_dir` to train from scratch.\" ) # Load data train_data = read_data('train.txt') validation_data = read_data('test.txt') # Set seed before initializing model. set_seed(training_args.seed) # initializing tokenizer tokenizer = AutoTokenizer.from_pretrained(model_id) # initializing model ## quantization bnb_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type=\"nf4\", bnb_4bit_compute_dtype=torch.bfloat16) model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={\"\":0}, trust_remote_code=True) model.gradient_checkpointing_enable() model = prepare_model_for_kbit_training(model) ## adapt model for LORA loraconfig = LoraConfig( r=matrix_order, lora_alpha=32, target_modules=TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING[model_type], lora_dropout=0.05, bias=\"none\", task_type=\"CAUSAL_LM\" ) model = get_peft_model(model, loraconfig) Prepare the data Here, the data are stored in a text.txt file.\ntokenizer.pad_token = tokenizer.eos_token def create_prompt(snt, pseudo_penman): prompt_template = f\"### SENTENCE\\n{snt}\\n\\n### PSEUDO_PENMAN\\n{pseudo_penman}\" return prompt_template def process_sample(sample): # Create your prompt here prompt = create_prompt(sample['snt'], sample['pseudo_penman']) # Encode the prompt return tokenizer(prompt, return_token_type_ids=False) mapped_train_dataset = list(map(process_sample, train_data)) mapped_validation_dataset = list(map(process_sample, validation_data)) Train the model using the huggingface Trainer  # Initialize our Trainer trainer = Trainer( model=model, train_dataset=mapped_train_dataset, eval_dataset=mapped_validation_dataset, args=training_args, tokenizer=tokenizer, data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False) ) # Training checkpoint = None if training_args.resume_from_checkpoint is not None: checkpoint = training_args.resume_from_checkpoint elif last_checkpoint is not None: checkpoint = last_checkpoint model.config.use_cache = False trainer.train(resume_from_checkpoint=checkpoint) trainer.save_model() trainer.save_state() model.config.to_json_file(f\"qlora_{model_id.split('/')[-1]}_finetuned_for_penman_generation/config.json\") Then, save the model on your local machine.\nMake inference with the model Here, the test data is stored in a test.txt file.\nimport torch from peft import PeftModel, PeftConfig from transformers import AutoModelForCausalLM, AutoTokenizer model_id = \"tiiuae/falcon-40b\" peft_model_id = \"qlora_falcon40b_finetuned_for_penman_generation\" config = PeftConfig.from_pretrained(peft_model_id) bnb_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type=\"nf4\", bnb_4bit_compute_dtype=torch.bfloat16) model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={\"\":0}, trust_remote_code=True) #model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map={\"\":0}) tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path) # Load the Lora model amr_model = PeftModel.from_pretrained(model, peft_model_id) # Set pad token if not tokenizer.pad_token: tokenizer.pad_token = tokenizer.eos_token # Inference def make_inference(line): snt = line[\"snt\"] batch = tokenizer(f\"### SENTENCE\\n{snt}\\n\\n### PSEUDO_PENMAN\\n\", return_tensors='pt', truncation=True, padding='longest') # Note: Remove the token_type_ids from the input. del batch[\"token_type_ids\"] with torch.cuda.amp.autocast(): output_tokens = amr_model.generate(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], max_length=200) line[\"pred_penman\"] = tokenizer.decode(output_tokens[0], skip_special_tokens=True) with open(\"final_data.txt\", 'w') as fichier: fichier.write(json.dumps(line)) fichier.write('\\n') def read_data(file_path): data = [] with open(file_path, 'r') as f: for line in f: try: data.append(json.loads(line)) except json.JSONDecodeError as e: print(f'Error parsing JSON for line: {line}') print(f'Error: {str(e)}') return data for line in read_data(\"test.txt\"): make_inference(line) Here, you will have a final_data.txt with the penman generation of the fine-tuned model!\n",
+  "wordCount" : "3111",
+  "inLanguage": "en",
+  "datePublished": "2023-06-08T00:00:00Z",
+  "dateModified": "2023-06-08T00:00:00Z",
+  "author":[{
+    "@type": "Person",
+    "name": "Camille Barboule"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://camillebrl.github.io/post/2023-06-08-lora-fine-tuning/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "My Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://camillebrl.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://camillebrl.github.io/" accesskey="h" title="My Blog (Alt + H)">
+                <img src="https://camillebrl.github.io/paresseux.png" alt="" aria-label="logo"
+                    height="25">My Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://camillebrl.github.io/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://camillebrl.github.io/about/" title="About Me">
+                    <span>About Me</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://camillebrl.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://camillebrl.github.io/">Home</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/post/">Posts</a></div>
+    <h1 class="post-title">
+      Fine-tune LLMs with LoRA &amp; QLoRA methods
+    </h1>
+    <div class="post-meta"><span title='2023-06-08 00:00:00 +0000 UTC'>June 8, 2023</span>&nbsp;·&nbsp;15 min&nbsp;·&nbsp;Camille Barboule
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#bgeneral-overview-of-how-lora-worksb" aria-label="General overview of how LoRA works"><!-- raw HTML omitted -->General overview of how LoRA works<!-- raw HTML omitted --></a><ul>
+                        
+                <li>
+                    <a href="#1isolation-of-the-weight-updates-into-1-matrix" aria-label="1.	Isolation of the weight updates into 1 matrix">1.	Isolation of the weight updates into 1 matrix</a></li>
+                <li>
+                    <a href="#2decomposition-of-the-weight-update-matrix" aria-label="2.	Decomposition of the weight update matrix">2.	Decomposition of the weight update matrix</a></li>
+                <li>
+                    <a href="#3-reconstruction-of-the-model-at-inference" aria-label="3. Reconstruction of the model at inference">3. Reconstruction of the model at inference</a></li>
+                <li>
+                    <a href="#4-application-to-llms" aria-label="4. Application to LLMs">4. Application to LLMs</a></li>
+                <li>
+                    <a href="#conclusion" aria-label="Conclusion">Conclusion</a><ul>
+                        
+                <li>
+                    <a href="#vram-during-training-reduction" aria-label="VRAM during training reduction">VRAM during training reduction</a></li>
+                <li>
+                    <a href="#checkpoint-size-reduction" aria-label="Checkpoint size reduction">Checkpoint size reduction</a></li>
+                <li>
+                    <a href="#faster-training" aria-label="Faster training">Faster training</a></li></ul>
+                </li>
+                <li>
+                    <a href="#go-further" aria-label="Go further&amp;hellip;">Go further&hellip;</a></li></ul>
+                </li>
+                <li>
+                    <a href="#btest-lora-fine-tuningb" aria-label="Test LoRA fine-tuning"><!-- raw HTML omitted -->Test LoRA fine-tuning<!-- raw HTML omitted --></a><ul>
+                        
+                <li>
+                    <a href="#install-dependencies" aria-label="Install dependencies">Install dependencies</a></li>
+                <li>
+                    <a href="#load-model--example-of-bloom-3b" aria-label="Load model – example of bloom-3b">Load model – example of bloom-3b</a></li>
+                <li>
+                    <a href="#print-model-to-know-which-weight-matrixes-we-want-to-decompose" aria-label="Print model to know which weight matrixes we want to decompose">Print model to know which weight matrixes we want to decompose</a></li>
+                <li>
+                    <a href="#apply-lora-to-the-model" aria-label="Apply LoRA to the model">Apply LoRA to the model</a></li>
+                <li>
+                    <a href="#load--preprocess-the-data-for-fine-tuning-on-qa-task" aria-label="Load &amp;amp; preprocess the data for fine-tuning on QA task">Load &amp; preprocess the data for fine-tuning on QA task</a></li>
+                <li>
+                    <a href="#train-the-model" aria-label="Train the model">Train the model</a></li>
+                <li>
+                    <a href="#inference-with-the-model" aria-label="Inference with the model">Inference with the model</a></li></ul>
+                </li>
+                <li>
+                    <a href="#bgeneral-overview-of-how-qlora-worksb" aria-label="General overview of how QLoRA works"><!-- raw HTML omitted -->General overview of how QLoRA works<!-- raw HTML omitted --></a><ul>
+                        
+                <li>
+                    <a href="#what-is-quantization" aria-label="What is quantization?">What is quantization?</a></li>
+                <li>
+                    <a href="#how-does-quantization-applies-in-qlora" aria-label="How does quantization applies in QLoRA?">How does quantization applies in QLoRA?</a></li>
+                <li>
+                    <a href="#performances-of-qlora" aria-label="Performances of QLoRA">Performances of QLoRA</a></li></ul>
+                </li>
+                <li>
+                    <a href="#btest-qlora-fine-tuningb" aria-label="Test QLoRA fine-tuning"><!-- raw HTML omitted -->Test QLoRA fine-tuning<!-- raw HTML omitted --></a><ul>
+                        
+                <li>
+                    <a href="#training-environment" aria-label="Training environment">Training environment</a></li>
+                <li>
+                    <a href="#install-dependencies-1" aria-label="Install dependencies">Install dependencies</a></li>
+                <li>
+                    <a href="#import-required-libraries" aria-label="Import required libraries">Import required libraries</a></li>
+                <li>
+                    <a href="#load-the-model-as-a-4-bit-model--configure-lora-with-the-right-adapter-matrix--here-query--value-for-attention-modules" aria-label="Load the model as a 4-bit model &amp;amp; configure LoRA (with the right adapter matrix:  here query / value for attention modules)">Load the model as a 4-bit model &amp; configure LoRA (with the right adapter matrix:  here query / value for attention modules)</a></li>
+                <li>
+                    <a href="#prepare-the-data" aria-label="Prepare the data">Prepare the data</a></li>
+                <li>
+                    <a href="#train-the-model-using-the-huggingface-trainer" aria-label="Train the model using the huggingface Trainer">Train the model using the huggingface Trainer</a></li>
+                <li>
+                    <a href="#make-inference-with-the-model" aria-label="Make inference with the model">Make inference with the model</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><hr>
+<p>LLMs are becoming larger and larger, and it becomes more and more difficult to adapt them : they are in the hand of a few privileged companies. This is why some research has increased in the last few months on how to allow adapting those models with &ldquo;acceptable&rdquo; (financially speaking) resources. I am presenting here my readings &amp; implementations of some methods allowing to adapt those very big LLMs in an accessible way.</p>
+<p>First of all, I have recently read and tested LoRA fine-tuning method, which comes from the paper <a href="https://arxiv.org/pdf/2106.09685.pdf">LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS (Hu et al.)</a>. LoRA is a very interesting fine-tuning method which is allowing us to fine-tune LLMs (up to 2-3B parameters) on a single A100 GPU - 40GB. Instead of updating all the parameters of the model during fine-tuning, LoRA uses only a small set of trainable parameters (called &ldquo;adapters&rdquo;), and so not updating the full model parameters which remain fixed:  I will try to explain you how it works in this post.</p>
+<p>Also, I recently read and tested QLoRA fine-tuning method, which is adding quantization to LoRA fine-tuning method, which comes out from the paper <a href="https://arxiv.org/pdf/2305.14314.pdf">QLORA: Efficient Finetuning of Quantized LLMs</a>. QLoRA is all the more interesting that it can allow us to fine-tune 40B models on a single A100 GPU (of 40GB)!</p>
+<p>I found this image to be the best introdocution of these methods:
+<img loading="lazy" src="qlora1.PNG" alt=""  />
+<!-- raw HTML omitted -->
+<em>(Source: <a href="https://arxiv.org/pdf/2305.14314.pdf">https://arxiv.org/pdf/2305.14314.pdf</a>)</em><!-- raw HTML omitted --></p>
+<ol>
+<li>
+<p>Full fine-tuning is the process by which we pass data through a pretrain network and then we update the weights of this pretrain network in the backpropagation process.<!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>With LoRA, the fine-tuning process is a bit different: LoRA fine-tuning does not change the weights within the base model; it is changing the values of some &ldquo;adapters&rdquo; only, which are those small rectangles on the image above, corresponding to a reduction of the weight update matrix.<!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>In QLoRA fine-tuning, the memory is even more optimized: the adapters is updated with the gradient calculated from the 4-bit base model, and the optimizer states are stored in cpu, to optimize all the more the GPU memory. QLoRA is has been implemented to allow everyone to run very large models on a single GPU.<!-- raw HTML omitted --></p>
+</li>
+</ol>
+<hr>
+<h3 id="bgeneral-overview-of-how-lora-worksb"><!-- raw HTML omitted -->General overview of how LoRA works<!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#bgeneral-overview-of-how-lora-worksb">#</a></h3>
+<p>LoRA is a new fine-tuning method. To understand how it works, let&rsquo;s start with a reminder of how traditional fine-tuning is working. Traditional fine-tuning is the process by which we pass data through a pretrain network and then we update the weights of this pretrain network in the backpropagation process. So it is just like training but starting from a pretrain model. We can actually represent this fine-tuning process differently:</p>
+<h4 id="1isolation-of-the-weight-updates-into-1-matrix">1.	Isolation of the weight updates into 1 matrix<a hidden class="anchor" aria-hidden="true" href="#1isolation-of-the-weight-updates-into-1-matrix">#</a></h4>
+<p><img loading="lazy" src="lora1.PNG" alt=""  />
+
+We can represent fine-tuning by having our frozen pretrain weights, pass data through it, and then we constantly update the weight update (∆W) matrix. Then, they (pretrained weights W &amp; weight update ∆W) recombine at the final step (output). All in all, here we keep track of it separately.</p>
+<h4 id="2decomposition-of-the-weight-update-matrix">2.	Decomposition of the weight update matrix<a hidden class="anchor" aria-hidden="true" href="#2decomposition-of-the-weight-update-matrix">#</a></h4>
+<p>Pretrain models have very low intrinsic dimension: they can be described as accurately (or almost as accurately) using way less dimensions than they have. Since pretrain models have lower intrinsic dimension, the paper hypotheses that the weights also have low intrinsic rank during adaptation. So it means that we don’t need all the dimensions to describe all that’s going on during fine-tuning.
+The rank of a matrix isn’t always equal to its dimension: it is equal to the number of linearly independent rows of columns. So a matrix might be 100 x 100, but it might have a rank of 10 or even less. <!-- raw HTML omitted -->
+Because of that, we can apply the process of matrix decomposition to represent the large matrix a combination of smaller matrixes.
+<img loading="lazy" src="lora2.PNG" alt=""  />
+<!-- raw HTML omitted --> <em>(Source: <a href="https://www.youtube.com/watch?v=dA-NhCtrrVE&amp;t=601s">https://www.youtube.com/watch?v=dA-NhCtrrVE&amp;t=601s</a>)</em>
+So here, WA &amp; WB are much smaller than the original matrix:
+<img loading="lazy" src="lora3.PNG" alt=""  />
+<!-- raw HTML omitted -->
+All in all, we have represented the ∆W update weight matrix into 2 smaller matrixes, which means that we do not have to care about the whole ∆W matrix: we only handle the 2 small WA &amp; WB matrixes for fine-tuning. In the fine-tuning process, we thus do small ingestion in the pretrain model!
+<img loading="lazy" src="lora4.png" alt=""  />
+<!-- raw HTML omitted -->
+The rank r is a hyperparameter: it means we can have up to rank r.<!-- raw HTML omitted -->
+This is how the process goes: we make the combination (between pretrained weights &amp; low rank matrixes) after the data go through it. It comes down to a “simple” addition: label = W(input) + WAWB<!-- raw HTML omitted -->
+Thanks to this method, we can accelerate the fine-tuning process of large models and consume less memory while fine-tuning.</p>
+<h4 id="3-reconstruction-of-the-model-at-inference">3. Reconstruction of the model at inference<a hidden class="anchor" aria-hidden="true" href="#3-reconstruction-of-the-model-at-inference">#</a></h4>
+<p>At inference time (after the model has been fine-tuned, when we want to use the model to make predictions), we can recombine the pretrained weights with WA &amp; WB:
+<img loading="lazy" src="lora5.png" alt=""  />
+</p>
+<h4 id="4-application-to-llms">4. Application to LLMs<a hidden class="anchor" aria-hidden="true" href="#4-application-to-llms">#</a></h4>
+<p>In LLMs, we only compute weight modifications on attention weight with LoRA. So WA &amp; WB will only represent attention weights modifications. The rest of the architecture of the transformer remains unchanged. More precisely, they focus on the q &amp; v of attention (query &amp; value). So we have Wq &amp; Wv rather than WA &amp; WB. But it is possible to focus on more weights. Here is a image from LoRA paper representing the accuracy depending on the weight type of the model chosen (Wq and Wv being respectively query &amp; value attention weights) and on the rank of the weight matrixes chosen:
+<img loading="lazy" src="lora6.PNG" alt=""  />
+ <em>(Source: <a href="https://arxiv.org/pdf/2106.09685.pdf">https://arxiv.org/pdf/2106.09685.pdf</a>)</em><!-- raw HTML omitted -->
+We see that there is no need for very high rank: the intrinsic rank of the weight matrix is potentially super low. Moreover, if we only focus on Wq &amp; Wv as reduction matrixes for the weight matrix update ∆W, we get very good accuracy with r=1, and the best one with r=8. WikiSQL and MultiNLI are the datasets on which the validation accuracy has been computed. The model fine-tuned here is GPT3-175M.</p>
+<h4 id="conclusion">Conclusion<a hidden class="anchor" aria-hidden="true" href="#conclusion">#</a></h4>
+<h5 id="vram-during-training-reduction">VRAM during training reduction<a hidden class="anchor" aria-hidden="true" href="#vram-during-training-reduction">#</a></h5>
+<p>72% less VRAM consumption for training GPT3 175B parameters with r=4 : from 1.2TB to 350GB.</p>
+<h5 id="checkpoint-size-reduction">Checkpoint size reduction<a hidden class="anchor" aria-hidden="true" href="#checkpoint-size-reduction">#</a></h5>
+<p>For r=4, reduction of 10 000x of the checkpoint size (for instance, fine-tuning GPT3-OPT 175B will generate a checkpoint of 35MB rather than 350GB)</p>
+<h5 id="faster-training">Faster training<a hidden class="anchor" aria-hidden="true" href="#faster-training">#</a></h5>
+<p>25% speedup during training</p>
+<h4 id="go-further">Go further&hellip;<a hidden class="anchor" aria-hidden="true" href="#go-further">#</a></h4>
+<p>This method opens many possibilities, mainly at inference. If we come back to what LoRA method, it all comes down to pass the model to the pretrain one, and just add WAWB to the whole. It means that we could have several versions on the model depending on the task we want to apply to the model. Rather than having different models, we could have only 1 (the pretrained one) and then add the WAWB corresponding to each task to the pretrained model applied to an input to get the label. All in all, all we have to do to switch between tasks is to replace WAWB:
+<img loading="lazy" src="lora7.png" alt=""  />
+</p>
+<h3 id="btest-lora-fine-tuningb"><!-- raw HTML omitted -->Test LoRA fine-tuning<!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#btest-lora-fine-tuningb">#</a></h3>
+<p>We will use the peft library from Huggingface (<a href="https://huggingface.co/blog/peft)">https://huggingface.co/blog/peft)</a>. It is the parameter-efficient fine-tuning library, which gives us access to LoRA fine-tuning method. LoRA is a specific method of peft, which allows to have access to many other parameter-efficient fine-tuning methods (such as suffix-tuning, …).</p>
+<h4 id="install-dependencies">Install dependencies<a hidden class="anchor" aria-hidden="true" href="#install-dependencies">#</a></h4>
+<p>The requirements.txt must be composed as follows:</p>
+<p>git+https://github.com/huggingface/peft.git
+git+https://github.com/huggingface/transformers<!-- raw HTML omitted -->
+bitsandbytes<!-- raw HTML omitted -->
+datasets<!-- raw HTML omitted -->
+accelerate<!-- raw HTML omitted -->
+loralib<!-- raw HTML omitted --></p>
+<h4 id="load-model--example-of-bloom-3b">Load model – example of bloom-3b<a hidden class="anchor" aria-hidden="true" href="#load-model--example-of-bloom-3b">#</a></h4>
+<p>As you do traditionally to load a model from huggingface (here, we will load the model with weights of float 16 precision rather than float32 not save memory):</p>
+<pre tabindex="0"><code>from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model = AutoModelForCausalLM.from_pretrained(
+    &quot;bigscience/bloom-3b&quot;, 
+    torch_dtype=torch.float16
+)
+tokenizer = AutoTokenizer.from_pretrained(&quot;bigscience/tokenizer&quot;)
+</code></pre><h4 id="print-model-to-know-which-weight-matrixes-we-want-to-decompose">Print model to know which weight matrixes we want to decompose<a hidden class="anchor" aria-hidden="true" href="#print-model-to-know-which-weight-matrixes-we-want-to-decompose">#</a></h4>
+<p>In the paper, they advise to chose Wq &amp; Wv.
+In bloom, we can see that we do have the query_key_value module:
+<img loading="lazy" src="lora8.PNG" alt=""  />
+
+But the name of the module might be different depending on models architecture! Example of cerebras model:
+<img loading="lazy" src="lora9.PNG" alt=""  />
+
+This is why we have built a TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING to get the target_module name depending on the model architecture.</p>
+<pre tabindex="0"><code>TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING = {
+    &quot;t5&quot;: [&quot;q&quot;, &quot;v&quot;],
+    &quot;mt5&quot;: [&quot;q&quot;, &quot;v&quot;],
+    &quot;bart&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;gpt2&quot;: [&quot;c_attn&quot;],
+    &quot;bloom&quot;: [&quot;query_key_value&quot;],
+    &quot;blip-2&quot;: [&quot;q&quot;, &quot;v&quot;, &quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;opt&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;gptj&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;gpt_neox&quot;: [&quot;query_key_value&quot;],
+    &quot;gpt_neo&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;bert&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;roberta&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;xlm-roberta&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;electra&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;deberta-v2&quot;: [&quot;query_proj&quot;, &quot;value_proj&quot;],
+    &quot;deberta&quot;: [&quot;in_proj&quot;],
+    &quot;layoutlm&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;llama&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;chatglm&quot;: [&quot;query_key_value&quot;],
+    &quot;starcoder&quot;: [&quot;c_attn&quot;],
+    &quot;falcon&quot;: [&quot;query_key_value&quot;],
+    &quot;cerebras&quot;: [&quot;c_attn&quot;]
+}
+</code></pre><h4 id="apply-lora-to-the-model">Apply LoRA to the model<a hidden class="anchor" aria-hidden="true" href="#apply-lora-to-the-model">#</a></h4>
+<pre tabindex="0"><code>from peft import LoraConfig, get_peft_model 
+
+config = LoraConfig(
+    r=8,
+    lora_alpha=16,
+    target_modules=[&quot;query_key_value&quot;],
+    lora_dropout=0.05,
+    bias=&quot;none&quot;,
+    task_type=&quot;CAUSAL_LM&quot;
+)
+
+model = get_peft_model(model, config)
+</code></pre><p>Here, we first select our rank (here, we chose a rank 8). Then, the target_module will be the weight matrix we want to decompose. This is the only module we will update (on which we will inject things).</p>
+<h4 id="load--preprocess-the-data-for-fine-tuning-on-qa-task">Load &amp; preprocess the data for fine-tuning on QA task<a hidden class="anchor" aria-hidden="true" href="#load--preprocess-the-data-for-fine-tuning-on-qa-task">#</a></h4>
+<p>We will fine-tune our model on the squad_v2 dataset, which is composed of contexts, questions and answers. To get a better idea on how the squad_v2 dataset works: <a href="https://huggingface.co/datasets/squad_v2">https://huggingface.co/datasets/squad_v2</a>
+So here, we want the model to learn this structure:
+<img loading="lazy" src="lora10.PNG" alt=""  />
+</p>
+<p>The code to preprocess the data in this way:</p>
+<pre tabindex="0"><code>from datasets import load_dataset
+
+qa_dataset = load_dataset(&quot;squad_v2&quot;)
+
+def create_prompt(context, question, answer):
+  if len(answer[&quot;text&quot;]) &lt; 1:
+    answer = &quot;Cannot Find Answer&quot;
+  else:
+    answer = answer[&quot;text&quot;][0]
+  prompt_template = f&quot;### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n{answer}&lt;/s&gt;&quot;
+  return prompt_template
+
+mapped_qa_dataset = qa_dataset.map(lambda samples: tokenizer(create_prompt(samples['context'], samples['question'], samples['answers'])))
+</code></pre><h4 id="train-the-model">Train the model<a hidden class="anchor" aria-hidden="true" href="#train-the-model">#</a></h4>
+<p>We include the model, and train it on 100 steps. If we want to train the model on 1 or more epochs, we can replace “max_steps=100” with “num_train_epochs=1”.
+Since we loaded the model with a precision of floating point 16, we need to add fp16=True.</p>
+<pre tabindex="0"><code>from  transformers import TrainingArguments, Trainer, DataCollatorForLanguageModeling
+
+trainer = Trainer(
+    model=model, 
+    train_dataset=mapped_qa_dataset[&quot;train&quot;],
+    args=TrainingArguments(
+        per_device_train_batch_size=4, 
+        gradient_accumulation_steps=4,
+        warmup_steps=100,
+        max_steps=100,
+        learning_rate=1e-3, 
+        fp16=True,
+        logging_steps=1, 
+        output_dir=f&quot;qlora_{model_id.split('/')[-1]}_finetuned_for_penman_generation&quot;,
+    ),
+    data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False)
+)
+model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
+trainer.train()
+</code></pre><h4 id="inference-with-the-model">Inference with the model<a hidden class="anchor" aria-hidden="true" href="#inference-with-the-model">#</a></h4>
+<pre tabindex="0"><code>import torch
+from peft import PeftModel, PeftConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+peft_model_id = &quot;lora_fine-tuned_model&quot;
+config = PeftConfig.from_pretrained(peft_model_id)
+model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=False, device_map='auto')
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+
+# Load the Lora model
+qa_model = PeftModel.from_pretrained(model, peft_model_id)
+</code></pre><p>What’s very interesting here, is that is model is loaded with first the load of the original model, and then the load of the LoRA model. The LoRA model is not heavy at all: a few MB, so it is easily storable.
+Let’s imagine we have another model (for graph generation from text for instance), we can load the model just doing:</p>
+<pre tabindex="0"><code>graph_generation_model = PeftModel.from_pretrained(model, peft_graph_generation_model_model_id)
+</code></pre><p>Then, you can build a function to process the context / question in the expected format:</p>
+<pre tabindex="0"><code>from IPython.display import display, Markdown
+
+def make_inference(context, question):
+  batch = tokenizer(f&quot;### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n&quot;, return_tensors='pt')
+
+  with torch.cuda.amp.autocast():
+    output_tokens = qa_model.generate(**batch, max_new_tokens=200)
+
+  display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
+</code></pre><p>And just run it!</p>
+<pre tabindex="0"><code>context = input(&quot;context: &quot;)
+question = input(&quot;question: &quot;)
+make_inference(context, question)
+</code></pre><h3 id="bgeneral-overview-of-how-qlora-worksb"><!-- raw HTML omitted -->General overview of how QLoRA works<!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#bgeneral-overview-of-how-qlora-worksb">#</a></h3>
+<h4 id="what-is-quantization">What is quantization?<a hidden class="anchor" aria-hidden="true" href="#what-is-quantization">#</a></h4>
+<p>Quantization is the process of discretizing an input from a representation that holds more information to a representation with less information. It usally means converting a data to fewer bits, ie from 32-bit floats to 8-bit integers.</p>
+<p>How does it works? What does it means to convert data from 32-bits to 8-bit?</p>
+<ul>
+<li>First, when quantizing data, you can choose the range of values that the data will be mapped to (what will be the minimum &amp; maximum values the data can take after quantization?)</li>
+<li>Then, when quantizing the data, you chose the precision to which you want to quantize your values (2bits, &hellip;, 8bits, &hellip;)</li>
+<li>Finally, to ensure that the entire range of the low-bit data type is used, the input data type is commonly rescaled into the target data type range through normalization by the absolute maximum of the input elements, which are usually structured as a tensor.</li>
+</ul>
+<p>For example, quantizing a 32-bit Floating Point (FP32) tensor into a Int8 tensor with range [−127, 127] will result into the following:
+<img loading="lazy" src="qlora2.PNG" alt=""  />
+</p>
+<h4 id="how-does-quantization-applies-in-qlora">How does quantization applies in QLoRA?<a hidden class="anchor" aria-hidden="true" href="#how-does-quantization-applies-in-qlora">#</a></h4>
+<p>In QLoRA, the base-model (&ldquo;foundation model&rdquo;) is loaded directly as a 4-bit model (converting all its weights to 4-bit precision weights). Thus, the adapters (weight update matrix) is updated with the gradient calculated from the 4-bit base model, as opposed to what we do in traditional LoRA, which is calculating the gradient from a 16-bits model (1/4 less precision). So, to sum-up, in QLoRA:</p>
+<ul>
+<li>The gradient is computed from a 4-bit model</li>
+<li>Like for LoRA, the gradient is not pushed during backpropagation into the base-model (here, for QLoRA, the base-model is a 4-bit model): the gradient is pushed during backpropagation into the LoRA weight update (∆W) matrix.</li>
+</ul>
+<p>In QLoRA, the memory is all the more optimized that the optimizer states are stored in cpu (this process is called : &ldquo;Paged Optimizers&rdquo;), to optimize all the more the GPU memory. QLoRA is has been implemented to allow everyone to run very large models on a single GPU. The optimizer state is all the intermediate values calculated for the backpropagation and that need to be stored to push the gradient backward.</p>
+<p>To note: there are several experiments in the reduction of the precision of the weights in QLoRA: 8-bit Integer (Int8) vs 4-bit Float (FP4) vs 4-
+bit NormalFloat (NF4).</p>
+<h4 id="performances-of-qlora">Performances of QLoRA<a hidden class="anchor" aria-hidden="true" href="#performances-of-qlora">#</a></h4>
+<p>The paper <a href="https://arxiv.org/pdf/2305.14314.pdf">QLORA: Efficient Finetuning of Quantized LLMs</a> shows that this method is not degrading the performance of LLMs in traditional tasks :
+<img loading="lazy" src="qlora3.PNG" alt=""  />
+
+Indeed, the papers&rsquo;s result shows that 4-bit QLORA matches 16-bit full finetuning and 16-bit LoRA finetuning performance on academic benchmarks (GLUE &amp; Supr-NaturalInstructions (ROugeL)).</p>
+<h3 id="btest-qlora-fine-tuningb"><!-- raw HTML omitted -->Test QLoRA fine-tuning<!-- raw HTML omitted --><a hidden class="anchor" aria-hidden="true" href="#btest-qlora-fine-tuningb">#</a></h3>
+<p>I will show you as example how to fine-tune falcon40B on PENMAN representation of sentences. Here, the model takes as input a sentence and returns its corresponding PENMAN representation. THe model should thus learn the following structure:</p>
+<pre tabindex="0"><code>### SENTENCE
+&quot;# ::snt As we predicted , Route 288 is generating residential development in scarcely populated areas all around its exits , overtaxing the local country roads .&quot;
+
+### PSEUDO_PENMAN
+&quot;( generate-01 :ARG0 ( road_0 :name ( name :op1 \&quot;Route\&quot; :op2 288 ) :part ( exit ) ) :ARG1 ( develop-02 :ARG1 ( residence ) :location ( area :ARG1-of ( populate-01 :mod ( scarce ) ) :location ( around :op1 exit :mod ( all ) ) ) :ARG0-of ( overtax-01 :ARG2 ( road_1 :ARG1-of ( local-02 :ARG2 ( country ) ) ) ) ) :ARG1-of ( predict-01 :ARG0 ( we ) ) )&quot;
+</code></pre><h4 id="training-environment">Training environment<a hidden class="anchor" aria-hidden="true" href="#training-environment">#</a></h4>
+<p>I will show you how to fine-tune this model on this task using Google Colab (premium) with a single A100 GPU (40GB).</p>
+<h4 id="install-dependencies-1">Install dependencies<a hidden class="anchor" aria-hidden="true" href="#install-dependencies-1">#</a></h4>
+<pre tabindex="0"><code>!pip install -q bitsandbytes datasets accelerate loralib evaluate einops
+!pip install -q git+https://github.com/huggingface/peft.git git+https://github.com/huggingface/transformers.git
+</code></pre><h4 id="import-required-libraries">Import required libraries<a hidden class="anchor" aria-hidden="true" href="#import-required-libraries">#</a></h4>
+<pre tabindex="0"><code>import argparse
+import logging
+import math
+import os
+import sys
+from dataclasses import dataclass, field
+from itertools import chain
+from typing import Optional
+
+import datasets
+import torch
+from datasets import load_dataset
+
+import transformers
+from transformers import (
+    MODEL_FOR_CAUSAL_LM_MAPPING,
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    Trainer,
+    TrainingArguments,
+    default_data_collator,
+    set_seed,
+)
+from transformers.testing_utils import CaptureLogger
+from transformers.trainer_utils import get_last_checkpoint
+
+from transformers import BitsAndBytesConfig
+
+from peft import prepare_model_for_kbit_training
+from peft import LoraConfig, get_peft_model
+
+import json
+</code></pre><h4 id="load-the-model-as-a-4-bit-model--configure-lora-with-the-right-adapter-matrix--here-query--value-for-attention-modules">Load the model as a 4-bit model &amp; configure LoRA (with the right adapter matrix:  here query / value for attention modules)<a hidden class="anchor" aria-hidden="true" href="#load-the-model-as-a-4-bit-model--configure-lora-with-the-right-adapter-matrix--here-query--value-for-attention-modules">#</a></h4>
+<pre tabindex="0"><code>TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING = {
+    &quot;t5&quot;: [&quot;q&quot;, &quot;v&quot;],
+    &quot;mt5&quot;: [&quot;q&quot;, &quot;v&quot;],
+    &quot;bart&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;gpt2&quot;: [&quot;c_attn&quot;],
+    &quot;bloom&quot;: [&quot;query_key_value&quot;],
+    &quot;blip-2&quot;: [&quot;q&quot;, &quot;v&quot;, &quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;opt&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;gptj&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;gpt_neox&quot;: [&quot;query_key_value&quot;],
+    &quot;gpt_neo&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;bert&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;roberta&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;xlm-roberta&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;electra&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;deberta-v2&quot;: [&quot;query_proj&quot;, &quot;value_proj&quot;],
+    &quot;deberta&quot;: [&quot;in_proj&quot;],
+    &quot;layoutlm&quot;: [&quot;query&quot;, &quot;value&quot;],
+    &quot;llama&quot;: [&quot;q_proj&quot;, &quot;v_proj&quot;],
+    &quot;chatglm&quot;: [&quot;query_key_value&quot;],
+    &quot;starcoder&quot;: [&quot;c_attn&quot;],
+    &quot;falcon&quot;: [&quot;query_key_value&quot;]
+}
+
+# instantiate training args (update the max_steps to &quot;num_train_epochs=1&quot; or more, here it was just for testing purposes)
+model_type = &quot;falcon&quot;
+model_id = &quot;tiiuae/falcon-40b&quot;
+matrix_order = 8
+training_args = TrainingArguments(
+    auto_find_batch_size=True,
+    gradient_accumulation_steps=1,
+    max_steps=1000,
+    logging_steps=1, 
+    learning_rate=2e-5,
+    fp16=True,
+    save_total_limit=4,
+    output_dir=f&quot;./{model_id.split('/')[-1]}_qlora_finetuned&quot;,
+    save_strategy='epoch',
+    optim=&quot;paged_adamw_8bit&quot;,
+    lr_scheduler_type = 'cosine',
+    warmup_ratio = 0.05,
+)
+
+def read_data(file_path):
+    data = []
+    with open(file_path, 'r') as f:
+        for line in f:
+            try:
+                data.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                print(f'Error parsing JSON for line: {line}')
+                print(f'Error: {str(e)}')
+    return data
+
+# Setup logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    format=&quot;%(asctime)s - %(levelname)s - %(name)s - %(message)s&quot;,
+    datefmt=&quot;%m/%d/%Y %H:%M:%S&quot;,
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+log_level = training_args.get_process_log_level()
+logger.setLevel(log_level)
+datasets.utils.logging.set_verbosity(log_level)
+transformers.utils.logging.set_verbosity(log_level)
+transformers.utils.logging.enable_default_handler()
+transformers.utils.logging.enable_explicit_format()
+
+# Log on each process the small summary:
+logger.warning(
+    f&quot;Process rank (distributed): {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}&quot;
+    + f&quot;distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}&quot;
+)
+
+# Detecting last checkpoint.
+last_checkpoint = None
+if os.path.isdir(training_args.output_dir) and not training_args.overwrite_output_dir:
+    last_checkpoint = get_last_checkpoint(training_args.output_dir)
+    if last_checkpoint is None and len(os.listdir(training_args.output_dir)) &gt; 0:
+        raise ValueError(
+            f&quot;Output directory ({training_args.output_dir}) already exists and is not empty. &quot;
+            &quot;Use --overwrite_output_dir to overcome.&quot;
+        )
+    elif last_checkpoint is not None and training_args.resume_from_checkpoint is None:
+        logger.info(
+            f&quot;Checkpoint detected, resuming training at {last_checkpoint}. To avoid this behavior, change &quot;
+            &quot;the `--output_dir` or add `--overwrite_output_dir` to train from scratch.&quot;
+        )
+
+# Load data
+train_data = read_data('train.txt')
+validation_data = read_data('test.txt')
+
+# Set seed before initializing model.
+set_seed(training_args.seed)
+# initializing tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+# initializing model
+## quantization
+bnb_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type=&quot;nf4&quot;, bnb_4bit_compute_dtype=torch.bfloat16)
+model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={&quot;&quot;:0}, trust_remote_code=True)
+model.gradient_checkpointing_enable()
+model = prepare_model_for_kbit_training(model)
+
+## adapt model for LORA
+loraconfig = LoraConfig(
+    r=matrix_order, 
+    lora_alpha=32, 
+    target_modules=TRANSFORMERS_MODELS_TO_LORA_TARGET_MODULES_MAPPING[model_type], 
+    lora_dropout=0.05, 
+    bias=&quot;none&quot;, 
+    task_type=&quot;CAUSAL_LM&quot;
+)
+model = get_peft_model(model, loraconfig)
+</code></pre><h4 id="prepare-the-data">Prepare the data<a hidden class="anchor" aria-hidden="true" href="#prepare-the-data">#</a></h4>
+<p>Here, the data are stored in a text.txt file.</p>
+<pre tabindex="0"><code>tokenizer.pad_token = tokenizer.eos_token
+
+def create_prompt(snt, pseudo_penman):
+    prompt_template = f&quot;### SENTENCE\n{snt}\n\n### PSEUDO_PENMAN\n{pseudo_penman}&lt;/s&gt;&quot;
+    return prompt_template
+
+def process_sample(sample):
+    # Create your prompt here
+    prompt = create_prompt(sample['snt'], sample['pseudo_penman'])
+    # Encode the prompt
+    return tokenizer(prompt, return_token_type_ids=False)
+
+mapped_train_dataset = list(map(process_sample, train_data))
+mapped_validation_dataset = list(map(process_sample, validation_data))
+</code></pre><h4 id="train-the-model-using-the-huggingface-trainer">Train the model using the huggingface Trainer<a hidden class="anchor" aria-hidden="true" href="#train-the-model-using-the-huggingface-trainer">#</a></h4>
+<pre tabindex="0"><code>
+# Initialize our Trainer
+trainer = Trainer(
+    model=model,
+    train_dataset=mapped_train_dataset,
+    eval_dataset=mapped_validation_dataset,
+    args=training_args,
+    tokenizer=tokenizer,
+    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+)
+
+# Training
+checkpoint = None
+if training_args.resume_from_checkpoint is not None:
+    checkpoint = training_args.resume_from_checkpoint
+elif last_checkpoint is not None:
+    checkpoint = last_checkpoint
+model.config.use_cache = False
+trainer.train(resume_from_checkpoint=checkpoint)
+trainer.save_model()
+trainer.save_state()
+model.config.to_json_file(f&quot;qlora_{model_id.split('/')[-1]}_finetuned_for_penman_generation/config.json&quot;)
+</code></pre><p>Then, save the model on your local machine.</p>
+<h4 id="make-inference-with-the-model">Make inference with the model<a hidden class="anchor" aria-hidden="true" href="#make-inference-with-the-model">#</a></h4>
+<p>Here, the test data is stored in a test.txt file.</p>
+<pre tabindex="0"><code>import torch
+from peft import PeftModel, PeftConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+model_id = &quot;tiiuae/falcon-40b&quot;
+peft_model_id = &quot;qlora_falcon40b_finetuned_for_penman_generation&quot;
+config = PeftConfig.from_pretrained(peft_model_id)
+
+
+bnb_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_use_double_quant=True, bnb_4bit_quant_type=&quot;nf4&quot;, bnb_4bit_compute_dtype=torch.bfloat16)
+model = AutoModelForCausalLM.from_pretrained(model_id, quantization_config=bnb_config, device_map={&quot;&quot;:0}, trust_remote_code=True)
+
+#model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=True, device_map={&quot;&quot;:0})
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+
+# Load the Lora model
+amr_model = PeftModel.from_pretrained(model, peft_model_id)
+
+# Set pad token
+if not tokenizer.pad_token:
+    tokenizer.pad_token = tokenizer.eos_token
+
+# Inference
+def make_inference(line):
+    snt = line[&quot;snt&quot;]
+    batch = tokenizer(f&quot;### SENTENCE\n{snt}\n\n### PSEUDO_PENMAN\n&quot;, return_tensors='pt', truncation=True, padding='longest')
+    # Note: Remove the token_type_ids from the input.
+    del batch[&quot;token_type_ids&quot;]
+    with torch.cuda.amp.autocast():
+        output_tokens = amr_model.generate(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], max_length=200)
+    line[&quot;pred_penman&quot;] = tokenizer.decode(output_tokens[0], skip_special_tokens=True)
+    with open(&quot;final_data.txt&quot;, 'w') as fichier:
+      fichier.write(json.dumps(line))
+      fichier.write('\n')
+
+def read_data(file_path):
+    data = []
+    with open(file_path, 'r') as f:
+        for line in f:
+            try:
+                data.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                print(f'Error parsing JSON for line: {line}')
+                print(f'Error: {str(e)}')
+    return data
+  
+for line in read_data(&quot;test.txt&quot;):
+    make_inference(line)
+</code></pre><p>Here, you will have a final_data.txt with the penman generation of the fine-tuned model!</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://camillebrl.github.io/tags/fine-tuning/">Fine-tuning</a></li>
+      <li><a href="https://camillebrl.github.io/tags/lora/">LoRA</a></li>
+      <li><a href="https://camillebrl.github.io/tags/peft/">PEFT</a></li>
+      <li><a href="https://camillebrl.github.io/tags/llms/">LLMs</a></li>
+    </ul>
+  </footer>
+</article>
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+    integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true},
+                {left: "$", right: "$", display: false}
+            ]
+        });
+    });
+</script>
+
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://camillebrl.github.io/">My Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
