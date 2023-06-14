@@ -36,6 +36,16 @@ pygmentsUseClasses = true
     url = "/about/"
     weight = 10
 
+    [[languages.en.menu.main]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/camille-barboule-353829147/"
+    weight = 6
+
+    [[languages.en.menu.main]]
+        name = "Twitter"
+        url = "https://twitter.com/BarbouleCamille"
+        weight = 7
+
 [params]
     env = 'production'
     description = "Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod"
