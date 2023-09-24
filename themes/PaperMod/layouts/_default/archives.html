@@ -27,11 +27,8 @@
   {{- end }}
 </header>
 
-{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
-
-{{- if site.Params.ShowAllPagesInArchive }}
-{{- $pages = site.RegularPages }}
-{{- end }}
+{{- $sectionsToInclude := slice "implementation_tutorials" "my_researches" "paper_review" }}
+{{- $pages := where site.RegularPages "Section" "in" $sectionsToInclude }}
 
 {{- range $pages.GroupByPublishDate "2006" }}
 {{- if ne .Key "0001" }}
