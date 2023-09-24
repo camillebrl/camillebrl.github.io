@@ -44,7 +44,7 @@
     <h3 class="archive-month-header">{{- .Key }}<sup class="archive-count">&nbsp;&nbsp;{{ len .Pages }}</sup></h3>
     <div class="archive-posts">
       {{- range .Pages }}
-      {{- if eq .Kind "page" }}
+      {{- if or (eq .Section "implementation_tutorials") (eq .Section "my_researches") (eq .Section "paper_review") }}
       <div class="archive-entry">
         <h3 class="archive-entry-title">
           {{- .Title | markdownify }}
