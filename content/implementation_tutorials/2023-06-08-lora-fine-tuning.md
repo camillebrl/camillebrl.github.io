@@ -4,6 +4,7 @@ date: 2023-06-08
 tags: ["Fine-tuning","LoRA", "PEFT", "LLMs"]
 math: true
 author: ["Camille Barboule"]
+categories: ["implementation_tutorials"]
 ---
 
 ---
