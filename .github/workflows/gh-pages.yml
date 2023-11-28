@@ -6,6 +6,7 @@ on:
       - "images/**"
       - "LICENSE"
       - "README.md"
+      - classification_papers.py
     branches:
       - main
       - gh-pages
