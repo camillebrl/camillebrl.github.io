@@ -1,0 +1,14 @@
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.99\linewidth]{figures/acid.pdf}
+\caption{
+Dense retrieval vs.\ generative retrieval. 
+In dense retrieval (right), both the query and the documents are encoded into \emph{dense} vectors (i.e., embeddings).
+Nearest-neighbor search is then applied to find the most relevant documents.
+Generative retrieval (left) trains a language model to generate the relevant document ID conditional on the query. The ID is tied to a unique document, allowing for direct lookup.
+\method (our method) uses GPT-3.5 to create a sequence of abstractive keyphrases to serve as the document ID.
+%\jungo{I just put my first version. Can we find a more interesting, intuitive key words/question pair? TV dramas? person? } \phillip{the FIFA example is fine, I think}
+%\nascomment{examle is fine, I think.  can you add something to show the cosine calculation across the collection in the dense pathway above?  I'd also suggest that the purple LM arrow be labeled `LM' (not LLM) and have it point to some icon for an ID ... then you can annotate and show that the ID could be a cluster ID or a series of keyphrases as in this work. also, the dense retrieval part is taking up way more real estate than the thing our paper is about.  can you make it more compact so that most of the figure is about generative retrieval and ACID?}
+} 
+\label{fig:dpr_vs_gen}
+\end{figure}

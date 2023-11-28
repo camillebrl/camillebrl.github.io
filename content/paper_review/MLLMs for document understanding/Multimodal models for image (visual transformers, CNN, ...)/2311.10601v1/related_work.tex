@@ -1,0 +1,18 @@
+\section{Related Work}
+
+\noindent \textbf{Indoor Localization via Wireless Networks}
+Indoor localization based on existing wireless communication networks, such as WiFi \cite{wifireview2015yang} and Bluetooth\cite{bluetoo2016chen}, based on their RSS, has gained popularity because it does not require additional hardware \cite{wifireview2015yang}. For such systems, two primary methodologies are employed:
+1) Utilizing an access-point database that comprises access-point IDs and their respective geo-coordinates. This setup facilitates the determination of user location through trilateration or weighted averaging of access-point coordinates \cite{WiGLEonline}.
+2) Employing a fingerprint database, a radiomap, which records the received signal strength indicators and the corresponding geo-coordinates at their observation points\cite{radar2000bah},\cite{WILL2013wu}. Such an approach stands out for its inherent scalability, amplified by the prospects of crowd-sourced data collection \cite{crowdsource2010mink}. 
+
+% \textbf{TBD...}\chris{@Josh, do you still put it a TBD?}
+
+\noindent \textbf{Uncertainty Estimation}
+Estimating the uncertainty, or more specifically, the suspicious evidence cues derived from data is crucial for the integration in real-world applications and as input for data fusion processes. 
+To quantify uncertainty within deep learning, two primary distinctions emerge: epistemic uncertainty, associated with the model, and aleatoric uncertainty, related to the data \cite{kendall2017uncertainties}. 
+Estimating aleatoric uncertainty can enhance the robustness of the network when training on noisy datasets. 
+By introducing an additional aleatoric uncertainty prediction head, the reliability of neural networks has been significantly strengthened across various applications \cite{cai2022stun}\cite{poggi2020uncertainty}\cite{taha2019unsupervised}\cite{feng2018safe}. Our research primarily concentrates on enhancing localization performance on noisy radio maps by predicting uncertainty, which in turn aids in data fusion processes. 
+
+
+\noindent \textbf{Multi-modal Sensor Fusion}
+Indoor positioning and navigation techniques using smartphones have seen significant advances with the incorporation of various data sources and modeling methods. WiFi-SLAM \cite{ferris2007wifi,mirowski2013signalslam} relays on WiFi-based loop-closing constraints, which effectively minimize the accumulation errors commonly found in inertial navigation. Bayesian filter-based algorithms can also be used to perform the multi-modal sensor fusion to estimate the online position, such as particle filter\cite{zou2017Accurate,Hong2014WaP,carrera2016real}, Kalman filter and its variant\cite{Hellmers2013IMU,Poulose2019Indoor,Feng2020Kalman}. Several studies have incorporated floor plan information into their fusion systems via offline image processing techniques \cite{herath2021fusiondhl,ma2017pedestrian}, while other methods use the floor plan as a constraint for particle filtering \cite{Hong2014WaP,carrera2016real} and conditional random fields\cite{xiao2014lightweight}. However, there is no method to properly fuse IMU, uncertainty-aware WiFi localization results, and the crowdsourced WiFi radio map data.

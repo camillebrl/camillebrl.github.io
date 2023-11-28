@@ -1,0 +1,49 @@
+\lstset{
+  basicstyle=\ttfamily,
+  breaklines=true,
+  frame=single,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
+}
+
+\renewcommand{\arraystretch}{1.1}
+
+\begin{table}[H]
+\centering
+\caption{Some examples of preference pairs in our dataset}
+\label{tab:rl_pairs}
+\begin{tabular}{|p{\linewidth}|}
+\hline
+\textbf{Query:} Hello all, what is the difference between writing '\&' and '\&\&'. E.g 
+\begin{lstlisting}
+if(income > 14000 && income <= 48000)
+    tax = 0.105 * 14000 + 0.175 * (income - 14000);
+end
+\end{lstlisting}
+
+\textbf{Preferred response:}
+\&\& is for scalars \& is for vectors.
+The way in which MATLAB compares is different for each of the two there is also two more operators (|| and |).
+
+Over-simplifications aside \&\& and || are short circuit operators, they go left to right. If any of the conditions are false then the comparing is stopped. So for conditionOne \&\& conditionTwo the condition on the left if it meets requirements (False here) will not check the condition on the right.
+
+\textbf{Non-preferred response:} \&\& is for scalars \& is for vectors \\
+\hline
+\textbf{Query:} How does the Quotient "\%" thing work?
+Tried googling it, did a bunch of tests in C to try and work it out myself. No luck. How does it calculate stuff?
+
+\textbf{Preferred response:}
+This is the modulus operator, and gives you the remainder of a division operation. e.g. 6\%2 will give you 0.
+You've already met the modulus operator as part of the Matlab project, where mod(5,2) would find the remainder when 5 is divided by 2 (handy for telling if a number is even or not). There was even a recording on how to use it.
+If you understand how mod(5,2) works in Matlab, then in C you have the benefit of a shorthand for it, i.e. 5\%2.
+
+\textbf{Non-preferred response:} This is the modulus operator, and gives you the remainder of a division operation. e.g. 6\%2 will give you 0. \\
+\hline
+\textbf{Query:} How do I get my while loop to start from the second line of data (e.g. not the header)?
+
+\textbf{Preferred response:}
+Add a fgetl(fid); before your loop starts. Alternatively, you could try to write some logic to skip it in the loop.
+
+\textbf{Non-preferred response:} Add a fgetl(fid); before your loop \\
+\hline
+\end{tabular}
+\end{table}

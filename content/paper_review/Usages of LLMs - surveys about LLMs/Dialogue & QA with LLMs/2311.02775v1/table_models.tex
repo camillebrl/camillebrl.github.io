@@ -1,0 +1,95 @@
+\begin{table}[!ht]
+\caption{LLM (GPT-4) and human rating comparison on model answers of the \texttt{c\_project} question: \quoteline{Can you put an if statement inside another if statement?}}
+\label{tab:models}
+\footnotesize
+\begin{tabular}{p{0.07\textwidth} p{0.8\textwidth} p{0.03\textwidth} p{0.05\textwidth}}
+\toprule
+\textbf{Model} & \textbf{Answer} & \textbf{LLM} & \textbf{Human} \\
+\midrule 
+LLaMA-2 Chat (7B) & 
+Hello! I'm here to help you with your query.
+To answer your question directly, the short answer is no, you cannot put an `if statement` inside another `if statement` in Matlab/C.
+In Matlab, you can only have one `if` statement per `if-else` block. 
+% This is because the `if-else` structure is used to define a branch of code that is executed based on a condition. 
+If you try to put another `if` statement inside the first `if` statement, you will get a compiling error...
+& 0 & 0 \\
+\midrule
+LLaMA-2 Chat (13B) & 
+% \begin{tabminted}{tex}
+% blah
+% \end{tabminted} 
+Of course! I'd be happy to help. 
+The answer to your question is yes, you can put an if statement inside another if statement in both Matlab and C. This is called nesting if statements.
+In Matlab, you can use the elseif keyword to nest if statements. [example omitted]. 
+In C, you can use the if keyword to nest if statements. [example omitted].
+I hope this helps! Let me know if you have any other questions.
+& 1 & 0.5 \\
+\midrule 
+LLaMA-2 Chat (70B) & 
+Hello! I'm happy to help you with your question. Yes, it is possible to put an if statement inside another if statement. This is called a nested if statement.
+
+Here's an example: [example omitted]. 
+In this example, the inner if statement will only execute if the condition1 is true. If condition1 is false, the code inside the inner if statement will not be executed.
+It's important to note that nesting if statements can make the code harder to read and understand, so it's generally recommended to use them sparingly and only when necessary.
+
+I hope this helps! Let me know if you have any further questions.
+& 1 & 1 \\
+\midrule
+GPT-4 & 
+Subject: Nested if statements in Matlab and C
+Answer:
+Yes, you can put an if statement inside another if statement. This is called "nested if statements." Both Matlab and C support nested if statements. Here's an example in both languages:
+
+Matlab: [example omitted]
+C: [example omitted]
+
+In both examples, we have an outer if statement checking if `x` is positive, and inside that, we have another if statement checking if `y` is positive. This allows us to handle different cases based on values of `x` and `y`.
+& 1 & 0.5 \\
+\midrule
+GPT-4 + RAG & 
+Yes, you can definitely put an "if" statement inside another "if" statement. This is known as nested if statements. Here's a simple example: [example omitted]
+
+In this example, the inner "if" statement (checking condition2) is only executed if condition1 is true. This can be useful when you need to check for multiple conditions that depend on each other.
+
+Remember to always properly indent your code when using nested if statements, as it can quickly become difficult to read and understand the flow of your program if you don't.
+& 1 & 1 \\
+\midrule
+L13+RAG & % LLaMA2-13b chat + RAG
+Hello! As your helpful teaching assistant, I'm here to help you with your query. Yes, it is possible to put an if statement inside another if statement in C programming. This is called nested if statements. Here's an example: [example omitted]
+In this example, the inner if statement (condition2) will only be executed if the outer if statement (condition1) is true.
+I hope this helps! If you have any more questions or need further clarification, please don't hesitate to ask :-) %\emoji{smiling-face}
+& 1 & 1 \\
+\midrule
+L13+SFT & %LLaMA2-13b chat + SFT 
+Yes.
+& 0.5 & 0.25 \\
+\midrule
+% LLaMA2-13b chat + SFT + RAG & 
+% \begin{tabminted}{text}
+% blah
+% \end{tabminted}
+% & 18 & 20 \\
+% \midrule
+L13+SFT +DPO & %LLaMA2-13b chat + SFT + DPO (
+Certainly! Yes, it is possible to put an if statement inside another if statement in MATLAB and C. This is known as nested if statements.
+
+In MATLAB, you can use the `if` statement within another `if` statement like this: [example omitted]
+In C, you can use the `if` statement within another `if` statement like this: [example omitted]
+It's important to note that when using nested if statements, you should always make sure that the inner if statement is fully enclosed within the outer if statement, as shown in the examples above.
+
+Additionally, it's worth noting that using nested if statements can make your code more complex and difficult to read. It's usually a good idea to break up your code into separate if statements if possible, to make it easier to understand and maintain.
+& 1 & 0.75 \\
+\midrule
+L13+SFT +DPO +RAG & % LLaMA2-13b chat + SFT + RAG + DPO 
+Yes, you can put an if statement inside another if statement in C programming. This is called nesting if statements.
+Here's an example: [example omitted]
+In the above example, the inner if statement is nested inside the outer if statement. The outer if statement checks the condition `condition1`, and if it is true, the inner if statement is executed. If the inner if statement is false, the outer if statement will execute the code inside the `else` block.
+
+You can use this syntax to add more complexity to your code and make decisions based on multiple conditions.
+
+I hope this helps! Let me know if you have any more questions.
+& 1 & 1 \\
+% \textbf{Total} &  &  145 & 195 \\
+\bottomrule
+\end{tabular}
+\end{table}

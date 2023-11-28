@@ -1,0 +1,28 @@
+
+\section{Introduction}
+Indoor location awareness is a key capability for smart devices and a fundamental need in embodied intelligence. There is a surge in applications of Indoor Positioning Systems (IPS) ranging from smart retail navigation to space utilization analysis. 
+
+Due to the non-line-of-sight issue of GPS in indoor environments, existing IPS leverage inertial measurement units (IMU) and/or building-dependent infrastructures such as WiFi, Bluetooth or magnetic fingerprints to localize smart devices. More recently, building floor plans emerge to be used as an effective input modality for IPS and can be fused with IMU and other building-dependent infrastructures to improve the localization accuracy \cite{herath2021fusiondhl}\cite{xiao2014lightweight}. Intuitively, floor plans constrain the
+movement path of a moving agent - people cannot walk through walls and can only enter a room through a door, and can serve as strong cues in correcting localization offsets. However, the floor plans of many environments can be absent or lack timely updates after map creation. As a result, the usefulness of such indoor localization methods is largely limited by the availability of accurate maps.
+
+\begin{figure}[!t]
+\centering
+\captionsetup{belowskip=-20pt}
+\includegraphics[width=1.0\linewidth]{figures/icra_ips_openfig.pdf}
+\caption{Conventional IPS uses accurate radio maps for WiFi localization and floor plans in fusion. To fully utilize the noisy crowdsourced radio map, we propose an uncertainty-aware WiFi localization module and a bespoken Bayesian fusion method that replaces floor plans with crowdsourced radio maps in fusion. }
+\label{fig:openfig}
+\end{figure}
+
+On the other side, with the proliferation of smartphones and WiFi-enabled mobile robots, the radio maps of WiFi become largely available from crowdsourcing. A radio map broadly refers to a database 
+consisting of a number of paired locations and their respective Received Signal Strengths (RSS) from different wireless access points. A research question of our interest is - \emph{can we replace floor plans with radio maps in multimodal IPS?} 
+Indeed, crowdsourced radio maps are often derived from tons of walking/moving trajectories by various users. Therefore, they not only contain wireless and location pairs but also carry side information about traversing regularity by inspecting the locations of fingerprints. With sufficient crowdsourced trajectories, we hypothesize the regularity embedded in a radio map implicitly reveals the allowable paths and can be used as an effective cue for localization, sharing a similar spirit of floor plans in constraining localization results.
+However, due to the nature of crowdsourcing, radio maps created this way inevitably suffer from location inaccuracy and sparse position coverage. Prior arts in fingerprint-based WiFi IPS \cite{huang2019online} found that the accuracy of the WiFi localization systems can be far from satisfying and impose challenges in fusion if built upon noisy crowdsourced radio maps. Meanwhile, the sparse position coverage of radio maps cannot provide location constraints as explicit as that of floor plans, limiting the adoption of map-matching-like fusion methods \cite{xiao2014lightweight,herath2021fusiondhl}.  
+
+In this work, we propose a new framework to deal with the issues of radio map issues and unravel their full potential in IPS. Our framework, illustrated in Fig.~\ref{fig:openfig}, includes an uncertainty-aware neural network model for WiFi fingerprinting with radio maps and a new Bayesian filtering method admissible to the fusion of radio maps. Qualitative and quantitative evaluations on three real-world sites demonstrate that the proposed system is able to
+produce $\sim25\%$ performance gain compared to the state-of-the-art IPS.
+
+
+
+
+
+

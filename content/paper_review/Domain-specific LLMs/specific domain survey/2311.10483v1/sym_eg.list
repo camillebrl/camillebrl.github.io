@@ -1,0 +1,13 @@
+    // S0: w == 0 && v == p && listrep(p)
+    while (v) {
+    //@ w == 0 && v != 0 && v == p && listrep(p)
+    //@ exists __1, w == 0 && v != 0 && v == p && p -> tail == __1 && listrep(__1)
+        t = v -> tail;
+    //@ w == 0 && v != 0 && v == p && p -> tail == t && listrep(t) 
+        v -> tail = w;
+    //@ w == 0 && v != 0 && v == p && p -> tail == w && listrep(t)
+        w = v;
+    //@ w == v && v != 0 && v == p && p -> tail == 0 && listrep(t)
+        v = t;
+    //@ S1: v == t && p != 0 && w == p && p -> tail == 0 && listrep(v)
+    }

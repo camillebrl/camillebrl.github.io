@@ -1,0 +1,153 @@
+% CVPR 2023 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+\usepackage[review]{cvpr}      % To produce the REVIEW version
+%\usepackage{cvpr}              % To produce the CAMERA-READY version
+%\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{soul}
+
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, e.g. with the
+% file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{10707} % *** Enter the CVPR Paper ID here
+\def\confName{ICCV}
+\def\confYear{2023}
+
+\renewcommand\thesection{\Alph{section}}
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{Comments on Reviews: mmFUSION}
+
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+\maketitle
+
+\section{ICCV2023 Reviewers Summary}
+\begin{table*}[h!]
+    \centering
+    %\rotatebox{90}{
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{l|lcccc}
+         S.n. &
+         \textbf{Question} & \textbf{Reviewer 2} & \textbf{Reviewer 3} & \textbf{Reviewer 5} &
+         \textbf{Our Progress}\\
+         \hline
+         \multirow{2}{*}{1}& Key ideas by reviewer & Slightly Explained & Sufficiently Explained& Sufficiently Explained & \multirow{2}{*}{\color{blue}{Understood Enough}} \\
+          & Experiments \& Significance by reviewer & Comply& Comply and mentioned for more & Comply & \\
+         \hline
+         \multirow{5}{*}{2}& Strengths: Key idea & important problem and well motivated&easy to follow \& reasonable & designed for broad commercial interest & \color{blue}{mmFUSION: A Good Idea}\\
+         & Strengths: Experimental or theoretical validation & performs better than naive methods& better results than existing fusion methods  & --- & \color{blue}{Better on Cited Papers}\\
+         & Strengths: Writing quality & well-written& --- &--- & \color{blue}{Well Written} \\
+         & Strengths: other valuable aspects & w/o ROIs is good point & mm Fusion \& feats fusion is key technology & --- & \color{blue}{Good Motivation}\\
+         & Strengths: visualization & good insights into feature being learned & --- & --- & \color{blue}{Better}\\
+         \hline
+         \multirow{7}{*}{3}& Weaknesses: Explain idea & if motivated why better than BEV based methods & --- & Lacking in presenting fundamental idea  & \color{black}{Can be Motivated Better} \\
+         & Weaknesses: Explain experiments & current baselines are outdated & limited baselines & limited to selected papers&\color{red}{Needed}\\
+         & Weaknesses: Idea already done? & --- & --- & --- &\\
+         & Weaknesses: Experiments are insufficient for claims? & results on Nuscenes/Waymo required and didn't compare with methods w/o ROIs& gap b/w validation and testing results & not clear how competing methods selected  &\color{red}{Needed} \\
+         & Weaknesses: Latency: & practical feasibility such as Latency\& Memory & latency analysis required & explain parameters& \color{blue}{Already Done} \\  
+         & Weaknesses: What is missing? & related work on fusion domain & adopt more 3D heads e.g PVRCNN & explanation on evaluation criteria & \color{red}{Needed}\\
+         & Weaknesses: Explain, are SOTAs surpassed? & not enough & good results & not reaching SOTAs &  \color{blue}{Needed} \\
+         & Weaknesses: Lack of Novelty & --- & --- & ---&  \color{blue}{Almost Okay} \\
+         \hline
+         4 & Reviewer Confidence? & very confident and expert & very confident and expert & somewhat confident &  \\
+         \hline
+         \multirow{3}{*}{5}& Justification of Rating: How weigh the strength & presented method is novel, interesting and field is cherry-picked & idea is simple & --- & \color{blue}{Idea is Novel} \\
+         & Justification of Rating: How weigh the weaknesses & choice of baseline is not sufficient & effectiveness not fully validated & evaluated on cars,not novel for wide applicability & \color{red}{Needed} \\
+         & Justification of Rating: additional thoughts & generalize to any large scale dataset& more exps should be conducted to support claims& should submit to application-specific conference & \color{red}{Needed} \\
+         \hline
+         \multirow{3}{*}{6}& Additional Comments: Minor Suggestions? & add more recent references [rp6][rp7]  & cite baseline models in tables & improve paper writing & \color{black} {Needed} \\
+         & Additional Comments: Questions? & --- & ---& ---&  \\
+         & Additional Comments: Corrections? & some typos & presentation can be improved (tables lines) & correct misspelled method names& \color{black}{Needed} \\
+         \hline
+    \end{tabular}
+    }%}
+    \caption{ICCV2023 Reviewers Summary}
+    \label{tab:ReviewersSummary}l
+\end{table*}
+
+
+
+
+\section{Architectural Modifications}
+\subsection{Proposition 1}
+This proposition is based on very less changes in the network, such as applying mmFUSION Module more than one times in a similar way as in Transformer the multi-head attentions are repeated but in our case mmFUSION modules (its cross-modality and multi-modality attention part only).
+
+\subsection{Proposition 2}
+This proposition is based on significant changes in the existing mmFUSION module. Take feature maps at each level of Img-Encoder and Pts-Encoder, pass them through cross-modality and multi-modality fusion modules, and feed them to the decoder at its same spatial level. So if there would be three levels in total, it means there would be three mmFUSION modules passing features to the decoder. This proposal is expected to remove ambiguities related to misalignment between features of multi-modalities. 
+
+\textbf{Challenges.}
+There would be a challenging situation that how high-resolution feature maps can be fed to mmFUSION, i.e. it will create a computational complexity issue. 
+
+\textbf{Possible Solution.}
+The squeeze and excitation (SE) module \cite{hu2018squeeze} can be leveraged to downsample the feature maps, the same as MMTM \cite{joze2020mmtm} adopted the strategy. But in our case, we will change 3D feature maps instead of 2D.
+
+
+\section{Experimental Modifications}
+\subsection{Main Experiments}
+\begin{itemize}
+    \item Perform an experiment on \textit{mmFUSION tiny version} i.e. feature map of size $50\times50\times4$ or 50\times50\times2$ 
+    \item Perform an experiment on \textit{mmFUSION small version} i.e. feature map of size $100\times100\times4$ 
+    \item Perform an experiment on \textit{mmFUSION base version} i.e. feature map of size $200\times200\times4$
+    \item Perform an experiment on \textit{mmFUSION Large version} i.e. feature map of size $200\times200\times8$
+
+    \item compare their performances and show what is the optimal shape of feature maps in the case of KITTI dataset
+    \item \textbf{If possible} repeat all these experiments for NuScenes Dataset and show similar analysis
+\end{itemize}
+\subsection{Ablation Experiments}
+\begin{itemize}
+    \item Redo the experiments with cross-modality and multi-modality attention modules as the previous ablation experiments are not based on exactly these modules, they were done to check the feasibility of the attention mechanism based on self-attention (used linear nn) and criss-cross attention (feature maps in 2D).  This was one of the main points where reviewers can raise the issue.
+    \end{itemize}
+
+
+
+%%%%%%%%% REFERENCES
+{\small \newpage \newpage
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+\end{document}

@@ -1,0 +1,518 @@
+% CVPR 2023 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+\usepackage[review]{cvpr}      % To produce the REVIEW version
+%\usepackage{cvpr}              % To produce the CAMERA-READY version
+%\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{soul}
+
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, e.g. with the
+% file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{10707} % *** Enter the CVPR Paper ID here
+\def\confName{ICCV}
+\def\confYear{2023}
+
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{mmFUSION: Multimodal Fusion for 3D Objects Detection}
+
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+\maketitle
+
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+This paper presents a new multi-modal fusion strategy at the feature level for camera images and LiDAR point clouds for 3D object detection. Instead of the need for regions of interest (ROIs) or proposals for modalities fusion, we propose a method to transform modalities features from a higher spatial shape to a lower spatial shape while maintaining meaningful information for the detection task. Usually, multi-modal fusion happens at the early or late stages in multi-modal detectors. These are the predominant approaches so far because of the simplicity and having proposals from each modality but these methods are limited by deficiencies in sensors. On the other hand, fusion at the intermediate level is more adaptive but at the same time more challenging because of the unaligned feature dimension and lacking adjacency in transformations. 
+%
+%Multimodal fusion can be done at the early, intermediate, and lateral stages before the final 3D detection. Each fusion has its merit and demerits, early fusion is mostly based on available features from each modality and their possible associations while on the other hand, late fusion is predominant so far because of its simplicity and having proposals from each modality. The intermediate fusion is done at the feature level and does not require either initial proposals from each modality or their feature concatenation information. However, having different and unaligned features dimension makes intermediate fusion more challenging.  
+%
+We propose a new multi-modal fusion approach at the feature level named \textbf{(mmFUSION)} that overcomes the problems of intermediate fusion. mmFUSION is a way to transform available data modalities from a defined higher spatial shape to a lower spatial shape keeping in view not associating features. Afterward, it learns to complement modalities' deficiencies through cross-modality attention which is further followed by multi-modal attention. Our proposed mmFUSION approach performs better than available early, intermediate, late, and two-stage based fusion methods. We evaluate our method on Kitti Dataset and show the effectiveness over different difficulty levels. 
+
+The code with the mmdetection3D\cite{contributors2020mmdetection3d} project plugin will be publicly available soon after acceptance.
+\end{abstract}
+
+%%%%%%%%%  Introduction
+\section{Introduction}
+\label{sec:intro}
+
+\begin{figure}[ht!]
+  \centering
+\includegraphics[width=15.2cm,height=11.8cm,keepaspectratio]{figs/intro/intro_pic.png}
+  \caption{Early Fusion: Low-level features are fused at an early stage before predicting final 3D proposals, Late Fusion: Proposals from a particular modality are predicted roughly, and then high-level features or proposals from both modalities are interacted to get final detection, Feature-Level Fusion: Usually BEVs maps are computed in order to fuse multi-modalities but need ROIs or second stage of fusion. Feature-Level Fusion at defined space \textbf{(Our Case)}: We treat each modality separately to get high-level features at the low spatial shape (without any ROIs or proposals), first learn to complement modalities deficiencies, and produce joint strong multi-modal features.}
+  \label{fig:intro}
+\end{figure} 
+% A gentle 3d detection intro, touch, and effect of fusion strategies on detection
+%
+%
+%
+3D object detection is a fundamental topic of research nowadays because of autonomous driving, and other 3D scene understanding applications. In general, with a compelling demand for better accuracy and adaptability of 3D detectors for leveraging information from different sensors, multi-modal fusion strategies are receiving increasing attention \cite{huang2020epnet,liang2019multi, liang2018deep, pang2020clocs, qi2018frustum, vora2020pointpainting, wang2021pointaugmenting, yoo20203d, zhang2021faraway, zhang2020exploring}. Every sensor has its merit and drawbacks. For instance, RGB cameras provide rich semantic information while lacking scene depth information, and when transformed into 3D world coordinates, the localization is not perfect because of one-to-many mapping.
+Whereas depth sensors, such as LiDARs, capture the scene with point clouds, which are accurate in terms of localization, but because of their sparsity, they lack in providing complete geometry of objects \cite{lang2019pointpillars, zhou2018voxelnet, yang2019std, shi2019pointrcnn}. However, to complement sensor modalities, it is always a need for a robust fusion strategy, which is possible if the extracted features from modalities are quite meaningful without losing any useful information and then fused intelligently. 
+
+
+% introduction of Lidar only, camera only, multimodaliy based 3d detectors, 
+% for the multimodal fusion, different fusion strategies considering low-level (early), high-level (late).
+There are various 3D detectors based on single-modality which are either LiDAR point clouds or monocular camera images. The performance of LiDAR-only detectors \cite{graham2017submanifold,chen2022focal,yang2018pixor,yang2018hdnet,lang2019pointpillars,yan2018second,deng2021voxel,yin2021center}  is way better than camera-based ones \cite{brazil2019m3d, simonelli2019disentangling, wang2021fcos3d, huang2021bevdet, chen2020dsgn} because of containing more information about the scene. Anyhow, both sensors complement several features but it is quite challenging to exploit the features of both sensors in an optimal way. However, several methods have been proposed with different strategies for associating and fusing features from both sensors, and these methods are called multi-modal 3D detectors. In general, three kinds of fusion can happen in multi-modal detectors, such as early, late, and intermediate or feature-level fusion as shown in Fig. \ref{fig:intro}. Early fusion methods associate low-level features from both modalities, such as LiDAR points and semantic image features which are based on the region of interest (ROIs) \cite{liang2018deep,huang2020epnet,yin2021multimodal,li2022voxel}. Early fusion is a well-known method, but its performance decreases because of a lack of adjacency between sparse LiDAR and transformed image features, more spcifically to mention MVX-Net \cite{sindagi2019mvx}, IPOD \cite{yang2018ipod}, Painted PointRCNN \cite{vora2020pointpainting} and AVOD-FPN \cite{ku2018joint}.   
+MVXNet and AVOD-FPN are also called two-stage detectors because of their fusion in two stages. 
+Whereas, late fusion first predicts coarse or confident enough proposals at high-level features from at least one modality, then creates interaction with other modality features for final 3D prediction \cite{chen2017multi,ku2018joint,yoo20203d}, more specifically to mention MV3D \cite{chen2017multi}, F-PointNet \cite{qi2018frustum}, UberATG-MMF \cite{liang2019multi} and EPNet \cite{huang2020epnet}. It is a predominant strategy because of its simplicity, but the dependency on initial proposals from modalities having deficiencies constrains the overall performance.
+
+% introduce mid-level feature fusion, its importance and challenges
+Another possibility is an effective way to fuse modalities at mid-stages and learn to generate strong high-level multi-modality features for 3D object detection. There are some methods such as Cont-Fuse\cite{liang2018deep} and 3D-CVF \cite{yoo20203d} . Several challenges need to be overcome for this purpose, such as camera and LiDAR features lying in different points of view requires to transform to a common spatial shape. The transformation process disperses the modalities' features and probably can not beat LiDAR-only methods. We address this problem of bringing modality features to our desired spatial shape by treating each modality independently without losing significant information. We update features at our pre-defined space with complementary information from modalities and generate final strong features. 
+
+%To overcome all these constraints of multi-modal fusion, mid-level fusion is considered to be the best choice. Some initial research has been done but still, the problem of fusing modalities having different spatial feature dimensions keeping in view to avoid misalignment is still an open question \cite{'references particular to intermediate fusion mentioning challengings'}. Empirical studies show the correlation between low-level features of any particular modality is lower and insufficient as compared to high-level features if retained sufficient information until high levels. This creates a good possibility of optimal fusion at these stages \cite{'a paper mentioning the strength of mid-level fusion'}.  Another challenge for mid-level fusion is which 3D representation i.e point or voxel for any given modality is needed to retain meaningful features. 
+
+
+% state of art considering the settings the setting of a single image and lidar view as multimodality and fusion at mid-level
+%proposed approach description mentioning strong points 
+In this paper, we present an effective method to leverage each sensor's information by introducing a multi-modal fusion (mmFUSION) strategy at an intermediate level with computed features at a low spatial shape. We employ two separate encoders which transform modality features from a defined high spatial shape to a low spatial shape in 3D. These representations are not a bird's eye view (BEV) i.e most methods compute BEV for fusion because of simplicity. 
+
+For images, we diffuse extracted 2D image features from its backbone into a 3D volume (defined high space) where its encoder computes features in our defined low spatial space. In a similar way, voxel features of a high spatial shape are transformed into a low spatial shape same as the image case. First, we apply cross-modality attention on these features at the lower shape and then follow multi-modality feature attention, and finally, a joint feature generation layer, which overall we call mmFUSION. Our proposed mmFUSION framework helps in overcoming several challenges in multi-modalities fusion, particularly the fusion at an intermediate level without the help of ROIs or proposals but just based on extracted features. We attach a simple detection 3D head at the final stage and show the effectiveness of our proposed framework for 3D object detection.
+
+\begin{itemize}
+    \item We propose a method to fuse multi-modality features at the intermediate level without the need for ROIs or proposals
+    \item Our proposed method transform features with high spatial shape to a lower spatial shape of each modality separately maintaining meaningful features
+    \item Our proposed approach leverages cross-modality attention followed by multi-modality attention in order to complement the deficiencies of different sensors.
+\end{itemize}
+
+%The 3D object detection in a scene given multi-modality data such as RGB, LiDAR, or Radar has a wide range of  autonomous driving and robotics applications. The 3D detection task is to: (i) regress the bounding boxes of objects along the heading angle and (ii) classify objects. Localizing and detecting 3D objects in the multi-modal scenario requires several challenges to overcome: (i) how to exploit multi-sensor capabilities to perform joint reasoning in an optimal way (ii) how to make the model generalizable to different types of available modalities (iii) how to fuse modalities without loss in resolution. To address these challenges, we propose finding a common reference system between the voxel embedding of each modality, learned independently. By learning to aggregate the voxel embeddings, we could potentially overcome the limitations of each independent modality.
+
+%In this paper, we present a simple and effective method to leverage the optimum information out of multi-modality data (image, Lidar, and radar) in voxels. Our main motivation for this proposal is to overcome the challenges faced by multi-modal 3D detectors while fusing or aggregating information from multiple diverse independent sensors. We pass each sensor's data to its backbone to get useful feature maps, such as ResNet50 for RGB, SECOND for LiDAR, and Radar point clouds. We voxelize the camera frustum 3D space by fixing the coordinates ranges and then transform all modalities features into this common 3D ground as shown in Figure \ref{fig:intro}. Each voxel contains a set of feature maps from different modalities where we learn vector representation using a voxel field encoder (VFE) from each modality without fusing any information at this stage. Next, the Aggregator learns how to aggregate these vector representations at each voxel separately and the inter-voxel level. This way of aggregation is so natural way of modality fusion which complements the deficiencies of available diverse information. Finally, the aggregator feeds its output to the standard 3D detection heads such as box regressors and classifiers.
+
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=17.5cm,height=9.2cm,keepaspectratio]{figs/method/method_updated.png}
+  \caption{The framework for 3D object detection with mmFUSION. \textbf{Imag}e and \textbf{LiDAR }point clouds are first processed by their respective \textbf{backbones} i.e. ResNet50 with field pyramid network and voxel field encoder respectively (as shown on the left side) to get features at defined high spatial shape. The \textbf{Img-Encoder} and \textbf{Pts-Encoder} transform these features to a low spatial shape preserving all significant information. Both representations are concatenated at the feature dimension which is processed through \textbf{cross-modality attention}, where attention learned weights are multiplied by incoming features of both modalities. Further, after passing through a \textbf{residual block}, these multi-modal features are refined by \textbf{attention} to themselves. Afterward, the final convolution layer generates the strong joint features. The following block is the detection backbone containing the 3D head to predict the final 3D proposals.}
+  \label{fig:main_method}
+\end{figure*}
+
+
+
+%%%%%%%%%  Related Work
+\section{Related Work}
+\label{sec:related_work}
+\subsection{Lidar-based 3D Detection}
+Several traditional methods process LiDAR point clouds considering as irregular input and regress 3D boxes in point, voxel, and range view depending on the representation. In the case of point-based 3D detection, the available methods extract, and aggregate features from raw point clouds \cite{yang2019std, shi2019pointrcnn, qi2019deep} before inputting to detection modules. The voxel-based detection methods first form the regular grid from point clouds, and then subsequently use sparse convolution and BEV transformation \cite{graham2017submanifold,chen2022focal,yang2018pixor,yang2018hdnet,lang2019pointpillars,yan2018second,deng2021voxel,yin2021center}. Even some methods project point-clouds to range-view images and process them as images which lack in exploring the geometrical clues because of lack of adjacency while performing transformations \cite{li2016vehicle,fan2021rangedet}. %last sentence may be a conflicting argument because in our case we are also transforming features to predefined space
+
+\subsection{Camera-based 3D Detection}
+3D detection from monocular or multi-views is based on image features projected into frustum space directly or with the help of predicted depth \cite{brazil2019m3d, simonelli2019disentangling, wang2021fcos3d, huang2021bevdet, chen2020dsgn }. Since the predicted depth is computationally expensive and also is not an accurate option because of one-to-many mapping and it creates semantic ambiguity, to counter this problem some methods use geometry cues estimated from multi-views \cite{wang2022detr3d, liu2022petr}. In general, alone camera-based 3D detectors are not accurate so far. In our case, we use it as one of the modalities, and where we diffuse its extracted multi-level features into a defined 3D space using transformation information. 
+
+\subsection{Multi-modal Fusion for 3D Detection}
+Multi-modality fusion is based on either point-level or instance-level. The point-level fusion \cite{liang2018deep,huang2020epnet,yin2021multimodal,li2022voxel} is an early-stage fusion method to combine different modality features with sufficient interaction. Whereas instance-level fusion \cite{chen2017multi,ku2018joint,yoo20203d} is a later-stage fusion of combining object-level features such as proposals. There are methods such as \cite{sindagi2019mvx} that try to combine both early and late fusion which are called two-stage detectors. 
+%Meanwhile fusing some specific knowledge between different modalities is another way of modality interaction \cite{hinton2015distilling}.
+More relevant to our context i.e. fusion at feature or mid-level, there are some recent methods that find a unified representation from modalities for example BEVFusion \cite{yoo20203d, liu2022bevfusion,liang2022bevfusion} 
+compute BEV representation from image features and concatenate lidar features with them. Leveraging information from different modalities in an optimal way by bringing the features to a common representation is seldom studied. We first learn high-level features from each modality at common 3D representation which is actually low spatial feature representation.   
+% while in the discussion, I need to discuss why we didn't compare with these methods because they use extra information such as ROIs or Proposals
+
+\section{mmFUSION}
+Our overall framework is composed of three parts: image feature transformation into world coordinates limited by defined ranges and the voxelization of LiDAR point clouds, corresponding encoders to transform the features into a defined low spatial 3D space, cross-modality attention followed by attention on itself to complement and weight the meaningful features which further followed by a final layer to generate joint features.
+
+\subsection{Feature Transformation and Voxelization}
+Given the inputs such as an image $I \in R^{W\times H \times 3} $ and LiDAR point clouds $P \in R^{N\times 3}$, we first extract features of both modalities using corresponding backbones. 
+
+For the image, we adopt ResNet50 \cite{he2016deep} followed by field pyramid network (FPN) \cite{lin2017feature} to extract multi-level features $F_I  \in R^{H \times W \times C}$, following \cite{rukhovich2022imvoxelnet, philion2020lift} we transform them into defined space using intrinsic and extrinsic parameters. Where we concatenate these features ray-wise to uniformly defined 3D anchors $A \in R^{X^\prime \times Y^\prime \times Z^\prime}$, and after associating $F_I$ we get $A_I \in R^{X^\prime \times Y^\prime \times Z^\prime \times C^\prime}$ representation. Note that we do not adopt depth information as followed by \cite{li2022unifying} which makes it computationally so expensive in our case. 
+%rather we follow \cite{rukhovich2022imvoxelnet} but modify it for multi-level features.  
+
+For LiDAR, we voxelize the point clouds and use a standard voxel size according to the concerned objects. We adopt dynamic voxelization \cite{zhou2019endtoend} technique to save memory and we employ voxel field encoder (VFE) \cite{zhou2018voxelnet} to create voxel features $V_P \in R^{X \times Y \times Z \times C}$ as shown in the first part of Figure \ref{fig:main_method}.
+
+%Further detail about chosen sparse shapes in order to produce a common low spatial representation is in the proceeding sections.
+
+\subsection{Image and LiDAR Encoders}
+To this end, we have transformed image features at defined anchor positions $A_I$ and LiDAR features at voxel coordinates  $V_P$. We employ two separate encoders (Img-Encoder and Pts-Encoder) to process corresponding features, where they adapt their own resolution settings such as for image $S_I \in R^{X^\prime\times Y^\prime\times Z^\prime}$ and LiDAR $S_P \in R^{X\times Y\times Z}$ for sampling the corresponding inputs, and transform these features from high-level representations to our desired low spatial shape ${H\times W\times D}$. 
+
+\textbf{Transformation to Lower Spatial Shape.}
+%
+The Img-Encoder is based on stacked 3D convolution layers where the number of layers depends on the ratio between our defined high shape to low spatial shape. It decreases only the depth (z-axis) channel retaining significant information where we follow the similar strategy as used by ImVoxelNet \cite{rukhovich2022imvoxelnet} but we do not produce BEV features. Hence, the Img-Encoder transforms its features in high space $A_I$ to desired low spatial shape $V^\prime_I \in R^{H\times W\times D \times C^\prime}$.
+%
+The Pts-Encoder is based on stacked sparse 3D convolution layers and it generates features of the same shape as the image case, which we define as  $V^\prime_P \in R^{H\times W\times D \times C}$.
+
+\textbf{Feature Concatenation.}
+%
+In order to fully utilize each modality and learn to complement modalities' deficiencies, which can be done through weighting features at specific coordinates positions anywhere in $V^\prime_I$ or $V^\prime_P$. Hence, we adopt concatenating the features of acquired lower spatial spaces $V^\prime_I$ and $V^\prime_p$, instead of summation or convolution. This process can be expressed as.
+\begin{equation}
+    V_U = concat(V^\prime_I,V^\prime_P),  
+    \label{concate_equation}
+\end{equation}
+ where $V_U \in R^{H\times W\times D \times (C^\prime + C) }$. 
+
+%This overall process can be summarised as that high-level features are extracted from each modality to have a weighted fusion 
+
+\subsection{Attention Modules}
+The attention modules perform the purpose of attention across modalities and attention on multi-modal features.
+
+\textbf{Cross-Modality Attention.}
+%
+We develop a cross-modality attention mechanism to learn the weighting across the spaces ( $V_I$, $V_P$ ). Our goal is to take care of complete spaces instead of sampling. We carefully design to weight the modalities features using 3D convolution followed by a sigmoid activation as inspired by \cite{fu2019dual, oktay2018attention}.
+\begin{equation}
+    V^c_{U} = crossmodAttn(V_U),  
+    \label{crossmodAttn_equation}
+\end{equation}
+ where $V^c_{U} \in R^{H\times W\times D \times (C^\prime + C)/2}$ is weighted cross-modality low spatial feature representation according to our defined lower shape. 
+% if needed the details about cross attention
+
+\textbf{Attention On Multi-modality Features.}
+%
+Having weighted features from cross-modality attention we pass it through a residual block to smooth the embedding. Afterward, we apply attention to itself to further refine our multi-modal features as: 
+\begin{equation}
+    V^m_{U} = mmAttn(V^c_{U}),  
+    \label{mmAttn_equation}
+\end{equation}
+ where $V^m_{U} \in R^{H\times W\times D \times (C^\prime + C)/2}$ is a multi-modal feature representation  according to our desired lower shape.
+
+ \subsection{Final Convolution Layer}
+Since we have our multi-modal features with spatial shape $H\times W\times D$ and our designed framework leverages a detection using the anchor-based 3D head. We apply a final 3D convolution final layer with stride 2 in order to have feature representations for the detection head such that: 
+
+\begin{equation}
+    mmF = finalconv(V^m_{U}),  
+    \label{finalconv_equation}
+\end{equation}
+%
+ where $mmF \in R^{H\times W\times (C^\prime + C)/2}$ are our final joint generated feature with shape $H\times W$ 
+
+\newline
+\newline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Experimental Tables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[h]
+    \centering
+    \caption{Comparisons of different methods (considering their full modal) with our mmFUSION at AP11-IoU=0.7 on KITTI \textit{val} set. (cars Only)}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{ccccc}
+        \hline
+        \multirow{3}{*}{Method} &   & 
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Car-R11}} 
+        &  & \\
+        \cline{3-5} 
+        & Fusion & Easy & Moderate & Hard  \\
+        \hline
+        MV3D & Late & 71.30 & 62.70 & 56.60 \\
+        F-PointNet & Late & 83.76 & 70.92 & 63.65 \\
+       MVXNET (VF) & 2 Stage & 82.30 & 72.20 & 66.80 \\
+       MVXNET (PF) & 2 Stage & 85.50 & 73.30 & 67.40 \\
+       AVOD-FPN & 2 Stage & 83.07 & 71.76 & 65.73 \\ 
+       IPOD* & Early & 84.10 & 76.40 &75.30\\
+       Cont-Fuse & Feats. & 86.32 & 73.25 & 67.81 \\ % read  these results in paper pag 10 and defend why these are important to compare because of geometric features used in the method, we don't use such priors
+       UberATG-MMF & Late & 88.40 & 77.43 & 70.22  \\
+       \textbf{mmFUSION (ours)} & Feats. & \textbf{88.52} & \textbf{77.96} & \textbf{76.23} \\
+    \end{tabular} 
+    }
+    \label{tab:CarAP11_complete_models}
+\end{table}
+
+
+
+\begin{table}[h]
+    \centering
+    \caption{Comparisons of different methods (considering specific settings) with our mmFUSION at AP11-IoU=0.7 on KITTI \textit{val} set. (cars Only)}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{ccccc}
+        \hline
+        \multirow{3}{*}{Method} &   & 
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Car-R11}} 
+        &  & \\
+        \cline{3-5} 
+        & Fusion & Easy & Moderate & Hard  \\
+        \hline
+       Cont-Fuse & Feats. & 81.50 & 67.79 & 63.05 \\ % read  these results in paper pag 10 and defend why these are important to compare because of geometric features used in the method, we don't use such priors, so we put results without geometric and knn features for a fair comparison
+       UberATG-MMF & pt-wise & 86.12 & 74.46 & 66.9  \\
+       UberATG-MMF & roi-wise & 87.93 & 77.87 & 75.58  \\
+       \textbf{mmFUSION (ours)} & Feats. & \textbf{88.52} & \textbf{77.96} & \textbf{76.23} \\
+    \end{tabular}
+    }
+    \label{tab:CarAP11_cont_uber}
+\end{table}
+
+
+
+\begin{table*}[h]
+    \centering
+    \caption{Comparisons of our mmFUSION with different methods having metric AP40 at IoU=0.7 on KITTI \textit{val} set. We mention their fusion schemes to show fair comparison (cars Only) }
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{llcccc cccc}
+        \hline 
+        \multirow{3}{*}{Method} &\multirow{3}{*}{Fusion Scheme}  &  &
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Car-R40 (IoU=0.7)}} 
+        & & \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{BEV}@Car-R40(IoU=0.7)}} &&\\
+        \cline{4-6}  \cline{8-10}
+                        &   & &  Easy&   Moderate&   Hard&    &   Easy&   Moderate&   hard\\
+        \hline
+        MVXNET (PF) &  2 stages  && 84.27 &   72.57 & 68.55 &   &  91.93  &  85.88 & 81.49 \\
+        
+        Painted PointRCNN  &  Early  & & 88.38 &   77.74 & 76.76 &   &  90.19  &  87.64& 86.71\\
+        % we consider 3D-CVF without 3D ROI based refinement to have fair comparison on feature based fusion
+        3D-CVF  &   Feats.  &&  89.39 &     79.25 &  78.02 &   & --   &     --&      --\\
+        %\hline
+        EPNet  &     Feats (L1 Module)  &     &  89.44 &     78.84 & 76.73 &   & -- &  --    & --  \\ 
+        
+        
+        \textbf{mmFUSION (ours)} & Feats. & &  \textbf{89.57} &   \textbf{79.80} &   \textbf{76.95} &   &   \textbf{95.24} &  \textbf{89.15} & \textbf{86.61} \\
+        
+        %EPNet  &            &  92.28&     82.59 & 80.14 &   & 95.51 &      88.76&    88.36\\
+        
+        %hline
+        %\st{PV-RCNN}  &       & 91.53 &     84.36 &  82.29 &  &    92.82 &     90.43&    88.41\\
+        %\hline
+        %\st{PV-RCNN+VFF}  &       & 92.31&     85.51 &  82.92 & &    95.43&     91.40&    90.66\\
+        %\hline
+        %\st{Voxel R-CNN}  &       &  92.27&   84.88&   82.50  &  &   95.51&       91.13&   88.85\\
+       % \st{Voxel R-CNN + VFF} &  &    89.51&    84.76&   79.21&   &    95.65&       91.75&   91.39\\
+        
+        %mmFUSION v1 \textbf{(ours)} &  &  87.75 &   75.76&   70.39  &   &    86.47 & 75.28 & 68.05 &   &   94.97 &    87.98 & 83.07 \\
+        %mmFUSION v2 \textbf{(ours)} &  &  87.09 &   75.89&   71.14  &   &    85.29 & 75.45 & 68.24 &   &   93.12 &    87.86 & 83.39 \\
+        %mmFUSION v3 \textbf{(ours)} &  &  88.44 &   76.61&   73.43  &   &    86.65 & 76.30 & 74.67 &   &   94.17 &    88.33 & 83.93 \\
+        \hline
+    \end{tabular}
+    }
+    \label{tab:car_results_AP40_latest}
+\end{table*}
+
+
+
+
+\iffalse
+\begin{table*}[h]
+    \centering
+    \caption{Comparisons of different methods with our mmFUSION for Pedestrian and Cyclist with IoU=0.5. on KITTI \textit{val} set. }
+    \begin{tabular}{ccccccccc}
+        \hline
+        \multirow{3}{*}{Method} &   & 
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Pedestrian-R40}} 
+        &  &
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Cyclist-R40}} &&\\
+        \cline{3-5} \cline{7-9}
+        & & Easy & Moderate & Hard & & Easy & Moderate & Hard \\
+       MVXNET (PF) & & 48.45 & 44.68 & 39.97 & & 57.32 & 40.65 & 38.56 \\ 
+       3D-CVF & & -- & -- & -- & & -- & -- & -- \\ 
+       VFF & & 73.26 & 65.11 &60.03&  & 89.40 & 73.12 &69.86 \\
+       mmFUSION v2 (ours) & & 62.73 & 56.47 &52.70&  &74.96 & 55.86 &52.76 \\
+       mmFUSION v3 (ours) & & -- & -- &--&  &-- & -- &-- \\
+    \end{tabular}
+    \label{tab:cyclist_ped_results}
+\end{table*}
+\fi
+
+
+
+
+
+\begin{table*}[h]
+    \centering
+    \caption{Comparisons of our mmFUSION pipeline with different fusion scheme-based methods (their full modal) on KITTI \textit{test} set for Car benchmark. It is based on AP40 metric}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{llccccccc}
+        \hline
+        \multirow{3}{*}{Method} &   \multirow{3}{*}{Fusion Scheme} &
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Car (IoU=0.7)}} & 
+        &  \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{BEV}@Car (IoU=0.7)}} & & &\\
+        \cline{3-5} \cline{7-9}
+        & & Easy & Moderate & Hard & & Easy & Moderate & Hard  \\
+        \hline
+        MV3D & Late & 74.97 & 63.63 & 54.00 & & 86.62 & 78.93 & 69.80 \\
+        IPOD & Early & -- & -- & -- & & 89.64 & 84.62 & 79.96 \\
+        Cont-Fuse &  Feats. & 82.50 & 66.20 & 64.04 & & 88.81 & 85.83 & 77.33  \\ % check again for its 40 point verification
+        F-PointNet & Late & 82.19 & 69.79 & 60.59 & & 91.17 & 84.67 & 74.77  \\
+        AVOD-FPN & 2 Stages & 83.07 & 71.76 & 65.73 & & 90.99 & 84.82 & 79.62 \\
+        MVXNet (PF) & 2 Stage & 83.20 & 72.7 & 65.2 & & 89.20 & 85.90 & 78.1 \\ 
+        F-ConvNet & Early & \textbf{87.36} & \textbf{76.39} & 66.69 && 91.51& 85.84 & 76.11 \\
+        % we  do not consider 3D CVF in test comparison because of  its 3D RoI based refinement mechanism which do not make fair  with us
+        %UberATG-MMF & mid & 88.40 & 77.43 & 70.22 & & -- & -- & --  \\
+        
+        %3D-CVF & Feature & 89.20 & 80.05 & 73.11 & & -- & -- & -- \\
+        %EPNet & Feature & 89.81 & 79.28 & 74.59 & & 94.22 & 88.47 & 83.69\\
+        \textbf{mmFUSION (ours)} & Feats. & 84.30 & 73.08 & \textbf{68.03} & & \textbf{91.25} & \textbf{86.02} & \textbf{80.99} \\
+        \hline
+    \end{tabular}
+    }
+    \label{tab:test_accuracy}
+\end{table*}
+
+
+
+
+
+\section{Experiments}
+In this section, we evaluate the performance of our proposed mmFUSION framework on the KITTI dataset \cite{Geiger2012CVPR}, where we also compare against different kinds of fusion methods as we discussed in Sec. \ref{sec:intro}.
+\subsection{Experimental Setup}
+\textbf{Dataset.}
+The KITTI dataset  is a widely adopted multi-modality dataset for evaluating 3D object detectors. It contains LiDAR and  front-view camera images which are available for training and testing. The training set has 7,481 samples, and the test set has 7,518 samples. The labeled training set is usually split into a train set with 3712 samples and a val set with 3769 samples. The official evaluation protocol of KITTI for different levels of difficulty namely "easy", "moderate", and "hard" is defined for each class. Such as for Car: IoU = 0.7 is strict, IoU = 0.5 is loose, whereas for both Pedestrian and Cyclist IoU = 0.5 is strict and IoU = 0.25 is loose. We use average precision (AP) obtained from 40 and 11 recall positions in our evaluation for a fairer comparison with the latest and old methods respectively. 
+
+\textbf{Implementation Details.} 
+Our implementation settings depend on a predefined mid-level spatial shape of the feature map where both modalities have to be fused. We set [4, 200, 176] spatial shape in the (z, y, x) axis of lidar LiDAR coordinates, and a point voxel of size $0.1 \times 0.1 \times 0.2$ meters whereas defined high spatial 3D volume for image feature transformation is set to be [176, 200, 20]. These settings configure the number of layers for both the image and lidar encoders. We trained the mmFUSION framework in an end-to-end manner using AdamW optimizer with a max learning rate of 2e\textsuperscript{-4} for 40 epochs. Our implementation is based on an open-source 3D object detection platform \textbf{(mmdetection3D)} \cite{contributors2020mmdetection3d}.
+
+
+\subsection{Adopted Backbones}
+This section contains the details about adapted backbones and branches other than mmFUSION module in our overall pipeline.  
+
+\textbf{Image Backbone.}
+The Convolutional neural networks are proven for extracting high-level semantic features from RGB images, we employ widely adopted Faster-RCNN framework \cite{ren2015faster} pre-trained on ImageNet and then fine-tuned on 2D detection. We extract a total of 5 multi-level features from each convolution level (ResNet50). We generate uniformly distributed anchors within standard axis limits and use lidar2Cam information in order to transform them into our predefined high-resolution 3D space. We concatenate multi-level features to 3D points in ray wise manner and apply 1x1 convolution in order to decrease channels to 256. 
+
+\textbf{Voxel Backbone.}
+
+Since the lidar points are sparse and a single point does not contain enough contextual information of any particular location, hence we adopt the standard method of voxelization and use a voxel field encoder VFE \cite{zhou2018voxelnet} in order to get voxel features. We set standard voxel size considering object sizes in the scene.
+
+\textbf{Point Backbones and 3D Detection Head.}
+
+We adopt SECOND \cite{yan2018second} and FPN network \cite{lin2017feature} as the point feature backbone where we use 4 feature levels and the last level is fed to the anchored-based 3D detection head same as used in SECOND. The 3D head regresses 3D boxes and produces class scores in the given scenes. We use a similar setting as used by. 
+
+
+\subsection{Main Results}
+In this section, we present the results of our proposed multi-modal fusion scheme and compare them with leading methods on the KITTI dataset \cite{Geiger2012CVPR}.
+
+\textbf{Validation Set.}
+In Table \ref{tab:CarAP11_complete_models}, we first report the overall performance of our proposed mmFUSION framework against the methods having an evaluation on average precision of 11 points (AP11) for 3D detection. Compared with the baseline MVXNet \cite{sindagi2019mvx}, a two-stage detector (an early and late fusion strategy), our proposed mmFUSION outperforms its point and voxel-based fusion schemes. Moreover, our method also surpasses all other fusion schemes such as Late: MV3D, F-PointNet, UberATG-MMF, Early: IPOD, and feature-based based such as Conti-Fuse. Further, for a fair comparison, in Table \ref{tab:CarAP11_cont_uber}, we also compare our proposed scheme in detail where Cont-Fuse: without its geometric and KNN features which makes it a pure feature-level fusion strategy, and UberATG-MMF: considering its point or ROI-wise fusion scheme (these are different ways of late fusion scheme). 
+
+We further show the mmFUSION effectiveness over the methods with different fusion schemes having AP40 criteria (a newly adapted metric by KITTI and followed by lateral methods). In Table \ref{tab:car_results_AP40_latest}, surpassing MVXNet baseline, our method is better than a strong early fusion method (Pained PointRCNN). Since 3D-CVF uses a 3D RoI-based refinement mechanism before final proposals which do not make it a fair comparison with us, so we compare its performance without its 3D ROI part. In a similar way, we compare our method with the L1 module for feature fusion of EPNet as a fairer comparison for feature-based fusion schemes. We observe that mmFUSION performs better over different fusion strategies such as early and late, which are based on ROIs proposals.
+Instead, mmFUSION even has only one stage of fusion without adopting ROIs or proposals in the fusion scheme and has a simple detection backbone having a 3D head. 
+
+We provide the visualizations for detected 3D objects with, network and defined spaces details in the supplementary material.
+
+\textbf{Test Set.}
+Here we compare our mmFUSION with different fusion schemes on KITTI test set.  In order to show the effectiveness of our proposed fusion scheme over others, we considered the methods which have either minimum initial/lateral proposals or ROI-based refinement stages in their methods. Table \ref{tab:test_accuracy} shows AP40-based evaluation on the test set after submitting results to KITTI Leaderboard. We observe that mmFUSIN outperforms the baseline and also strong early and late fusion scheme-based methods. It is comparable to some latest approaches. 
+
+%\textcolor{red}{Temporary Results} \\
+%We implemented the baseline comparison method \cite{sindagi2019mvx}, and the base components of our proposed pipeline without the aggregator. Our first  test experiment is based on Kitti dataset \cite{Geiger2012CVPR} which contains three difficulty levels(easy, moderate, and hard) in the annotations. Our results show a mean average precision (mAP) improvement for two categories: cars from 85.77 to 86.63 and pedestrians from 60.55 to 63.14. However, these are only temporary results, and the key component of our proposed pipeline, the aggregator, is still missing and should in principle lead to better performances.
+
+\begin{table*}[ht!]
+    \centering
+    \caption{Ablation experiments on KITTI validation set (cars Only) where SLim: single level image features, MLim: multi-level image features, SC: simple concatenation, JFG: joint feature generation, AF:attention on mmFeatures, CA: cross-modality attention. Baseline\cite{sindagi2019mvx} is our considered two-stage detector and Baseline* is its modified version to our framework where we remove the fusion point or voxel level and fuse after creating BEV feature maps.}
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{ccccccc cccc cccc cccc}
+        \hline 
+        \multirow{3}{*}{Method}&  
+        \multirow{3}{*}{SLim}&
+        \multirow{3}{*}{MLim}&
+        \multirow{3}{*}{SC}&
+        \multirow{3}{*}{JFG}&
+        \multirow{3}{*}{AF}&
+        \multirow{3}{*}{CA}&
+        &  
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{2D}@Car-R40 (IoU=0.7)}} & &
+        \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{3D}@Car-R40 (IoU=0.7)}} 
+        & & \multicolumn{3}{c}{\multirow{2}{*}{AP\textsubscript{BEV}@Car-R40(IoU=0.7)}} &&\\
+        \cline{9-11}  \cline{13-15} \cline{17-19}
+        & & & & & & & &   Easy&   Moderate&   Hard&    &   Easy&   Moderate&   hard & & Easy&   Moderate&   hard \\
+        \hline
+        Baseline  & & & & & & & & 93.46& 90.10&87.47 & & 84.27 &   72.57 & 68.55 &   &  91.93  &  85.88 & 81.49 \\
+        Baseline* & &\checkmark & & & & & &95.43 &89.83 & 87.45&& 82.86 &   69.82 & 65.47 &   & 92.07   &  85.86 & 81.58 \\
+        
+        \hline
+
+        Exp:1 & \checkmark & & \checkmark& & & & & 96.45 & 92.92& 88.08& &  87.40 &   75.10 &   70.39  &   &   94.97 &   85.88  & 81.00  \\
+
+         Exp:2 & \checkmark & & &\checkmark & & & & 96.38 & 92.92&90.20 &&  87.09 &   75.09&   71.14  &   &  93.12 &    87.86 & 83.22 \\
+
+         Exp:3 &  &\checkmark & &\checkmark & & & &  96.18 & 90.87 & 88.17 & & 88.44 &   76.61&   73.43   &    &   92.96 &    86.22 & 83.66  \\
+        %v3 (ours) &  &\checkmark & &\checkmark & & & & & 96.18 & 90.87 & 88.17 & & 88.44 &   76.61&   71.94   &    &   94.17 &    88.33 & 83.93  \\
+         Exp:4 &  &\checkmark & &\checkmark &\checkmark & & & 96.18 & 92.76 & 90.13 && 86.71 & 75.66 &   70.92  &    &   91.90 &    86.01 & 83.21  \\
+
+         Exp:5 &  &\checkmark & &\checkmark & &\checkmark & & 96.17 & 92.19 & 89.87 && 85.49 & 73.43 &   70.45  &    &   92.07 &    85.49 & 82.98  \\
+        
+        Exp:6 (final) &  &\checkmark & &\checkmark & \checkmark &\checkmark & & 96.40 & 92.66 & 90.08 && 89.57 & 79.80 &  76.95 &    &   95.24 &    89.15 & 86.61  \\
+    \end{tabular}
+    }
+    \label{tab:ablation_study}
+\end{table*}
+
+
+\subsection{Ablation Study}
+
+We conduct extensive ablation studies on the KITTI validation set to analyze and evaluate the effectiveness of each module in our proposed framework, as reported in Table \ref{tab:ablation_study}. We keep the same settings for the image backbone such as extracting multi-level features except in one experiment and voxel features from the voxel backbone. The last module is a simple detection module with an anchored 3D head. We provide details about each experiment with selected modules in the proceeding sections.
+
+\textbf{Exp1: Simple Concatenation (SC) of Modalities. }
+%
+We start our ablation study with just a simple concatenation of features (SCF) extracted from each modality's encoder. We use the single-level image (SLim) features from the image backbone as input to the image encoder.
+
+\textbf{Exp2: Multi-modal Feature Generation.}
+%
+In this experiment, we get features at defined 3D spatial shapes where we concatenate them at feature dimension and apply a 3D convolution layer with stride 2 (as used in our overall framework) to get final joint features for the 3D head. We call this experiment a joint feature generation (JFG) from the defined spatial shape (DSS). We use a single-level (SLim) image feature as input to the image encoder.
+
+\textbf{Exp3: Multi-modal Feature Generation with Multi-level Image Features.}
+%
+This experiment is similar to the last one but we use the multi-level image (MLim) features in order to differentiate whether single or multi-level has any effects on our proposed framework. The purpose is to analyze the computational differences. 
+
+\textbf{Exp4: Multi-modal Feature with Attention.}
+%
+We check the effects of self-attention composed of linear layers on generated joint multi-modal features. For this purpose, we reshape the features before and after the attention layer. We observe increasing layers considering our 3D spatial shape is not feasible computationally. 
+
+\textbf{Exp5: Cross-Modality Attention and Multi-Modal Feature Generation.}
+%
+Since the attention mechanism is computationally an expensive task, The features with 3D spatial shapes are very hard to process with cross-modality as we need to consider both modalities simultaneously. In order to check cross-attention (CA) effects, we use criss-cross attention layers \cite{huang2019ccnet} (a computationally cheap option) on both modalities as depth-wise (in z-axis) in this experiment. 
+
+\textbf{Exp6: Feature Generation with mmFUSION Module.}
+%
+This experiment is our best-proposed module which contains cross-modality attention followed by another attention on acquired multi-modality features as explained in the main methodology of our paper. 
+
+\textbf{}
+
+%[FIXME: there is no discussion of these ablations studies! How these have drive the model design? Why and what works better? Which is the reason? etc...]
+
+
+
+
+
+\section{Conclusion and Discussion}
+We presented the mmFUSION framework, a new method for multi-modality fusion a mid-stage fusion strategy for 3D object detectors. Our key innovation lies in that we propose a feature-level fusion that is not dependent on either ROIs or 2D/3D proposals from modalities. It processes the complete data of a sensor such as extracted 2D feature maps and learns a low-level 3D feature representation. Similar to the case of LiDAR, it processes the whole point cloud where it learns lower spatial feature representation same as in the case of image. The key advantage to having a lower-level representation is to solve the problems of lower-level features(early fusion) problems, i.e the lack of adjacency between transformed image features and available 3D points.
+Furthermore, the advantage is to make an independent fusion strategy that should not be affected because of sensor deficiencies that happen in late fusion cases. 
+ Another advantage is to have a one-stage fusion strategy even without proposals, which we proved by comparing our strategy with two-stage detectors. 
+
+We showed by applying cross-modality attention that it is significant in low spatial space and computationally cheap.
+As in our case, our cross-modality module learns how to weigh two diverse modality features in our defined lower spatial shape, which results in complementing the missing information or sensor deficiencies. We evaluate the proposed method on the KITTI dataset and show effectiveness over several methods with a significant margin. 
+
+We admire, our proposed solution would be a new baseline for a feature-based fusion strategy and can be adopted in the future for methods seeking this kind of solution where they have to keep each modality separate and fuse at a particular level. Additionally, it does not require ROIs in the early or late stages. 
+
+We hope our proposed fusion strategy can be extended and adapted in multi-modal 3D detectors with minimal changes, because of its ability for adaptability.
+
+
+%%%%%%%%% REFERENCES
+{\small \newpage \newpage
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{document}

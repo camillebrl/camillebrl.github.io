@@ -1,0 +1,19 @@
+%\begin{figure}[ht]
+%\centering
+%    \begin{subfigure}[b]{0.9\linewidth}
+%        \includegraphics[width=\linewidth]{figures/data_diagram.png}
+%        \caption{Data processing and augmentation.}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[b]{0.55\linewidth}
+%        \includegraphics[width=\linewidth]{figures/training_diagram.png}
+%        \caption{Model training.}
+%    \end{subfigure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.99\linewidth]{figures/acid_training.pdf}
+\caption{Data processing and model training. (a) Each document-query pair from the training corpus will be converted into inputs and outputs for finetuning the pretrained transformer decoder, which serves as the generative retrieval model. (b) GPT-3.5 is used to generate a sequence of keyphrases, which is used as the document ID. (c) Given a user query or a synthetic query, the generative retrieval model learns to generate the ID of the relevant document. We use a doc2query model to generate synthetic queries as additional inputs.
+Randomly sampled spans of 64 tokens can also be used as inputs to ensure that the model associates the contents of each document with its ID.
+} 
+\label{fig:architecture}
+\end{figure}

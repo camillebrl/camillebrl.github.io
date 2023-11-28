@@ -1,0 +1,13 @@
+\begin{figure}[t!]
+    \centering
+    \vspace{-0.2cm}
+    \includegraphics[width=1.\columnwidth]{figure/fig_saliency_detector_V7_WJ.pdf}
+    \vspace{-0.5cm}
+    \caption{
+    Saliency token generation. 
+    The saliency token is obtained by combining video-averaged context with a moment-descriptive token which is calculated by aggregating top-K moment-descriptive candidates.
+    Specifically, we yield a moment-descriptive token by subtracting a context token from clip tokens and then, use their correlation to saliency candidates as the moment-descriptiveness scores after scaling with clip-wise query correspondence $\bar{a}$.
+    }
+    \vspace{-0.3cm}
+    \label{fig:MSD}
+\end{figure}

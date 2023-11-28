@@ -1,0 +1,105 @@
+\section{Multimodal Fusion}
+\label{sec:multimodal_fusion}
+
+\subsection{Design Motivation}
+We begin by presenting the motivation behind our multimodal fusion method which combines the strengths of the extended Kalman filter and particle filters. Prior arts of particle filters have shown the effectiveness of using particle filters to combine the WiFi localization results, inertial odometry and floor plans. In our context, however, the floor plan is unavailable and we can only access the radio map via crowdsourcing. A straightforward idea is to use the kernel density estimation algorithm\cite{silverman2018density} to generate a continuous likelihood distribution over the map area - which implies the visiting frequency and reachable areas of a target place. Such prior knowledge, if accurate, can serve a similar constant to floor plans by changing the importance weight of particle filters. However, as radio maps itself is only a sparse approximation of the location-visiting frequency, the resultant likelihood distribution is imbalanced. As a result, because of the absence of particles in true yet unfamiliar areas during the filtering, the \emph{kidnapped robot problem} \cite{Thrun2005Probabilistic,hester2008negative} is likely to happen if we are confined to changing the importance weight only (see the supplementary video). Realising the Kalman correction step can directly modify the position of the particles from measurements, we propose to integrate the Kalman correction step into the particle filters and force the particles to be closer to the WiFi localization results. Concretely, such an Extended Kalman Particle Filter (EKPF) consists of the following stages: model prediction, importance weight update, and WiFi measurement correction.  
+
+\subsection{Model Prediction} 
+In EKPF, every particle maintains states of the particle $\mathbf{s}_{t}=[x_t,y_t,\theta_t,v_t]^T$, an importance weight $w$ and a corresponding error covariance matrix $\mathbf{P}_{t}$, where $x_t,y_t$ are the map frame 2D position, $\theta$ represents the odometry frame to the map frame rotation. $v$ is the scale ratio of the estimated velocity from IMU to the filter velocity. Whenever relative position updates $\mathbf{O_{t}} = {[O_{tx},O_{ty}]^T}$ in odometry frame is received, the states are propagated as follows:
+\begin{equation}
+\begin{aligned}
+\mathbf{s}_{t}=\mathbf{s}_{t-1}+\mathbf{M}\cdot(\mathbf{O_{t}} \cdot (1+\phi(n_p)))+ [0,0,\phi(n_r),0]^T 
+\end{aligned}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+\mathbf{M} = {\left[\begin{array}{l l l}{v_t\cos\theta_{t-1}}&{-v_t\sin\theta_{t-1}}\\ {v_t\sin\theta_{t-1}}&{v_t\cos\theta_{t-1}}\\ {0}&{0}\\ {0}&{0}\end{array}\right]}
+\end{aligned}
+\end{equation}
+where $\phi(n)$ represents random Gaussian noise with zero mean and variance $n$.
+
+
+\begin{equation}
+\begin{aligned}
+\check{\mathbf{P}}_{t}=\mathbf{F}_{t-1}\check{\mathbf{P}}_{t-1}\mathbf{F}_{t-1}^{T}+\mathbf{N}_{t-1}\mathbf{Q}_{t-1}\mathbf{N}_{t-1}^{T}
+\end{aligned}
+\end{equation}
+where $\check{\mathbf{P}}_{t}$ is the state covariance at time $t$, $Q_{t-1}$ is the noise covariance at time $t$. ${F}_{t-1}$ is the motion model Jacobian with respect to the last state while ${N}_{t-1}$ is the motion model Jacobian with respect to the noise of the last state. 
+
+\subsection{Importance Weight Update} 
+\label{sub:importance}
+The weight of every particle is updated using its current location and the
+likelihood map during this stage. To obtain a smooth prior map $f_{map}$, the crowdsourced radio map is fed into the Gaussian kernel density estimation algorithm \cite{silverman2018density} and then normalized:
+\begin{equation}
+f_{map}(\mathbf{L}) = \frac{1}{N} \sum_{i=1}^{N} \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2} \left( {L - L_i} \right)^2} + \beta
+\end{equation}
+where $\beta$ is a small constant to control the smoothness of the generated prior map.
+The importance weight of every particle is updated using its current location states.
+Like standard particle filter algorithms, the ratio of effective particles is monitored during the process and the standard systematic method \cite{doucet2001sequential} is used for the particle resampling. Note that during the particle resampling phase, the error covariance matrix \( \mathbf{P} \) remains unchanged.
+
+% Potentially it be updated using the prior map, however, it is tricky to find a function that firmly maps the prior likelihood to the covariance matrix to obtain a better result. 
+
+% \begin{figure}[htbp]
+% \centering
+% \begin{minipage}[t]{0.22\textwidth}
+% \centering
+% \includegraphics[width=4cm]{figures/before_resampling.png}
+% \caption{Particles before Importance Weight Updating and resampling}
+% \end{minipage}
+% \begin{minipage}[t]{0.22\textwidth}
+% \centering
+% \includegraphics[width=4cm]{figures/after_resampling.png}
+% \caption{Particles after Importance Weight Updating and resampling}
+% \end{minipage}
+% \end{figure}
+
+
+% \begin{figure}
+%      \centering
+%      \begin{subfigure}[b]{0.23\textwidth}
+%          \centering
+%          \includegraphics[width=\textwidth]{figures/radio_map.pdf}
+%          \caption{raw radio map}
+%          \label{fig:y equals x}
+%      \end{subfigure}
+%      \hfill
+%      \begin{subfigure}[b]{0.23\textwidth}
+%          \centering
+%          \includegraphics[width=\textwidth]{figures/prior_map.pdf}
+%          \caption{prior likelihood map}
+%          \label{fig:three sin x}
+%      \end{subfigure}
+%      \caption{Illustration of the prior map generation in Sec.~\ref{sub:importance}. }
+%      \label{fig:prior_map}
+% \end{figure}
+
+\subsection{Measurement Model}
+
+Similar to the usage in the original Kalman filter, in EKPF, the measurement model relates the current state $\mathbf{\check{s}}_t$ to a fresh WiFi localization result at timestamp $t$, $\mathbf{L}^{G}_t \sim \mathcal{N}(f_{\mu}(\mathbf{G}_t), f_{\sigma}(\mathbf{G}_t))$.
+In the map frame, we have:
+\begin{equation}
+\begin{aligned}
+ f_{\mu}(\mathbf{G}_t)=\left[\begin{array}{c c c c}{{1}}&{{0}}&{{0}}&{{0}}\\ {{0}}&{{1}}&{{0}}&{{0}}\end{array}\right]\mathrm{s}_{t}+{\bf m}_{t}\;
+\end{aligned}
+\end{equation}
+$\bf{m}_{t}$ is the measurement noise.
+To compute the Kalman Gain, we have:
+\begin{equation}
+\begin{aligned}
+\mathbf{K}_t = \mathbf{\check{P}}_t \mathbf{H}_t^T \left(\mathbf{H}_t \mathbf{\check{P}}_t \mathbf{H}_t^T +  \mathbf{R}_t  \right)^{-1} 
+\end{aligned}
+\end{equation}
+where $R_t$ is the measurement noise covariance where we used the estimated uncertainty $f_{\sigma}(\mathbf{G}_t)$ from the aforementioned WiFi localization model; $\mathbf{H}_t$ is the measurement model Jacobian with respect to the last state. The Kalman Gain $K_t$ is used to correct the predicted state:
+\begin{equation}
+\begin{aligned}
+\mathbf{\hat{s}}_t = \mathbf{\check{s}}_t + \mathbf{K}_t \left(\mathbf{L}_t -  f_{\mu}(\mathbf{G}_t)\right)
+\end{aligned}
+\end{equation}
+Finally, the covariance correction is updated as follows:
+\begin{equation}
+\begin{aligned}
+\mathbf{\hat{P}}_t = \left(\mathbf{I} - \mathbf{K}_t \mathbf{H}_t \right)\mathbf{\check{P}}_t
+\end{aligned}
+\end{equation}
+where $\mathbf{I}$ represents the identity matrix.
+

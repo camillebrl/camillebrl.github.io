@@ -1,0 +1,240 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Created using Karbon14, part of koffice: http://www.koffice.org/karbon -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="637.795px" height="496.063px">
+  <defs>
+    <path id="defitem0" fill="none" stroke="#000000" d="M158.609 159.409L168.609 159.409"  fill-rule="evenodd" />
+    <path id="defitem1" fill="none" stroke="#000000" d="M315.781 159.537L325.781 159.537"  fill-rule="evenodd" />
+    <path id="defitem2" fill="none" stroke="#000000" d="M479.781 159.537L489.781 159.537"  fill-rule="evenodd" />
+    <path id="defitem3" fill="none" stroke="#000000" d="M177.699 163.955L187.699 163.955"  fill-rule="evenodd" />
+    <path id="defitem4" fill="none" stroke="#000000" d="M333.936 163.409L343.936 163.409"  fill-rule="evenodd" />
+    <path id="defitem5" fill="none" stroke="#000000" d="M498.397 168.21L508.397 168.21"  fill-rule="evenodd" />
+    <path id="defitem6" fill="none" stroke="#000000" d="M73.457 268.318L83.457 268.318"  fill-rule="evenodd" />
+    <path id="defitem7" fill="none" stroke="#000000" d="M182.855 310.52L192.855 310.52"  fill-rule="evenodd" />
+    <path id="defitem8" fill="none" stroke="#000000" d="M402.855 308.52L412.855 308.52"  fill-rule="evenodd" />
+    <path id="defitem9" fill="none" stroke="#000000" d="M532.855 270.52L542.855 270.52"  fill-rule="evenodd" />
+    <path id="defitem10" fill="none" stroke="#000000" d="M95.0879 276.031L105.088 276.031"  fill-rule="evenodd" />
+    <path id="defitem11" fill="none" stroke="#000000" d="M206.589 318.005L216.589 318.005"  fill-rule="evenodd" />
+    <path id="defitem12" fill="none" stroke="#000000" d="M426.589 316.005L436.589 316.005"  fill-rule="evenodd" />
+    <path id="defitem13" fill="none" stroke="#000000" d="M557.316 277.156L567.316 277.156"  fill-rule="evenodd" />
+    <path id="defitem14" fill="none" stroke="#000000" d="M205.255 305.641L215.255 305.641"  fill-rule="evenodd" />
+    <path id="defitem15" fill="none" stroke="#000000" d="M425.882 304.284L435.882 304.284"  fill-rule="evenodd" />
+    <path id="defitem16" fill="none" stroke="#000000" d="M11.457 312.318L21.457 312.318"  fill-rule="evenodd" />
+    <path id="defitem17" fill="none" stroke="#000000" d="M33.0879 320.031L43.0879 320.031"  fill-rule="evenodd" />
+    <path id="defitem18" fill="none" stroke="#000000" d="M600.74 310.974L610.74 310.974"  fill-rule="evenodd" />
+    <path id="defitem19" fill="none" stroke="#000000" d="M620.473 318.458L630.473 318.458"  fill-rule="evenodd" />
+    <path id="defitem20" fill="none" stroke="#000000" d="M619.14 306.095L629.14 306.095"  fill-rule="evenodd" />
+    <path id="defitem21" fill="none" stroke="#000000" d="M249.639 334.985L259.639 334.985"  fill-rule="evenodd" />
+    <path id="defitem22" fill="none" stroke="#000000" d="M204.579 478.421L214.579 478.421"  fill-rule="evenodd" />
+    <path id="defitem23" fill="none" stroke="#000000" d="M226.21 486.134L236.21 486.134"  fill-rule="evenodd" />
+    <path id="defitem24" fill="none" stroke="#000000" d="M140.689 475.997L150.689 475.997"  fill-rule="evenodd" />
+    <path id="defitem25" fill="none" stroke="#000000" d="M162.32 483.709L172.32 483.709"  fill-rule="evenodd" />
+    <path id="defitem26" fill="none" stroke="#000000" d="M174.73 475.167L184.73 475.167"  fill-rule="evenodd" />
+    <path id="defitem27" fill="none" stroke="#000000" d="M264.022 479.027L274.022 479.027"  fill-rule="evenodd" />
+    <path id="defitem28" fill="none" stroke="#000000" d="M285.653 486.74L295.653 486.74"  fill-rule="evenodd" />
+    <path id="defitem29" fill="none" stroke="#000000" d="M235.925 476.539L245.925 476.539"  fill-rule="evenodd" />
+    <path id="defitem30" fill="none" stroke="#000000" d="M388.657 482.597L398.657 482.597"  fill-rule="evenodd" />
+    <path id="defitem31" fill="none" stroke="#000000" d="M410.288 490.309L420.288 490.309"  fill-rule="evenodd" />
+    <path id="defitem32" fill="none" stroke="#000000" d="M324.767 480.173L334.767 480.173"  fill-rule="evenodd" />
+    <path id="defitem33" fill="none" stroke="#000000" d="M346.398 487.885L356.398 487.885"  fill-rule="evenodd" />
+    <path id="defitem34" fill="none" stroke="#000000" d="M358.808 479.342L368.808 479.342"  fill-rule="evenodd" />
+    <path id="defitem35" fill="none" stroke="#000000" d="M448.1 483.203L458.1 483.203"  fill-rule="evenodd" />
+    <path id="defitem36" fill="none" stroke="#000000" d="M469.731 490.915L479.731 490.915"  fill-rule="evenodd" />
+    <path id="defitem37" fill="none" stroke="#000000" d="M420.003 480.715L430.003 480.715"  fill-rule="evenodd" />
+    <path id="defitem38" fill="none" stroke="#000000" d="M204.271 384.849L214.271 384.849"  fill-rule="evenodd" />
+    <path id="defitem39" fill="none" stroke="#000000" d="M219.902 388.562L229.902 388.562"  fill-rule="evenodd" />
+    <path id="defitem40" fill="none" stroke="#000000" d="M232.044 396.796L242.044 396.796"  fill-rule="evenodd" />
+    <path id="defitem41" fill="none" stroke="#000000" d="M163.245 262.482L173.245 262.482"  fill-rule="evenodd" />
+    <path id="defitem42" fill="none" stroke="#000000" d="M172.876 270.194L182.876 270.194"  fill-rule="evenodd" />
+    <path id="defitem43" fill="none" stroke="#000000" d="M446.562 263.394L456.562 263.394"  fill-rule="evenodd" />
+    <path id="defitem44" fill="none" stroke="#000000" d="M456.193 271.106L466.193 271.106"  fill-rule="evenodd" />
+    <path id="defitem45" fill="none" stroke="#000000" d="M242.366 100.076L252.366 100.076"  fill-rule="evenodd" />
+    <path id="defitem46" fill="none" stroke="#000000" d="M115.856 56.076L125.856 56.076"  fill-rule="evenodd" />
+    <path id="defitem47" fill="none" stroke="#000000" d="M275.029 54.204L285.029 54.204"  fill-rule="evenodd" />
+    <path id="defitem48" fill="none" stroke="#000000" d="M489.029 56.204L499.029 56.204"  fill-rule="evenodd" />
+    <path id="defitem49" fill="none" stroke="#000000" d="M134.947 60.621L144.947 60.621"  fill-rule="evenodd" />
+    <path id="defitem50" fill="none" stroke="#000000" d="M293.184 58.076L303.184 58.076"  fill-rule="evenodd" />
+    <path id="defitem51" fill="none" stroke="#000000" d="M507.645 64.877L517.645 64.877"  fill-rule="evenodd" />
+  </defs>
+  <g id="Layer">
+    <image x="" y="" width="" height="" xlink:href="" />
+    <path id="path3144" fill="#ffffff" stroke="#000000" d="M184.851 189.409C184.851 205.057 171.42 217.742 154.851 217.742C138.282 217.742 124.851 205.057 124.851 189.409"  />
+    <path id="path3146" fill="#ffffff" stroke="#000000" d="M344.851 189.742C344.851 205.391 331.42 218.076 314.851 218.076C298.282 218.076 284.851 205.391 284.851 189.742"  />
+    <path id="path3148" fill="#ffffff" stroke="#000000" d="M503.851 188.742C503.851 204.391 490.42 217.076 473.851 217.076C457.282 217.076 443.851 204.391 443.851 188.742"  />
+    <path id="path3150" fill="#ffffff" stroke="#000000" d="M103.881 328.576C103.881 344.224 90.4498 356.909 73.8813 356.909C57.3127 356.909 43.8813 344.224 43.8813 328.576"  />
+    <path id="path3152" fill="#ffffff" stroke="#000000" d="M597.639 330.136C597.639 345.784 584.207 358.47 567.639 358.47C551.07 358.47 537.639 345.784 537.639 330.136"  />
+    <text id="text3158" fill="#000000" font-family="Bitstream Vera Sans" font-size="32">
+      <textPath xlink:href="#defitem0">o</textPath>
+    </text>
+    <text id="text4133" fill="#000000" font-family="Bitstream Vera Sans" font-size="32">
+      <textPath xlink:href="#defitem1">o</textPath>
+    </text>
+    <text id="text4137" fill="#000000" font-family="Bitstream Vera Sans" font-size="32">
+      <textPath xlink:href="#defitem2">o</textPath>
+    </text>
+    <text id="text4141" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem3">1</textPath>
+    </text>
+    <text id="text4145" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem4">2</textPath>
+    </text>
+    <text id="text4151" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem5">3</textPath>
+    </text>
+    <path id="path4175" fill="none" stroke="#000000" d="M88.4267 300.621L144.184 214.561"  fill-rule="evenodd" />
+    <path id="path4177" fill="none" stroke="#000000" stroke-width="0.992126" d="M102.972 318.803L452.063 208.5"  fill-rule="evenodd" />
+    <path id="path4179" fill="none" stroke="#000000" d="M172.063 214.561L536.912 316.379"  fill-rule="evenodd" />
+    <path id="path4181" fill="none" stroke="#000000" d="M488.427 212.136L552.669 300.621"  fill-rule="evenodd" />
+    <path id="path4183" fill="none" stroke="#000000" d="M155.518 160.803L153.881 122.439"  fill-rule="evenodd" />
+    <path id="path4185" fill="none" stroke="#000000" d="M313.275 160.015L313.881 118.803"  fill-rule="evenodd" />
+    <path id="path4187" fill="none" stroke="#000000" d="M473.457 159.591L471.457 122.439"  fill-rule="evenodd" />
+    <text id="text5364" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem6">w</textPath>
+    </text>
+    <text id="text5368" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem7">w</textPath>
+    </text>
+    <text id="text5372" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem8">w</textPath>
+    </text>
+    <text id="text5376" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem9">w</textPath>
+    </text>
+    <text id="text5380" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem10">i</textPath>
+    </text>
+    <text id="text5386" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem11">i</textPath>
+    </text>
+    <text id="text5390" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem12">i</textPath>
+    </text>
+    <text id="text5394" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem13">i</textPath>
+    </text>
+    <text id="text5398" fill="#000000" font-family="Bitstream Vera Sans" font-size="22">
+      <textPath xlink:href="#defitem14">'</textPath>
+    </text>
+    <text id="text5404" fill="#000000" font-family="Bitstream Vera Sans" font-size="22">
+      <textPath xlink:href="#defitem15">'</textPath>
+    </text>
+    <text id="text5412" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem16">h</textPath>
+    </text>
+    <text id="text5416" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem17">i</textPath>
+    </text>
+    <text id="text5422" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem18">h</textPath>
+    </text>
+    <text id="text5426" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem19">i</textPath>
+    </text>
+    <text id="text5430" fill="#000000" font-family="Bitstream Vera Sans" font-size="22">
+      <textPath xlink:href="#defitem20">'</textPath>
+    </text>
+    <text id="text5434" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem21">... ... ...</textPath>
+    </text>
+    <text id="text5438" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem22">x</textPath>
+    </text>
+    <text id="text5442" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem23">k</textPath>
+    </text>
+    <path id="path5460" fill="none" stroke="#000000" d="M402.366 461.833L550.002 358.379"  fill-rule="evenodd" />
+    <path id="path5468" fill="none" stroke="#000000" d="M218.124 455.773L542.124 349.894"  fill-rule="evenodd" />
+    <path id="path5470" fill="none" stroke="#000000" d="M396.306 460.621L96.0631 355.955"  fill-rule="evenodd" />
+    <path id="path5472" fill="none" stroke="#000000" d="M212.063 455.773L88.7904 359.591"  fill-rule="evenodd" />
+    <text id="text5474" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem24">x</textPath>
+    </text>
+    <text id="text5478" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem25">1</textPath>
+    </text>
+    <text id="text5482" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem26">...</textPath>
+    </text>
+    <text id="text5486" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem27">x</textPath>
+    </text>
+    <text id="text5490" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem28">d</textPath>
+    </text>
+    <text id="text5496" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem29">...</textPath>
+    </text>
+    <text id="text5502" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem30">y</textPath>
+    </text>
+    <text id="text5506" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem31">k</textPath>
+    </text>
+    <text id="text5510" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem32">y</textPath>
+    </text>
+    <text id="text5514" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem33">1</textPath>
+    </text>
+    <text id="text5518" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem34">...</textPath>
+    </text>
+    <text id="text5522" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem35">y</textPath>
+    </text>
+    <text id="text5526" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem36">d</textPath>
+    </text>
+    <text id="text5530" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem37">...</textPath>
+    </text>
+    <text id="text5572" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem38">v</textPath>
+    </text>
+    <text id="text5576" fill="#000000" font-family="Bitstream Vera Sans" font-size="20">
+      <textPath xlink:href="#defitem39">y</textPath>
+    </text>
+    <text id="text5580" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem40">k</textPath>
+    </text>
+    <path id="path5584" fill="none" stroke="#000000" stroke-width="0.992126" stroke-dashoffset="0" stroke-dasharray=" 3.9685 3.9685 " d="M100.548 311.53L299.336 214.561"  fill-rule="evenodd" />
+    <path id="path5588" fill="none" stroke="#000000" stroke-width="0.992126" stroke-dashoffset="0" stroke-dasharray=" 3.9685 3.9685 " d="M545.396 309.106L334.487 214.561"  fill-rule="evenodd" />
+    <text id="text5594" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem41">r</textPath>
+    </text>
+    <text id="text5598" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem42">i</textPath>
+    </text>
+    <text id="text5602" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem43">r</textPath>
+    </text>
+    <text id="text5606" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem44">i</textPath>
+    </text>
+    <path fill="#ffffff" stroke="#000000" stroke-width="0.992126" stroke-dashoffset="0" stroke-dasharray=" 3.9685 3.9685 " d="M101.76 118.258L101.76 66.136L538.124 66.136L538.124 118.258L101.76 118.258Z"  />
+    <text id="text2301" fill="#000000" font-family="Bitstream Vera Sans" font-size="28">
+      <textPath xlink:href="#defitem45">Sum to 1</textPath>
+    </text>
+    <text id="text2305" fill="#000000" font-family="Bitstream Vera Sans" font-size="32">
+      <textPath xlink:href="#defitem46">P</textPath>
+    </text>
+    <text id="text2309" fill="#000000" font-family="Bitstream Vera Sans" font-size="32">
+      <textPath xlink:href="#defitem47">P</textPath>
+    </text>
+    <text id="text2313" fill="#000000" font-family="Bitstream Vera Sans" font-size="32">
+      <textPath xlink:href="#defitem48">P</textPath>
+    </text>
+    <text id="text2317" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem49">1</textPath>
+    </text>
+    <text id="text2321" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem50">2</textPath>
+    </text>
+    <text id="text2325" fill="#000000" font-family="Bitstream Vera Sans" font-size="18">
+      <textPath xlink:href="#defitem51">3</textPath>
+    </text>
+    <path id="path2329" fill="none" stroke="#000000" d="M154.766 67.47L154.766 11.712"  fill-rule="evenodd" />
+    <path id="path2331" fill="none" stroke="#000000" d="M312.523 66.682L312.523 10.924"  fill-rule="evenodd" />
+    <path id="path2333" fill="none" stroke="#000000" d="M472.705 66.258L472.705 10.5"  fill-rule="evenodd" />
+  </g>
+</svg>

@@ -1,0 +1,73 @@
+
+\begin{figure}[h]
+    \vspace{0.5mm}
+    \footnotesize
+    \begin{tcblisting}{text only, 
+        halign=left, 
+        title= \textbf{Crawed Raw Corpus}, 
+        colbacktitle=gray!30!white, 
+        coltitle=black
+    }
+    
+    \textsf{\fontsize{8}{8}\selectfont
+    1. I would not recommend .
+    2. I like that the fittings are metal and seem to be very sturdy . 
+    3. Then he learns , she was trying to get to her child who is in a babyseat in the back . 
+    4. Decent movie worth a rental and if you are a collector buy it .
+    5. ~\dots\dots
+    }
+
+    \end{tcblisting}
+
+
+
+
+
+
+
+    \begin{tcblisting}{text only, 
+        halign=left, 
+        title= \textbf{LLM-generated Raw Corpus}, 
+        colbacktitle=blue!30!white, 
+        coltitle=black
+    }
+
+    \textsf{\fontsize{8}{0}\selectfont
+    {\color{blue} itr 1:}
+    1. The turns of play until the end of the game were intense .
+    2. All instructions of how to use the product will be given in the manual .
+    3. ~\dots\dots
+    }
+
+    \vspace{-6pt} \hdashrule{\linewidth}{0.4pt}{.5mm} \vspace{-12pt}
+
+    \textsf{\fontsize{8}{0}\selectfont
+    {\color{blue} itr 2:}
+    1. She is a major client , and I removed the drive from the enclosure to see how warm it was .
+    2. My hand spelled " I love you " in sign language , but she did n't notice .
+    3. ~\dots\dots
+    }
+
+    \vspace{-6pt} \hdashrule{\linewidth}{0.4pt}{.5mm} \vspace{-12pt}
+
+    \textsf{\fontsize{8}{0}\selectfont
+    {\color{blue} itr 3:}
+    1. The movie was comfortable , but for corporatism , Mama recommended Telephone in February .
+    2. I have a disc that has been dented during delivery , and now I need to return it .
+    3. ~\dots\dots
+    }
+
+    \vspace{-6pt} \hdashrule{\linewidth}{0.4pt}{.5mm} \vspace{-12pt}
+
+    \textsf{\fontsize{8}{0}\selectfont
+    {\color{blue} itr 4:}
+    1. Very old Spiderman is under the CD cases , and it 's easy to place others on top .
+    2. I really prefer the normal ones , not including those with too many features .
+    3. ~\dots\dots
+    }
+    
+    \end{tcblisting}
+
+    \caption{Comparison of typical examples of crawled and iterative LLM-generated raw corpus.}
+    \label{fig:crawled_vs_LLMgen}
+\end{figure}

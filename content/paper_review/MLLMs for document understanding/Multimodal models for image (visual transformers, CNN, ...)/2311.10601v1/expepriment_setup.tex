@@ -1,0 +1,22 @@
+\section{Experimental Setup}
+
+\subsection{Data Collection}
+
+In diverse campus environments, we gathered WiFi fingerprints and IMU data using multiple smartphones over varying durations. This data was refined using a graph optimization algorithm \cite{huaweiradiomap} to produce radio maps for different structures. We focused on Building A (2,800 $m^2$ commercial space), Building B (3,300 $m^2$ educational facility), and Building C (4,500 $m^2$ library). Ground truth was acquired using Velodyne VLP-16 LiDAR integrated with an Xsens IMU, offering precise location data at 200Hz and we run with Lio-SAM algorithm \cite{liosam2020shan} to obtain the true pose. The smartphones collected IMU data at 100Hz and WiFi fingerprints every 2-3 seconds. We gathered around 2 hours of test data across the buildings, with trajectories lasting 5-10 minutes and covering a total of $4.2$ km.
+
+% In various campus settings, we utilized multiple smartphones to extensively gather WiFi fingerprints and IMU data from different users over different periods. The raw data after this pseudo-crowdsourcing phase was subsequently processed via a graph optimization algorithm \cite{huaweiradiomap} to generate the radio maps of different buildings. 
+% We selected Building A, a commercial building with an approximate area of 2,800 $m^2$, Building B, an education building covering 3,300 $m^2$, and Building C, and a library spanning about 4,500 $m^2$.
+% To obtain the ground truth for testing, we used a handheld Velodyne VLP-16 LiDAR integrated with an Xsens IMU system. The LiDAR captured spatial point cloud data, and with the aid of the Lio-SAM algorithm \cite{liosam2020shan}, it provided precise location coordinates at a rate of 200Hz. Concurrently, the smartphones acquired WiFi fingerprints and IMU readings, later earmarked for testing.
+% The IMU data was captured at a frequency of 100Hz, whereas WiFi fingerprints were logged every 2-3 seconds. We amassed approximately 2 hours of test data from three different buildings. The trajectories recorded in this dataset spanned between 5 to 10 minutes each. In total, $4.2$ kilometre of data were collected and used in testing. 
+
+
+\subsection{Implementation Details}
+
+\subsubsection{WiFi Localization Network}
+The model was end-to-end trained on the radio map dataset, split 9:1 for training and validation. The best model is selected based on the performance achieved on the validation set. Note that the test set for performance evaluation is separate and independent of the radio map set. Coordinates were min-max normalized for faster convergence. Training used the AdamW optimizer \cite{adamw2019decoupled} at a $1e^{-4}$ learning rate, betas of $(0.9, 0.999)$, and a weight decay of $1e^{-3}$ over 200 epochs. 
+Unless otherwise specified, the ReLU\cite{relu2019deep} activation function was utilized throughout the model. The CNN used for MAC address embedding consisted of two layers with kernel sizes 20 and 5 and strides 4 and 2, raising channel counts from 1 to 16. An MLP then reduced dimensions to $256*1$.
+The RSS embedding MLP has neurons arranged as $(1, 128, 64, 1)$, using Sigmoid activation at the output. The multi-head attention transformer has 4 layers and 4 heads, a feed-forward size of 256, and a $0.2$ dropout rate. Both output layers's hidden dimensions are set as $(256, 128, 64)$. The uncertainty-focused MLP's output adopts the Sigmoid function mapping the probability from $[0, 1]$. The localization MLP's last layer only has the linear transformation.
+
+\subsubsection{EKPF Fusion}
+
+$400$ particles were used in all experiments. Empirically, the location noise covariance, $\phi(n_p)$, was set to $0.1$, and the rotation covariance, $\phi(n_r)$, was set to $0.05$. Two critical EKPF parameters are: the softening constant $\beta$ for the prior map likelihood and the measurement noise covariance constant $\gamma$ adjusted by $f_{\sigma}(\mathbf{G}_t)$. Given the inconsistent reliability of the prior map and WiFi model across buildings, optimal parameters differ. For each site, a validation trajectory was used for a grid search to determine these settings, with $\beta$ ranging from $1e^{-4}$ to $1e^{-5}$ and $\gamma$ from 100 to 200. The kernel density function processed the radio map using a Gaussian kernel with a bandwidth of $1.0$.

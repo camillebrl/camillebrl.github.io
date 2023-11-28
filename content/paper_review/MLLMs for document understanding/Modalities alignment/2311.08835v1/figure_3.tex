@@ -1,0 +1,15 @@
+\begin{figure}[t!]
+    \centering
+    \vspace{-0.1cm}
+    \includegraphics[width=1.\columnwidth]    {figure/Guiding_Modality_Interaction_V7.pdf}
+    \vspace{-0.55cm}
+    \caption{Clip-word correlation learner. We discover and reflect the relevance between clips and text words into cross-attention.
+    % relevance between clips and text words
+    (a) We establish visual moment, non-moment, query, and dummy representative tokens using learnable moment and sentence tokens.
+    (b) To learn the aligned space, we implement contrastive learning. Whereas the text query prototype $\hat{S}^{+}$ learns to be aligned with the paired visual moment token $\hat{M}^{+}$, dummy prototype $\hat{S}^{-}$ learn to exclude the moment-specific knowledge.
+    (c) Within the aligned space, the correlation in clip-word level is employed as the guidance for the attention map in the cross-attention layers. 
+    }
+    \label{fig:SCM}
+    \vspace{-0.35cm}
+\end{figure}
+

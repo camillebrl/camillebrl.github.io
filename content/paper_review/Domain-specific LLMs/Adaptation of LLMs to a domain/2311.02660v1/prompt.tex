@@ -1,0 +1,38 @@
+
+\begin{figure}[t]
+    \vspace{0.5mm}
+    \footnotesize
+    \begin{tcblisting}{text only, 
+        halign=left, 
+        title= \textbf{LLM Prompt}, 
+        colbacktitle=gray!30!white, 
+        coltitle=black
+    }
+    
+    \textsf{\fontsize{8}{0}\selectfont
+    As a language assistant, you excel at creating sentences of a specific length while adherating to \bm{$N$} grammar rules provided above. 
+    Please consider the \bm{$M$} examples, generate one sentence of \bm{$L1 \sim L2$} words:
+    }
+
+    \vspace{-6pt} \hdashrule{\linewidth}{0.4pt}{.5mm} \vspace{-12pt}
+
+    \textsf{\fontsize{8}{0}\selectfont
+    {\color{blue} GRs:}
+     S$\rightarrow$PP NP VP, ~
+     PP$\rightarrow$IN NP, ~
+     VP$\rightarrow$VP NP, \dots
+    }
+
+    \vspace{-6pt} \hdashrule{\linewidth}{0.4pt}{.5mm} \vspace{-12pt}
+
+     \textsf{\fontsize{8}{1}\selectfont
+     {\color{blue} Snts:} 
+        1. History brings inspiration to peace . 
+        2. It is the jack of all trades and master of none . 
+        3. ~\dots~\dots
+     }
+
+    \end{tcblisting}
+    \caption{LLM prompt example for generating a sentence by the grammar rules and domain sentences. Note that the blue tokens and dashed lines are not part of the actual prompt, only shown for illustration.}
+    \label{fig:prompt}
+\end{figure}

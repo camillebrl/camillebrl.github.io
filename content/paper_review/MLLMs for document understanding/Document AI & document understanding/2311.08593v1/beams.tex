@@ -1,0 +1,46 @@
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/beam_width.png}
+\caption{Top-1 accuracy of the 1B-parameter model versus beam width on the MSMARCO 100k dataset.}
+\label{fig:beams}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/wider_beams.png}
+\caption{Top-10 and 20 accuracies of the 1B-parameter model versus beam width on the MSMARCO 100k dataset.}
+\label{fig:wide_beams}
+\end{figure}
+
+\iffalse
+\begin{tabular}{rcccccc}
+% \toprule
+%  & \multicolumn{3}{c}{Cluster IDs} & \multicolumn{3}{c}{{\method}s} \\
+%  & Acc@1 & @10 & @20 & Acc@1 & @10 & @20 \\
+% \midrule
+% Beam 1 & 40.5 & -- & -- & 50.4 & -- & -- \\
+%  2 & 42.0 & -- & -- & 52.1 & -- & -- \\
+%  4 & 42.4 & -- & -- & 51.6 & -- & -- \\
+%  8 & 42.1 & -- & -- & 52.1 & -- & -- \\
+%  10 & 42.1 & 62.0 & -- & 52.3 & 76.3 & -- \\
+%  20 & 42.4 & 62.3 & 67.1 & 50.4 & 76.3 & 80.4 \\
+%  30 & 41.9 & 62.2 & 67.2 & 50.5 & 74.9 & 81.1 \\
+%  40 & 41.9 & 62.3 & 67.4 & 51.2 & 75.3 & 80.5 \\
+%  50 & 42.2 & 62.3 & 67.2 & 50.9 & 75.3 & 81.1 \\
+\toprule
+ & \multicolumn{3}{c}{Cluster IDs} & \multicolumn{3}{c}{{\method}s} \\
+ & Acc@1 & @10 & @20 & Acc@1 & @10 & @20 \\
+\midrule
+Beam 1 & 47.6 & -- & -- & 54.0 & -- & -- \\
+ 2 & 48.7 & -- & -- & 56.0 & -- & -- \\
+ 4 & 49.0 & -- & -- & 55.7 & -- & -- \\
+ 8 & 48.8 & -- & -- & 56.5 & -- & -- \\
+ 16 & 49.0 & 71.0 & -- & 56.6 & 84.1 & -- \\
+ 20 & 49.0 & 71.1 & 75.6 & 55.0 & 83.4 & 87.2 \\
+ 30 & 49.0 & 70.9 & 75.6 & 56.4 & 84.1 & 88.3 \\
+ 40 & 49.0 & 70.9 & 75.6 & 56.5 & 84.1 & 88.3 \\
+ 50 & 49.0 & 70.9 & 75.6 & 56.5 & 84.1 & 88.4 \\
+
+\bottomrule
+\end{tabular}
+\fi

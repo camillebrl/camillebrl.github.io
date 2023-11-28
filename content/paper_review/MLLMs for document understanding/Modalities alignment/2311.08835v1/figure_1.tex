@@ -1,0 +1,23 @@
+\begin{figure*}[t!]
+    \centering
+    \vspace{-0.2cm}
+    \includegraphics[width=1.\textwidth]{figure/main_figure_V9.pdf}
+    \vspace{-0.6cm}
+    \caption{An overview of CG-DETR. From left to right, the model consists of three phases: (i) feature extraction, (ii) correlation-guided feature interaction, and (iii) predictions for grounding tasks.
+    (i) Along with video and text feature extraction, dummy tokens are conditioned by the query to represent the query-excluding meaning.
+    (ii) Correlation-guided feature interaction is performed with adaptive cross-attention. 
+    In addition to calibration of text query engagement as a whole, we also guide the word-wise engagement with the clip-word correlation learner.
+    % Not only do we calibrate the text query engagement as a whole, but we also guide the word-wise engagement with the correlation learner.
+    At the bottom, we utilize the video context and a calibrated attention map to generate a saliency token. 
+    A saliency token is processed through the same cross-attention layer to be similarly encoded with video tokens to prevent a modality gap. 
+    Details for correlation learner and saliency token are in Fig.~\ref{fig:SCM}, ~\ref{fig:MSD}.
+    (iii) Finally, tokens are processed through the encoder and decoder to make predictions.
+    % \SE{}
+    % 1) i, ii, iii 에 대한 표기가 그림에도 포함되면 더 좋을거같아요
+    % 2) 두번째 문장이 조금 더 자세하면 좋을거 같기는 합니다. (dummy token에 대한 설명 / aca에서 attention weight가 guide 된다는 점? / guide를 위한 correlation이 어떤건지 (video-setenec aligned space?))
+    % 다른 figure들 이랑 같이봐야할거 같긴한데... 이게 제일 먼저 나오는거니까 반복되더라도 조금 더 자세한 설명은 포함되는게 좋지 않나 싶어요
+    }
+    \label{fig:main_figure}
+\end{figure*}
+\vspace{-0.4cm}
+% mining / generator 는 뒤에있다고 설명

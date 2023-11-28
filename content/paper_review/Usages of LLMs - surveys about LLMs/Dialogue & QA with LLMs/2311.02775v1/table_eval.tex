@@ -1,0 +1,66 @@
+
+\begin{table}[h!]
+\centering
+    \caption{Human evaluation scores by rubrics items (scaled average $\pm$ stdev)}
+    \label{tab:human-eval}
+    \begin{tabular}{l|c|c|c}
+        \toprule
+        \textbf{Model} & \textbf{Usefulness} & \textbf{Accuracy} & \textbf{Total} \\
+        \midrule
+        LLaMA-2 Chat 7B (L7) & 0.18 ($\pm$ 0.29) & 0.28 ($\pm$ 0.38) & 0.23 ($\pm$ 0.32) \\
+        LLaMA-2 Chat 12B (L13) & 0.18 ($\pm$ 0.24) & 0.30 ($\pm$ 0.41) & 0.24 ($\pm$ 0.32) \\
+        LLaMA-2 Chat 70B (L70) & 0.20 ($\pm$ 0.34) & 0.33 ($\pm$ 0.41) & 0.26 ($\pm$ 0.36) \\
+        GPT-4 (G4) & 0.28 ($\pm$ 0.34) & 0.40 ($\pm$ 0.42) & 0.34 ($\pm$ 0.37) \\
+        GPT-4 + RAG & \textbf{0.63} ($\pm$ 0.44) & \textbf{0.71} ($\pm$ 0.35) & \textbf{0.67} ($\pm$ 0.37) \\
+        L13 + RAG & \textbf{0.53} ($\pm$ 0.42) & 0.53 ($\pm$ 0.39) & 0.53 ($\pm$ 0.39) \\
+        L13 + SFT & 0.13 ($\pm$ 0.28) & 0.10 ($\pm$ 0.21) & 0.11 ($\pm$ 0.22) \\
+        L13 + SFT + DPO & 0.23 ($\pm$ 0.38) & 0.33 ($\pm$ 0.44) & 0.28 ($\pm$ 0.39) \\
+        L13 + SFT + DPO + RAG & \textbf{0.53} ($\pm$ 0.42) & \textbf{0.61} ($\pm$ 0.39) & \textbf{0.57} ($\pm$ 0.39) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+% \include{figs/table_eval}
+% \begin{table}[h!]
+% \centering
+%     \caption{Human evaluation scores by rubrics items (average $\pm$ stdev)}
+%     \label{tab:human-eval}
+%     \begin{tabular}{l|c|c|c}
+%         \toprule
+%         \textbf{Model} & \textbf{Usefulness} & \textbf{Accuracy} & \textbf{Total} \\
+%         \midrule
+%         LLaMA2-7b chat (L7) & 0.18 ($\pm$ 0.29) & 0.28 ($\pm$ 0.38) & 0.23 ($\pm$ 0.32) \\
+%         LLaMA2-13b chat (L13) & 0.18 ($\pm$ 0.24) & 0.30 ($\pm$ 0.41) & 0.24 ($\pm$ 0.32) \\
+%         LLaMA2-70b chat (L70) & 0.20 ($\pm$ 0.34) & 0.33 ($\pm$ 0.41) & 0.26 ($\pm$ 0.36) \\
+%         GPT-4 (G4) & 0.28 ($\pm$ 0.34) & 0.40 ($\pm$ 0.42) & 0.34 ($\pm$ 0.37) \\
+%         G4+RAG & \textbf{0.63} ($\pm$ 0.44) & \textbf{0.71} ($\pm$ 0.35) & \textbf{0.67} ($\pm$ 0.37) \\
+%         L13+RAG & \textbf{0.53} ($\pm$ 0.42) & 0.53 ($\pm$ 0.39) & 0.53 ($\pm$ 0.39) \\
+%         L13+SFT & 0.13 ($\pm$ 0.28) & 0.10 ($\pm$ 0.21) & 0.11 ($\pm$ 0.22) \\
+%         L13+SFT+DPO & 0.23 ($\pm$ 0.38) & 0.33 ($\pm$ 0.44) & 0.28 ($\pm$ 0.39) \\
+%         L13+SFT+DPO+RAG & \textbf{0.53} ($\pm$ 0.42) & \textbf{0.61} ($\pm$ 0.39) & \textbf{0.57} ($\pm$ 0.39) \\
+%         \bottomrule
+%     \end{tabular}
+% \end{table}
+
+\begin{table}[h!]
+\centering
+    \caption{Human evaluation and LLM evaluation scores by rubrics items (average $\pm$ stdev)}
+    \label{tab:human-llm-eval}
+    \begin{tabular}{l|c|c|c|c|c|c}
+        \toprule
+        \textbf{Model} & \multicolumn{3}{c|}{\textbf{HumanEval}} & \multicolumn{3}{c}{\textbf{LLM-Eval}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        & \textbf{Usefulness} & \textbf{Accuracy} & \textbf{Total} & \textbf{Usefulness} & \textbf{Accuracy} & \textbf{Total} \\
+        \midrule
+        LLaMA2-7B chat (L7) & 0.18 ($\pm$ 0.29) & 0.28 ($\pm$ 0.38) & 0.23 ($\pm$ 0.32) & 0.18 ($\pm$ 0.29) & 0.28 ($\pm$ 0.38) & 0.23 ($\pm$ 0.32) \\
+        LLaMA2-13b chat (L13) & 0.18 ($\pm$ 0.24) & 0.30 ($\pm$ 0.41) & 0.24 ($\pm$ 0.32) & 0.18 ($\pm$ 0.24) & 0.30 ($\pm$ 0.41) & 0.24 ($\pm$ 0.32) \\
+        LLaMA2-70b chat (L70) & 0.20 ($\pm$ 0.34) & 0.33 ($\pm$ 0.41) & 0.26 ($\pm$ 0.36) & 0.20 ($\pm$ 0.34) & 0.33 ($\pm$ 0.41) & 0.26 ($\pm$ 0.36) \\
+        GPT-4 (G4) & 0.28 ($\pm$ 0.34) & 0.40 ($\pm$ 0.42) & 0.34 ($\pm$ 0.37) & 0.28 ($\pm$ 0.34) & 0.40 ($\pm$ 0.42) & 0.34 ($\pm$ 0.37) \\
+        GPT-4+RAG & \textbf{0.63} ($\pm$ 0.44) & \textbf{0.71} ($\pm$ 0.35) & \textbf{0.67} ($\pm$ 0.37) & \textbf{0.63} ($\pm$ 0.44) & \textbf{0.71} ($\pm$ 0.35) & \textbf{0.67} ($\pm$ 0.37) \\
+        L13+RAG & \textbf{0.53} ($\pm$ 0.42) & 0.53 ($\pm$ 0.39) & 0.53 ($\pm$ 0.39) & \textbf{0.53} ($\pm$ 0.42) & 0.53 ($\pm$ 0.39) & 0.53 ($\pm$ 0.39) \\
+        L13 + SFT & 0.13 ($\pm$ 0.28) & 0.10 ($\pm$ 0.21) & 0.11 ($\pm$ 0.22) & 0.13 ($\pm$ 0.28) & 0.10 ($\pm$ 0.21) & 0.11 ($\pm$ 0.22) \\
+        L13 + SFT + DPO & 0.23 ($\pm$ 0.38) & 0.33 ($\pm$ 0.44) & 0.28 ($\pm$ 0.39) & 0.23 ($\pm$ 0.38) & 0.33 ($\pm$ 0.44) & 0.28 ($\pm$ 0.39) \\
+        L13+SFT+DPO+RAG & \textbf{0.53} ($\pm$ 0.42) & \textbf{0.61} ($\pm$ 0.39) & \textbf{0.57} ($\pm$ 0.39) & \textbf{0.53} ($\pm$ 0.42) & \textbf{0.61} ($\pm$ 0.39) & \textbf{0.57} ($\pm$ 0.39) \\
+        \bottomrule
+    \end{tabular}
+\end{table}

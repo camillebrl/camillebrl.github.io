@@ -1,0 +1,40 @@
+%!TEX root = ../acl.tex
+%*******************************************************************************
+%*********************************** Methods *****************************
+%*******************************************************************************
+\section{Fact-checking conversational claims}
+%As illustrated in Figure 1, 
+Fact-checking systems typically consist of three components: a document retriever that returns the most relevant documents to a given claim from a textual source such as Wikipedia, a sentence retriever that selects the most relevant evidence sentence(s) from the retrieved documents, and a claim verification model that classifies the claim as \textsc{Supports}, \textsc{Refutes} or \textsc{Not Enough Info} (NEI) 
+w.r.t.\ the evidence. We formulate fact-checking dialogue claims as the task of verifying the last utterance, referred to as the claim \textit{c}, of a multi-turn conversation $C = \{ U_1, ..., U_{n-1}, c\}$. %Figure 1 provides contrasting examples of stand-alone well-formed claims and conversational claims. 
+%
+This section presents techniques aimed at improving the dialogue fact-checking performance of a model trained on stand-alone well-formed claims, without requiring any adaptation of the model itself. 
+%For implementation details, we refer the interested reader to Appendix A.
+
+\paragraph{Document retrieval}
+%Rather than adapting the document retriever to consider context through fine-tuning, we propose utilizing the context utterances directly. Specifically, 
+In order to take into account the dialogue context of the claim,
+we return the union of the top \textit{k} documents that are most similar to the claim, along with the single most relevant document to each utterance in the context:
+\begin{equation}
+    D_c = f(c,k)\text{ } \cup \sum_{i = 1}^{n-1} f(U_i,1) 
+\end{equation},
+where \textit{f} is a scoring function (not fine-tuned to dialogues) that takes as input a sentence \textit{s} and a number \textit{k}, and returns the top \textit{k} most relevant %Wikipedia 
+documents to \textit{s}.
+%
+The proposed method enables capturing the main entities of the conversation, despite the presence of coreference and ellipses. For example, in Figure 1, the name ``Paul McCartney'' is referred to as simply ``Paul'' in the conversational claim, making accurate document retrieval difficult.  Our approach tackles this challenge without retrieving a large number of irrelevant documents. Indeed, solely retrieving documents related to the claim would involve considering a broad range of entities containing ``Paul'' in their names. In contrast, the proposed method enables the retrieval of the precise entity under discussion within the conversation, eliminating the need to search through all possible ``Paul'' entities. Moreover, by focusing on the single most relevant document to each sentence within the context and simultaneously retrieving the top \textit{k} most relevant documents to the claim, we strike a balance. This approach ensures that the entities in the context are considered, but not to the extent that they overshadow the importance of the claim itself.
+
+\paragraph{Sentence retrieval}
+Just like document retrieval, the performance of sentence retrieval can be greatly impacted by the presence of coreference and ellipses in dialogues, as demonstrated in Figure 1. In the conversational example, the sentence retriever should %is tasked with 
+assign the highest score to the Wikipedia sentence that contains information about the birth year of ``Paul''. However, in this case, ``Paul'' could equally refer to either ``Paul McCartney'' or ``Pope Paul I'', as documents with these titles were retrieved. As a result, the sentence retriever
+is unable to distinguish the correct evidence and assigns equal scores to sentences from both documents.
+
+To address this issue, we propose incorporating document relevance scores into sentence retrieval. This method capitalizes on the contextual information gathered during document retrieval, making sure it is utilized effectively in sentence retrieval. For instance, as shown in Figure 1, the information that ``Paul McCartney'' is the most relevant document to the conversation, while ``Pope Paul I'' is the sixth most relevant, increases the likelihood that the correct evidence is found in the former document. 
+
+The proposed technique operates by combining information gathered during document and sentence retrieval as follows:
+\begin{equation}
+    score(s;c) = g(r_s; r_D; R_D)
+\end{equation}
+, where g is a parameterized function, s is an evidence sentence in a document \textit{D} $\in D_c$, $r_s$ is the similarity score of $s$ to the claim $c$, $r_D$ is the similarity score of \textit{D} to $c$, and $R_D$ is the ranking of \textit{D} among \textit{D$_c$}.  To train function \textit{g}, the document and sentence retrieval models are first applied to the DialFact training set examples to generate triples $(r_s; r_D; R_D)$ for each sentence \textit{s} with respect to a claim. Then, a logistic regression model is trained using these triples as inputs and Boolean values indicating whether each evidence sentence is a piece of evidence according to the gold standard.
+
+\paragraph{Claim Detection} Typical fact-checking models are trained on claims that are single-factoid, self-contained sentences, such as those in FEVER~\cite{fever}. However, claims in dialogues often span multiple sentences, and may contain content that is not possible to check, such as ``Yes. I really like this band so I know.'' in Figure~1. This type of information can be challenging for these models to distinguish from the verifiable portion of the claim. 
+%
+To address this issue, we present a technique for identifying the factual information in dialogue claims. It operates by selecting the part of the utterance that has the highest semantic textual similarity to the retrieved evidence. The process begins by splitting the claim into sub-sentences. Next, we use a sentence encoder to generate encodings for each sub-sentence and each retrieved evidence sentence. Finally, the claim is replaced with the sub-sentence that has the highest cosine similarity with the retrieved evidence.

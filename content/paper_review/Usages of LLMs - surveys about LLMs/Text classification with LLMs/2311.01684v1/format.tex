@@ -1,0 +1,28 @@
+\begin{table}[h]
+    \centering
+    \small
+    \setlength{\tabcolsep}{2pt} 
+    \begin{tabular}{lp{5.9cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Question} \\ 
+    \midrule
+    \multirow{2}{*}{COPA} & My body cast a shadow over the grass [\textcolor{red}{because}] \\
+    \hhline{~-}
+    & The physician misdiagnosed the patient [\textcolor{red}{so}]\\
+    \midrule
+    \multirow{3}{*}{SCT} & Tyler went to a baseball game. He saw his favorite team! His team played hard. His team won! []\\
+    \midrule
+    \multirow{2}{*}{SocialIQa} & Tracy didn't go home that evening and resisted Riley's attacks. [\textcolor{red}{Before, Tracy needed to}]\\
+    \midrule
+    \multirow{4}{*}{ARC} & Which technology was developed most recently? [\textcolor{red}{the answer is}]\\
+    \hhline{~-}
+    & A green plant absorbs light. A frog eats flies. These are both examples of how organisms []\\
+    \midrule
+    \multirow{4}{*}{OBQA} & A person can grow cabbage in January with the help of what product? [\textcolor{red}{the answer is}]\\
+    \hhline{~-}
+    & Gas can fill any container it is given, and liquid []\\
+    \bottomrule
+    \end{tabular}
+    \caption{Question formats used for each dataset. The red words in square brackets are additions to the context, designed specifically for each dataset.}
+    \label{tab:converted_question}
+\end{table}

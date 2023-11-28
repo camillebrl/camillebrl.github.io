@@ -1,0 +1,327 @@
+% CVPR 2023 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+\usepackage[review]{cvpr}      % To produce the REVIEW version
+%\usepackage{cvpr}              % To produce the CAMERA-READY version
+%\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{soul}
+
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, e.g. with the
+% file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{10707} % *** Enter the CVPR Paper ID here
+\def\confName{ICCV}
+\def\confYear{2023}
+
+\renewcommand\thesection{\Alph{section}}
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{Supplementary Material}
+
+\author{First Author\\
+Institution1\\
+Institution1 address\\
+{\tt\small firstauthor@i1.org}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+Second Author\\
+Institution2\\
+First line of institution2 address\\
+{\tt\small secondauthor@i2.org}
+}
+\maketitle
+
+\section{Additional Details about Experiments}
+This section contains extended details about the modules in the mmFUION framework, their settings, training, validation, and testing process. 
+
+\textbf{Defining High Spatial Shapes.}
+Our defined high spatial shapes for image and LiDAR branches are based on what we set the resolution within the detection range in each axis. We follow the standard detection range which is 0 to 70, -40 to 40, and -3 to 1 in the x, y, and z-axis respectively. For the image case, we divide these ranges and construct a 3D volume of shape $176\times200\times16$. In the case of LiDAR, we set $700\times800\times20$ based on voxel size $0.1\times0.1\times0.2$ meters, which can also be increased to $1400\times1600\times40$ if halved the voxel size. 
+
+\textbf{Image Encoder.}
+It decreases the defined high spatial shape $176\times200\times16$ to 2 levels ($l$) in the z direction only using a total number of $l$ layers having 3D convolution with stride 2 which is followed by the final $1\times1$ 3D convolution. The final formed low spatial shape from the image encoder is $4\times200\times176$ (permuted into LiDAR coordinates).
+
+\textbf{Pts Encoder/LiDAR Encoder.} 
+It also follows a similar convention as the image i.e $l=2$ number of layers with employing the stride = (2, 2, 2) such as in each direction. Note that different from the image encoder, here we use a sparse input layer in the beginning but a final $1\times1$ 3D convolution layer same as in the image encoder. The final formed low spatial shape from Pts-Encoder is $4\times200\times176$ (already in LiDAR coordinates). 
+
+The output feature channels can be set to 128 or 256 based on the availability of computational resources.
+
+
+%\textbf{Cross Modality Attention Module.}
+
+%\textbf{Multi-Modality Attention Module.}
+
+
+\textbf{Loss Functions.}
+
+Our total loss at the anchored 3D detection head end is the sum of three losses:
+\begin{equation}
+    \mathcal{L} = \mathcal{L}_{cls} + \mathcal{L}_{reg} + \mathcal{L}_{dir}
+\end{equation}
+where $\mathcal{L}_{cls}$ denotes the focal loss \cite{lin2017focal} for classification, which balances the positive and negative sample with setting $\alpha = 0.25$ and $\gamma = 2.0$.
+The $\mathcal{L}_{reg}$ denotes smooth L1 loss \cite{girshick2015fast} for bounding box regression with setting $\beta=1/9$ and loss weight to 2.
+Finally, $\mathcal{L}_{dir}$ denotes the cross entropy loss for direction classification with setting loss weight to 0.2.
+
+ %left bottom right top
+ \begin{figure}[ht!]
+     \centering
+     \includegraphics[trim=0.5cm 0 0.5cm 0 , width=9cm,height=8.2cm,keepaspectratio]{figs/supp_material/mmFUSION_all_loss.pdf}
+     \caption{Losses curves during mmFUSION training}
+     \label{fig_losses}
+ \end{figure}
+
+ %left bottom right top
+ \begin{figure}[h]
+     \centering
+     \includegraphics[trim=0.5cm 0 0.5cm 0 , width=9cm,height=8.2cm,keepaspectratio]{figs/supp_material/Car_3D_AP40_IoU_0_7.pdf}
+     \caption{Evaluation comparison of mmFUSION with baseline at each epoch.}
+     \label{Car3dAP40}
+ \end{figure}
+ 
+
+
+\textbf{Train Process.}
+ We train our proposed mmFUSION framework in an end-to-end manner following all the settings mentioned above for fair comparisons. Since there is a high-class imbalance in the KITTI dataset, We follow common practices as already used by our baseline and other comparison methods and train our model for the car class only. We report the top performance in the last 5 epochs for stable comparison.  Figure \ref{fig_losses} shows plots for all losses during mmFUSION training. Figure \ref{Car3dAP40} shows an evaluation comparison of our method with the baseline at each epoch for 3D detection considering different difficulty levels as defined by KITTI.
+
+
+
+
+
+\begin{figure*}[h!]
+\centering
+    \begin{subfigure}[b]{0.25\textwidth}
+         \centering
+         \includegraphics[trim=1cm 0 0.3cm 1cm,width=\textwidth]{figs/supp_material/test_results/car_detection.eps}
+         \caption{Car: Detection}
+         \label{fig:y equals x}
+     \end{subfigure}
+     %\hspace{0.4cm}
+     \hfill
+     \begin{subfigure}[b]{0.225\textwidth}
+         \centering
+         \includegraphics[trim=2cm 0 0.5cm 1cm, width=\textwidth]{figs/supp_material/test_results/car_orientation.eps}
+         \caption{Car: Orientation}
+         \label{fig:three sin x}
+     \end{subfigure}
+     %\hspace{0.4cm}
+     \hfill
+     \begin{subfigure}[b]{0.23\textwidth}
+         \centering
+         \includegraphics[trim=1.7cm 0 0.3cm 1cm,width=\textwidth]{figs/supp_material/test_results/car_detection_3d.eps}
+         \caption{Car: 3D Detection}
+         \label{fig:five over x}
+     \end{subfigure}
+     %\hspace{0.4cm}
+     \hfill
+     \begin{subfigure}[b]{0.21\textwidth}
+         \centering
+         \includegraphics[trim=2cm 0 1cm 1cm,width=\textwidth]{figs/supp_material/test_results/car_detection_ground.eps}
+         \caption{Car: Bird's Eye View}
+         \label{fig:five over x}
+     \end{subfigure}
+    \caption{Precision-Recall curves of mmFUSION on the KITTI \textit{test} set.}
+    \label{fig:precision_recall_onTest}
+\end{figure*}
+
+
+
+
+ 
+
+\textbf{Test Process}
+
+We report precision-recall (PR) curves in Figure \ref{fig:precision_recall_onTest} on the KITTI test set for the car category. Our mmFUSION achieves satisfactory results on different metrics (as defined by KITTI). These test results have been reported after submitting our predictions to the online KITTI leaderboard.
+
+
+
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}[b]{0.495\textwidth}
+            \centering
+            % raw image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/000008_img.png}
+            \end{subfigure}
+            % lidar points
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/000008_pts.png}
+            \end{subfigure}
+            % projected points on image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/000008_img_pts.png}
+             %\vspace{0.3cm}
+            \end{subfigure}
+           
+            % projected gt 3D boxes on image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/000008_gt_bbox.png}
+            \end{subfigure}
+            % projected predicted 3D boxes on image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/000008_pred.png}
+            \end{subfigure}
+            
+
+
+            
+    \end{subfigure}
+    %\hspace{-0.1cm}
+    \begin{subfigure}[b]{0.45\textwidth}
+             \centering
+            % img low spatial shape
+            \begin{subfigure}[b]{0.95\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/img_low_spatial_shape.png}
+            \end{subfigure}
+            % lidar low spatial shape
+            \begin{subfigure}[b]{0.95\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/pts_low_spatial_shape.png}
+            \end{subfigure}
+            % multimodality low spatial shape
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/multi_low_spatial_shape.png}
+                %\vspace{0.3cm}
+            \end{subfigure}
+            % drawn gt boxes on multimodality low spatial shape
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/pts_gt3D.png}
+            \end{subfigure}
+            % drawn pred boxes on multimodality low spatial shape
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000008/pts_pred3d.png}
+            \end{subfigure}
+            
+    \end{subfigure}
+    \caption{Visualization of mmFUSION framework. First row both columns: image, and its features in low spatial shape. Second: LiDAR  point clouds, and their features in the low spatial shape. Third: projected LiDAR points on the image, and the figure to its right side showing mmFUSION features after cross-modality and multi-modality attention block (black color L1 norm value almost 0, extreme red shows highest value). Fourth and Fifth: ground truth 3D boxes \color{blue}{(in blue)} \color{black} and predicted 3D boxes \color{red}{(in red)}.}
+%    \caption{Examples of the proposed low spatial shape on KITTI \textit{val} set. The blue points indicate the projected features in low spatial shape while green points show LiDAR points.}
+    \label{fig:overll_qualitative_example1}
+\end{figure*}
+
+\begin{figure*}[h!]
+    \centering
+    \begin{subfigure}[b]{0.495\textwidth}
+            \centering
+            % raw image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_img.png}
+            \end{subfigure}
+            % lidar points
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_pts.png}
+            \end{subfigure}
+            % projected points on image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_img_pts.png}
+             %\vspace{0.05cm}
+            \end{subfigure}
+           
+            % projected gt 3D boxes on image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_gt_bbox.png}
+            \end{subfigure}
+            % projected predicted 3D boxes on image
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_pred.png}
+            \end{subfigure}
+            
+
+
+            
+    \end{subfigure}
+    %\hspace{-0.1cm}
+    \begin{subfigure}[b]{0.45\textwidth}
+             \centering
+            % img low spatial shape
+            \begin{subfigure}[b]{0.95\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/img_low_spatial_shape.png}
+            \end{subfigure}
+            % lidar low spatial shape
+            \begin{subfigure}[b]{0.95\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/pts_low_spatial_shape.png}
+            \end{subfigure}
+            % multimodality low spatial shape
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/multi_low_spatial_shape.png}
+                %\vspace{0.05cm}
+            \end{subfigure}
+            % drawn gt boxes on multimodality low spatial shape
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_pts_gt.png}
+            \end{subfigure}
+            % drawn pred boxes on multimodality low spatial shape
+            \begin{subfigure}[b]{1\textwidth}
+                \centering
+                \includegraphics[width=\textwidth]{figs/supp_material/visualization/000031/000031_pts_pred.png}
+            \end{subfigure}
+            
+    \end{subfigure}
+    \caption{Extended visualizations with another example, order is same as in Figure \ref{fig:overll_qualitative_example1}}
+%    \caption{Examples of the proposed low spatial shape on KITTI \textit{val} set. The blue points indicate the projected features in low spatial shape while green points show LiDAR points.}
+    \label{fig:overll_qualitative_example2}
+\end{figure*}
+
+
+\section{Qualitative Results}
+In this section, we show qualitatively how the proposed mmFUSION framework detects objects leveraging complementary information from both sensors. In Figure \ref{fig:overll_qualitative_example1}, we first visualize image and its corresponding features in low spatial shape (output of proposed image encoder). Then we show lidar points and its corresponding features in the low spatial shape (output of proposed Pts-Encoder/LiDAR Encoder). Note that red regions show the L1 norm  of feature vector at that particular location. It can be seen in the case of images, features are available but spread. Whereas in the case of LiDAR, they are more significant. Third, we show the image with projected LiDAR points (just to show both modalities together), and towards its right side, the final joint features in low spatial shape after mmFUSION modules (cross and multi-modality attentions). It can be seen in this representation how objects' regions are significant (red points). Hence, we see how objects which are either far or not even having LiDAR points are still detected correctly because mmFUSION leverages information from the camera for those points and fills the gap between both modalities. It can be noticed visually some objects are not annotated in the KITTI dataset but are still correctly detected. Figure \ref{fig:overll_qualitative_example2} is extended visualization with another example.
+
+
+
+%%%%%%%%% REFERENCES
+{\small \newpage \newpage
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{document}

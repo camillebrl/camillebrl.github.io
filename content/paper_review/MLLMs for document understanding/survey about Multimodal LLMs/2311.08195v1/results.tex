@@ -1,0 +1,102 @@
+%*******************************************************************************
+%*********************************** Results *****************************
+%*******************************************************************************
+\section{Results}
+%\paragraph{Overview} 
+\paragraph{Implementation details} FEVER \cite{fever} is a benchmark dataset comprising well-formed claims derived from Wikipedia. Our approach builds on the state of the art. It employs GENRE\footnote{\url{https://github.com/facebookresearch/GENRE}} \cite{genre} as our scoring function  \textit{f} for document retrieval following \citet{genre-sota}. For sentence retrieval and claim verification, we leverage the Bigbird-based \cite{bigbird} and DeBERTa \cite{deberta} models\footnote{\url{https://github.com/dominiksinsaarland/document-level-FEVER}} respectively, from \citet{stammbach}. For the evidence enhancement ensemble, we train a logistic regression model \textit{g} using the scikit-learn library\footnote{\url{https://scikit-learn.org/stable/index.html}}. For claim detection, we leverage SRoBERTa\footnote{\url{https://github.com/UKPLab/sentence-transformers}} and Spacy's Sentencizer\footnote{\url{https://spacy.io/api/sentencizer/}} to perform sentence encoding and sentence splitting, respectively. Finally, %for the experiments that are included in Appendix C, 
+we used SpanBERT \citep{spanbert} for coreference resolution, StyleFormer\footnote{
+\url{https://github.com/PrithivirajDamodaran/Styleformer}} for style transfer, and the %joined learning 
+GPT-2-based model proposed by \citet{cread} for claim rewrite.
+
+\paragraph{Document retrieval results}
+\begin{table}[H]
+\setcounter{table}{0}
+\centering
+\footnotesize
+\begin{tabular}{@{}ccc@{}}
+\toprule
+                                                                 & \multicolumn{2}{c}{\textbf{Document Retrieval}}                             \\ \midrule
+                                                                               & Recall & \begin{tabular}[c]{@{}c@{}}Recall\\ (No NEI)\end{tabular}  \\ \hline
+  Claim-only                                                              & 56.85  & 60.02                                                     \\
+  Resolved Claim-only                                                     & 67.0   & 72.0                                                      \\
+  \begin{tabular}[c]{@{}c@{}}Concatenated \\ Claim + Context \cite{dialfact}\end{tabular} & 76.5   & 79.3                                                      \\
+ Proposed Method                                                         & \textbf{81.90}  & \textbf{83.76}                                                     \\ \bottomrule
+\end{tabular}
+\caption{Document recall for claim-only and claim+context approaches using GENRE.}
+\end{table} 
+Table~1 presents a summary of the document retrieval results achieved on the DialFact test set. We conduct a comparative analysis of various methods: applying GENRE directly to the claim, applying GENRE to the claim after performing coreference resolution from the context using SpanBERT, employing the approach suggested by \citet{dialfact}, which entails concatenating the claim with the last two utterances of context and applying the scoring function \textit{f} to the result, and our proposed approach (Section 2). By looking at the results, it is clear that directly using the context substantially improves document recall. This result is expected, as the main entities of a conversation are often repeated numerous times in the context. Additionally, these methods do not depend on the coreference resolution accuracy. The scores also show that our proposed method improves upon that presented in \citet{dialfact} by more than 5 percentage points in terms of document recall when \textit{k = 10} (we select the top 10 documents using the claim). To ensure this performance increase is not merely due to an increase in the average number of retrieved documents, we additionally tested our method with \textit{k = 5}. The document recall, in this case, is equal to 80.07\% with an average number of retrieved documents of 7.79. This average includes 2.79 documents retrieved from the context, in addition to the top 5 documents most relevant to the claim. In contrast, other methods retrieve a minimum of 10 documents. The effectiveness of this approach compared to that presented in \citet{dialfact} can be explained by the higher emphasis on the claim. Our method focuses on retrieving the single most relevant document to each sentence within the context while simultaneously retrieving the top \textit{k} most relevant documents to the claim. In contrast, the approach in \citet{dialfact} directly applies the model to the concatenation of the claim and context, often resulting in the retrieval of noisy documents. 
+
+%The following experiments aim to compare the FEVER and DialFact performance of a model trained on well-formed claims and combining our techniques, with models fine-tuned on conversational claims within their contexts. 
+
+
+%\paragraph{Document retrieval results} Our experiments have shown that our proposed method outperforms the best approach from \citet{dialfact} by nearly 5\% in terms of document recall. We include the results table in the Appendix.
+%\paragraph{Main results}
+\begin{table}
+\centering
+\footnotesize
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}
+{lccc}
+\hline
+ & \textbf{FEVER}  & \textbf{DialFact}                     \\ \hline
+                     &  \multicolumn{2}{c}{\textbf{Accuracy}}            \\ \hline
+FEVER & \textbf{79.80} & 50.75 (-12.88)    \\
+\hspace{0.1in}+VitC   & 76.99 (-2.81) &  57.84 (-5.79)\\ \hline
+\hspace{0.1in}+DialFact   & 67.03 (-12.77) &  61.08 (-2.55) \\
+\hspace{0.1in}+Colloquial & 65.07 (-14.73) &  60.12 (-3.51)\\
+\hspace{0.1in}+VitC+DialFact   & 64.88 (-14.92) &  61.99 (-1.64) \\
+\hspace{0.1in}+VitC+Colloquial & 64.56 (-15.24) &  61.10 (-2.53) \\
+\hline
+\hspace{0.1in}\textit{+retrieval}  & \textbf{79.80} & 51.78 (-11.85) \\ 
+\hspace{0.1in}\textit{+VitC+retrieval}   & 76.99 (-2.81) & 58.36 (-5.27) \\ 
+\hspace{0.1in}\textit{+claimdet} & \textbf{79.80} &  53.30 (-10.33) \\
+\hspace{0.1in}\textit{+VitC+claimdet} & 76.99 (-2.81) & 59.72 (-3.91)\\
+\hspace{0.1in}\textit{+retrieval+claimdet} & \textbf{79.80} & 54.56 (-9.07)\\
+\hspace{0.1in}\textit{+VitC+retrieval+claimdet} & 76.99 (-2.81) & 60.72 (-2.91) \\ \hline
+
+\hspace{0.1in}+DialFact+retrieval & 67.03 (-12.77)  & 62.83 (-0.80) \\
+\hspace{0.1in}+Colloquial+retrieval & 65.07 (-14.73) & 60.93 (-2.70) \\ 
+\hspace{0.1in}+VitC+DialFact+retrieval & 64.88 (-14.92)  & \textbf{63.63} \\
+\hspace{0.1in}+VitC+Colloquial+retrieval & 64.56 (-15.24) & 61.54 (-2.09) \\ 
+\hline
+AugWoW \cite{dialfact} & 60.98 (-18.82) & 51.60 (-12.03) \\ 
+AugWoW+retrieval & 60.98 (-18.82) & 54.38 (-9.25) \\ 
+\end{tabular}
+}
+\caption{Performance analysis on FEVER \textsc{Dev} and DialFact \textsc{Test} of typical fact-checking models combining our methods versus specialized models for dialogues. The  models proposed in this paper are in italic. Best performance per dataset is in bold.}
+\label{tbl:results}
+\end{table}
+
+\paragraph{Final results} Table 2 summarizes the claim verification results on the test set. The first group consists of typical fact-checking models trained on FEVER (\textit{FEVER}), fine-tuned using VitaminC \citep[\textit{FEVER+VitC}]{dialfact}. VitaminC \citep{vitaminc} is a large-scale dataset containing examples that are \textit{contrastive}: evidence pairs are almost identical in language and content, except that one supports and the other refutes a claim. Training a fact-checking model on VitaminC has been shown to improve a classifier’s sensitivity to subtle changes in evidence. In our case, fine-tuning on VitaminC improves the DialFact accuracy by over 7\%, while only causing a decrease of less than 3\% on FEVER. % due to catastrophic forgetting.
+
+In the second group, we fine-tune the typical models on additional dialogue data from DialFact and Colloquial \cite{colloquial}, as proposed by \citet{dialfact}. Specializing the models for dialogue leads to significant improvements in DialFact accuracy. However, this approach results in a substantial loss of up to 15\% in accuracy on FEVER due to catastrophic forgetting.
+
+The third group uses the typical models with our proposed enhanced evidence selection and claim detection techniques. Applying these together leads to substantial performance improvements of up to 4\% on DialFact, while maintaining the accuracy on FEVER. This is reflected in the DialFact accuracy of \textit{FEVER+VitC+retrieval+claimdet}, which performs similarly to the top specialized models for dialogue fact-checking in group 2 while outperforming them by over 12\% on FEVER.
+%techniques
+
+The next group demonstrates the advantages of incorporating our evidence enhancement technique to models fine-tuned for dialogue. 
+%Even when specialized models for dialogue fact-checking are employed, our technique still results in improved performance on DialFact. 
+Specifically, \textit{FEVER+VitC+DialFact+retrieval} achieves state-of-the-art performance on DialFact, outperforming the best previously published results \cite{dialfact} by 12\%.
+\begin{figure}
+    \centering
+    \includegraphics[width = .9\linewidth ]{C5-Results/fig2.png}
+    \caption{Tradeoff analysis between the accuracy scores on FEVER and DialFact for each model. }
+    \label{fig:my_label}
+\end{figure}
+
+Finally, in the last group, we compare the DialFact accuracy of \textit{AugWow}, the top-performing model from \citet{dialfact}, when applied using evidence from the best specialized pipeline in their work, versus using our retrieved evidence. The results show an improvement of slightly less than 3\% when employing our retrieved evidence without using any specialized models for dialogue. %\indent Regarding document retrieval evaluation, our experiments have shown that our proposed method outperforms the best approach from \citet{dialfact} by 5\% in terms of document recall. We include the results table in the Appendix.
+
+Figure 2 illustrates the tradeoff between accuracy on dialogue fact-checking and catastrophic forgetting on FEVER. \textit{FEVER+VitC+retrieval+claimdet}, a model that combines our proposed methods, optimizes this balance better than the other approaches. It achieves near state-of-the-art results on both FEVER and DialFact, as seen by its placement in the upper right quadrant of the graph. In contrast, the state-of-the-art models for FEVER and DialFact are closer to one of the axes, reflecting their inferior performances on conversational claims and stand-alone formal claims respectively.
+
+\section{Qualitative analysis}
+We conducted a qualitative analysis to assess the advantages and limitations of different approaches.
+%Comparing against standard models first. We show how we improve on them
+% look at the cases where the model
+
+We initially analyzed the performance improvements offered by our proposed techniques when incorporated to typical fact-checking models by focusing on cases where the central entities in the claim were referred to using pronouns. Our findings showed that most of the times, the document retrieval technique we proposed was still able to successfully identify the appropriate document by taking into account the context (Example~1 in Table~B.1).
+In our study of claims with coreference, we encountered multiple situations where document retrieval was successful but returned multiple documents with  similar 
+potential evidence sentences (e.g., birth years of ``Pope Paul I'' and ``Paul McCartney'', Figure~1). Our proposed sentence retrieval enhancement technique played a crucial role in these cases by using the context gathered during document retrieval to select the right evidence, resulting in more accurate predictions (Example~2 in Table~B.1). We also evaluated instances where the claim contained limited factual information. Frequently, our claim detection method effectively filtered out irrelevant sentences and allowed only the essential information to be processed by the model, leading to accurate predictions (Example 3 in Table B.1).
+
+Additionally, we studied instances where specialized models for dialogue fact-checking outperformed the typical fact-checking model combining our techniques. We found that a common challenge in conversational claims that our approach does not address is indirect claims, such as those made in the form of a question. This limitation is due to the fact that typical fact-checking models are not trained to recognize indirect claims, and our proposed claim detection technique does not resolve this issue (Example 4 in Table B.1).
+
+Finally, we examined cases where \textit{FEVER+VitC+retrieval+claimdet} outperforms specialized models for dialogue fact-checking. We discovered that in instances where a conversational claim could be easily transformed into a well-formed claim through methods such as claim detection, typical fact-checking models often outperformed those specifically designed for dialogue fact-checking. This is because the latter models experience catastrophic forgetting (Example 5 in Table B.1).

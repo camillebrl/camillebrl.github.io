@@ -1,0 +1,245 @@
+\section{Results}
+
+\subsection{Multimodal IPS Performance}
+
+We now compare our multimodal localization approach with the following competing methods: (1) \textbf{FusionDHL}\cite{herath2021fusiondhl}: We adapt the FusionDHL to a version without floorplan on our dataset. FusionDHL is an offline optimization algorithm based on least squares and the closest baseline to ours. (2) \textbf{EKF}\cite{kalman1960new}: The normal extended Kalman filter combines the odometry and the uncertainty-aware WiFi localization results. (3) \textbf{PF}\cite{doucet2001sequential}: The particle filter fusion method uses an implementation similar to \cite{zou2017Accurate}, fusing the odometry and the uncertainty-aware WiFi localization results. 
+
+Fig.~\ref{fig:cdf} shows the cumulative distribution function of the localization errors in meters. All filter methods take some time to converge, so the result of the first minute of the trajectory is removed. Our EKPF fusion method is better than all baselines in all 3 sites. In comparison to FushionDHL, our results demonstrate EKPF can successfully integrate radio map information into the WiFi/IMU fusion and achieve better localization performance in terms of all metrics. The performance gain over the best competing approach (i.e., FusionDHL) is around $10.6\%$, $21.5\%$ and $43.3\%$ on three buildings respectively. Fig.\ref{fig:result_example} further shows the qualitative result achieved by our method in the largest building. 
+% \vspace{-0.1\textwidth}
+\begin{figure*}[t]
+\vspace{-0.075\textwidth}
+     \centering
+     \begin{subfigure}[b]{0.325\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/bayes_cdf.pdf}  
+         \caption{Building A. Mean error of ours: 1.71m}
+         \label{fig:y equals x}
+     \end{subfigure}
+     % \hfill
+     \begin{subfigure}[b]{0.325\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/forum_cdf.pdf}
+         \caption{Building B. Mean error of ours: 1.91m}
+         \label{fig:three sin x}
+     \end{subfigure}
+     % \hfill
+     \begin{subfigure}[b]{0.325\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/lib_cdf.pdf}
+         \caption{Building C. Mean error of ours: 1.82m}
+         \label{fig:five over x}
+     \end{subfigure}
+               \captionsetup{belowskip=-10pt}
+        \caption{Overall performance of our multimodal IPS.}
+        \label{fig:cdf}
+        \vspace{-0.007\textwidth}
+\end{figure*}
+% \vspace{-0.2\textwidth}
+\begin{figure*}
+     \centering
+     \begin{subfigure}[b]{0.325\textwidth}
+         \centering
+         \includegraphics[width=0.95\textwidth]{figures/rawimu.pdf}
+         \caption{Raw Odometry}
+         \label{fig:y equals x}
+     \end{subfigure}
+     % \hfill
+     \begin{subfigure}[b]{0.325\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/lib_gt.pdf}
+         \caption{Ground Truth}
+         \label{fig:three sin x}
+     \end{subfigure}
+     % \hfill
+     \begin{subfigure}[b]{0.325\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/lib_fusion.pdf}
+         \caption{Our method (ring radius corresponds to uncertainty)}
+         \label{fig:five over x}
+     \end{subfigure}
+        \caption{Qualitative results of our method in the library (Building C). }
+        \label{fig:result_example}
+        
+\end{figure*}
+
+
+% \label{experiments-sota}
+% \begin{figure*}[htbp]
+% \centering
+% \begin{minipage}[t]{0.44\textwidth}
+% \centering
+% \includegraphics[width=8cm]{figures/EKPF_Forum.png}
+% \caption{EKPF Building A}
+% \end{minipage}
+% \centering
+% \begin{minipage}[t]{0.44\textwidth}
+% \centering
+% \includegraphics[width=8cm]{figures/EKPF_lib.png}
+% \caption{EKPF Building C}
+% \end{minipage}
+% \end{figure*}
+
+% \begin{figure*}[htbp]
+% \centering
+
+% \begin{minipage}[t]{0.31\textwidth}
+% \centering
+% \includegraphics[width=6cm]{figures/EKPF_Forum_no_uncer.png}
+% \caption{EKPF w/o uncertainty}
+% \end{minipage}
+% \centering
+% \begin{minipage}[t]{0.31\textwidth}
+% \centering
+% \includegraphics[width=6cm]{figures/EKF_Forum.png}
+% \caption{EKF (EKPF w/o radiomap)}
+% \end{minipage}
+% \begin{minipage}[t]{0.31\textwidth}
+% \centering
+% \includegraphics[width=6cm]{figures/FusionDHL_Forum.png}
+% \caption{FusionDHL w/o floorplan}
+% \end{minipage}
+% \end{figure*}
+% \begin{figure*}[htbp]
+% \centering
+% \begin{minipage}[t]{0.31\textwidth}
+% \centering
+% \includegraphics[width=6cm]{figures/EKPF_lib_no_uncer.png}
+% \caption{EKPF w/o uncertainty}
+% \end{minipage}
+% \centering
+% \begin{minipage}[t]{0.31\textwidth}
+% \centering
+% \includegraphics[width=6cm]{figures/EKF_lib.png}
+% \caption{EKF (EKPF w/o radiomap)}
+% \end{minipage}
+% \begin{minipage}[t]{0.31\textwidth}
+% \centering
+% \includegraphics[width=6cm]{figures/FusionDHL_lib.png}
+% \caption{FusionDHL w/o floorplan}
+% \end{minipage}
+% \end{figure*}
+
+
+
+%%% A: bayes B: forum C: library%%%
+
+% \begin{table}
+% \centering
+% \caption{EKPF fusion result}
+% \begin{threeparttable}
+% \begin{tabular}{|c|c|c|c|c|}
+% \hline
+% Site       & Mean   & Median & Max    & 95th   \\ \hline
+% Building A & 1.7128 & 1.4207 & 7.2425 & 4.1152 \\\hline
+% Building B & 1.9080 & 1.5443 & 9.0905 & 4.4217 \\\hline
+% Building C & 1.8217 & 1.6024 & 6.4697 & 4.2624 \\\hline
+% \end{tabular}
+% \end{threeparttable}
+% \end{table}
+%% Ablation Version 1
+
+\subsection{WiFi Localization Performance}
+
+We evaluate our model against both traditional and state-of-the-art machine-learning localization techniques. For the conventional method, we used the Weighted K-nearest neighbours (WKNN)\cite{wknn2004he}, which employs Euclidean distance with \(k=50\) neighbours. Additionally, we compared against a method utilizing a stacked denoising autoencoder for regression (DSAE)\cite{DSAE2019wa}, which first trains an autoencoder and then fine-tunes with an MLP for improved localization.
+
+In Tab.~\ref{tab:wifi-results}, our model's performance outshines both WKNN and DSAE across three buildings, excelling in mean, median, and 95th percentile errors. Although we observed a slightly higher maximum error in Building B compared to WKNN, our model's uncertainty prediction effectively reduces outlier impact, ensuring dependable outcomes overall.
+
+\begin{table}[!h]
+    % \vspace{0.15cm}
+    \centering
+    \caption{WiFi Localization Performance Comparison}
+    \label{tab:wifi-results}
+    \begin{threeparttable}
+    \begin{tabular}{llllll} 
+    \hline
+    Site & Method & Mean & Median & Max & 95th \\ 
+    \hline
+    \multirow{3}{*}{Building A} & WKNN\cite{wknn2004he}& 6.0200 & 5.0613 & 40.5234 & 14.1351 \\
+    & DSAE\cite{DSAE2019wa}& 5.2531 & 4.4546 & 19.8080 & 11.8786 \\
+    & Ours & \textbf{2.5706} & \textbf{2.1238} & \textbf{14.4922} & \textbf{6.3661} \\ 
+    \hline
+    \multirow{3}{*}{Building B} & WKNN\cite{wknn2004he}& 4.3299 & 3.4623 & \textbf{19.5425} & 10.3376 \\
+    & DSAE\cite{DSAE2019wa}& 5.5253 & 5.1184 & 22.1047 & 11.5780 \\
+    & Ours & \textbf{3.3942} & \textbf{2.4951} & 25.3909 & \textbf{9.1316} \\ 
+    \hline
+    \multirow{3}{*}{Buidling C} & WKNN \cite{wknn2004he} & 7.8455 & 6.4902 & 24.4383 & 18.9681 \\
+    & DSAE \cite{DSAE2019wa} & 2.7263 & 2.3757 & 21.7769 & 5.7564 \\
+    & Ours &\textbf{2.1596} & \textbf{1.7336} & \textbf{9.4093} & \textbf{5.5427} \\
+    \hline
+    \end{tabular}
+    \end{threeparttable}
+    
+\end{table}
+
+
+\subsection{Ablation Study}
+
+\subsubsection{Input MAC Embedding}
+\label{subs:input_mac_embedding}
+To evaluate the effectiveness of the RSS Distribution Map, we conducted an ablation study on Building A, wherein the MAC's index was directly used as input, analogous to the neural word embedding\cite{mikolov2013efficient}. The results revealed a notable increase in testing mean error by approximately 1.5 m, suggesting the model was overfitting to the radio map. The introduction of the RSS Distribution Map as an input appears to serve both as an initializer and as a regularizer. As shown in Fig.\ref{fig:mapprnot}, we present a 2D projection of the input embeddings using UMAP\cite{mcinnes2020umap} for the ease of visualization. MACs detected in close temporal proximity are represented with similar colours. The embedding with the RSS Distribution Map not only reveals meaningful topological structures globally but also locally captures correlations between proximate MACs. In contrast, the model without it tended to embed MACs into distinct, isolated spaces. 
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.23\textwidth}
+    \centering
+        \includegraphics[width=.8\textwidth]{figures/withmap_color.png}
+        \caption{using RSS Distribution}
+        \label{fig:subfig_a}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.23\textwidth}
+    \centering
+        \includegraphics[width=.8\textwidth]{figures/nomap_color.png}
+        \caption{using Word Embedding\cite{mikolov2013efficient}}
+        \label{fig:subfig_b}
+    \end{subfigure}
+    \caption{By using the RSS distribution for input embedding, the resultant MAC embeddings are more discriminative where we find physically closer MAC addresses (denoted in similar colors) are closer in the projected 2D feature space.}
+    \label{fig:mapprnot}
+\end{figure}
+
+
+% Plan
+% 1. remove CNN, use vanilla word embedding --> larger error, slower training, overfitting
+
+% 2. remove uncertainty estimation --> overfit the radio map
+
+\subsubsection{Uncertainty Estimation}
+
+We conducted another experiment on one building to examine the impact of uncertainty on our models' performances. Table \ref{tab:unc-res} highlights the enhancement of over 10\% for both WiFi and Fusion positioning results. By using the metric of Pearson product-moment correlation, we found that the correlation between errors and uncertainty in all environments exceeded 0.3, indicating a relatively strong relationship. Incorporating uncertainty offers dual advantages: it prevents the WiFi model from overfitting to the noisy radio map data and also refines the precision of Fusion's location predictions. The fusion model trusts the WiFi-based location estimates more while remaining cautious of those with high uncertainty.
+
+
+\begin{table}
+    % \vspace{0.15cm}
+    \centering
+    \caption{Uncertainty Integration Performance Comparison}
+    \label{tab:unc-res}
+    \begin{threeparttable}
+    
+\begin{tabular}{l|cccc}
+\hline
+Methods                    
+                                           & Mean   & Median & Max     & 95th                  \\ \hline
+WiFi (with Unc)                            & \textbf{2.5706} & \textbf{2.1238} & \textbf{14.4922} & \textbf{6.3661}               \\ 
+WiFi (without Unc)                         & 3.1406 & 2.6301 & 21.9450 & 8.0191              \\ 
+Fusion (with Unc)                          & \textbf{1.8558} &  \textbf{1.4207}    &    7.2425     & \textbf{4.1152}    \\ 
+Fusion (without Unc)                       & 2.1558 &   1.5880  & \textbf{7.1923}        &    4.8716    \\ \hline
+\end{tabular}
+    \end{threeparttable}     
+\end{table}
+
+
+
+
+% \chris{this is the place we validate the individual contribution of our design, by alternatively removing one of our method designs and giving the performance drop}
+
+% We study each component of \sysname by evaluating different groups shown in Table. \ref{score-ablation-full}. It can be observed that 
+% \begin{itemize}
+%     \item \textbf{SE} (c.f. Sec.~\ref{ssub:se}) alone achieves recall@1=73.3\%, which is comparable with NetVLAD.
+%     \item \textbf{TE} (c.f. Sec.~\ref{ssub:te}) boosts recall@1 by 3.4\% when added to \texttt{SE}, and decreases it by 3.1\% when removed from \sysname.
+%     \item\textbf{DPR} (c.f. Sec.~\ref{ssub:dpr}) increases recall@1 by 2.0\% when added to \texttt{SE}, and decreases it by 1.2\% when removed from \sysname.
+%     \item \textbf{RCSHR} (c.f. Sec. \ref{subs:RCSHR}) improves recall@1 by 0.1\%, 0.5\%, 1.0\% and 1.1\% when added to \texttt{SE}, \texttt{SE+DPR}, \texttt{SE+TE} and \texttt{SE+TE+DPR}, respectively. Improvements vary because \texttt{RCSHR} works as a refinement module, bringing more remarkable improvement when the descriptors themselves are more discriminative (i.e., \texttt{RCSHR} hardly changes candidates' order when mismatches have small feature distances). This is in accordance with our observation that more discriminative descriptors lead to fewer mismatches between geometrically-close places, and thus, \texttt{RCSHR} helps more in distinguishing these places
+%     % \footnote{More illustrative examples are available in our supplementary video.}.
+%     (more illustrative examples are available in our supplementary video).
+% \end{itemize}
+% The results indicate that each component is critical in improving the overall performance, of which the most significant benefit is from \texttt{TE}.

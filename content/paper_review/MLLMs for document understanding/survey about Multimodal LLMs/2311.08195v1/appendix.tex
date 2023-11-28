@@ -1,0 +1,118 @@
+\newpage
+\section{Model Card}
+\setcounter{figure}{0}
+\begin{minipage}{1.0\textwidth}
+  \strut\newline
+  \centering
+  \includegraphics[width=\textwidth]{modcard.png}
+  \captionof{figure}{Model card for the fact-checking model presented in this work.}\label{fig:figure1}
+  \label{table:table A}
+\end{minipage}
+\newpage \clearpage
+\section{Qualitative analysis examples}
+\setcounter{table}{0}
+\begin{minipage}{1.0\textwidth}
+\vspace*{-1cm}
+  \strut\newline
+  \centering
+  \includegraphics[width=\textwidth]{Appendix/qualanal.png}
+  \captionof{table}{Sample \textsc{DialFact Test} instances highlighting the strengths and weaknesses of the top-performing models. S, R and NEI stand for \textsc{Supports}, \textsc{Refutes} and \textsc{Not Enough Info}, respectively. With the exception of Example 2, which is specifically chosen to demonstrate the advantages of our retrieval enhancement method, we have selected examples where the correct evidence is retrieved with or without the enhancement. To keep the context concise, we have only included the last turn of the conversation preceding the claim in these examples.}\label{fig:figure1}
+  \label{table:table A}
+\end{minipage}
+
+The first example demonstrates the efficacy of our document retrieval technique. Despite the claim only referencing ``Cheerleading'' using a pronoun, the evidence required to verify it is effectively retrieved from the corresponding document, resulting in accurate predictions from all models.
+
+The second example illustrates the advantages of the retrieval enhancement ensemble. Without using it, no evidence sentence related to ``Appetite for Destruction'' is found among the top 5 predictions. However, with the enhancement method, the crucial piece of evidence from the ``Guns N' Roses'' document is assigned the highest score. \\
+\vspace*{17.75cm}\\
+\noindent This is reflected in the claim verification results, as models that did not utilize the retrieval enhancement method produced incorrect predictions.
+
+In the third example, all the models but \textit{FEVER+VitC} generate correct predictions. The specialized models are trained to eliminate extraneous information like ``I sure can'' and concentrate on the verifiable part of the claim (in italics). Additionally, \textit{FEVER+VitC+retrieval+claimdet} leverages claim detection before claim verification. This approach discards the first and last sentences, retaining only the factual information in the claim, which can be effectively processed by the typical fact-checking model.
+
+The fourth example highlights a typical challenge in conversational claims that is not addressed by our proposed methods. The claim is made indirectly, in the form of a question, which typical fact-checking models are not trained to identify. This form of \textit{disguised} claim is not addressed either by our claim detection method, leading to \textsc{Not Enough Info} predictions from \textit{FEVER+VitC} and \textit{FEVER+VitC+retrieval-claimdet}. In contrast, models fine-tuned specifically for dialogue are able to effectively handle this challenge and generate accurate predictions.
+
+Finally, the fifth example demonstrates a scenario where typical fact-checking models outperform models designed for dialogue fact-checking. All models except for \textit{FEVER+VitC+retrieval-claimdet} produce incorrect predictions. \textit{FEVER+VitC} fails to identify the claim's verifiable portion, while specialized models for dialogue fail to verify the claim with respect to the evidence. However, by applying the claim detection method, \textit{FEVER+VitC+retrieval-claimdet} is left with a well-formed formal claim that it verifies correctly. In cases where the conversational claim can be easily converted into a well-formed claim and does not present significant challenges in dialogue, typical fact-checking models can be more effective due to the catastrophic forgetting effects suffered by models fine-tuned for dialogue fact-checking.
+%\section{Implementation details}
+%For document retrieval, we employ GENRE\footnote{\url{https://github.com/facebookresearch/GENRE}} as our scoring function \textit{f}. For sentence retrieval and claim verification, we leverage the models \footnote{\url{https://github.com/dominiksinsaarland/document-level-FEVER}} from \citet{stammbach} .
+
+%For the evidence enhancement ensemble, we train a logistic regression model \textit{g} using the scikit-learn library \footnote{\url{https://scikit-learn.org/stable/index.html}}.
+
+%For claim detection, we leverage SRoBERTa \footnote{\url{https://github.com/UKPLab/sentence-transformers}} and Spacy's Sentencizer \footnote{\url{https://spacy.io/api/sentencizer/}} to perform sentence encoding and sentence splitting, respectively. 
+
+%Finally, for the experiments that are included in Appendix E, we used SpanBERT \citep{spanbert} for coreference resolution, StyleFormer\footnote{
+%\url{https://github.com/PrithivirajDamodaran/Styleformer}} for style transfer and the joined learning GP2-based model proposed by \citet{cread} for claim rewrite.
+
+\section{Claim-transformation techniques}
+\citet{dialfact} state that the dialogue domain poses three main challenges for standard fact-checking models: the coreference and ellipsis phenomena, the low density of factual information in claims, and the colloquial language. In response, we proposed claim-transformation techniques to address these challenges directly.
+Namely, we explored coreference resolution \cite{spanbert} and claim rewrite \cite{cread} to obtain self-contained claims that can be understood independent of previous dialogue context. These involve utilizing information from the previous turns to resolve coreference and ellipses. Additionally, we examined the benefits of applying style transfer to tackle the typical model's struggles with colloquial language. As these techniques were less effective than the techniques discussed in this paper, we include their results in the Appendix.
+\subsection{Coreference resolution}
+In DialFact, \citet{dialfact} choose to incorporate context by feeding models the concatenation of the claim and the last two utterances preceding it. However, this method requires not only specializing the model for the task but also adds significant noise. Nevertheless, context is crucial for claim understanding due to coreference and ellipses. Therefore, we propose directly addressing these issues by performing coreference resolution to obtain self-contained claims. 
+
+We first concatenate the whole dialogue context with the claim. Subsequently, the coreference resolution model predicts coreference clusters in the resulting query. Each cluster consists of ((\textit{span start, span end), span tokens}) pairs, with the first pair being the referent and the remaining ones being its references. Subsequently, we use the span boundaries to replace each reference with its referent and obtain self-contained claims.
+
+We present the results below.
+\setcounter{table}{0}
+\begin{table}[H]
+\hspace{-0.2cm}
+\resizebox{.5\textwidth}{!}{%
+\begin{tabular}{cccccc}
+\hline
+\textbf{}       & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Document}\\  \textbf{Retrieval}\end{tabular}}                              & \multicolumn{2}{c}{\textbf{Evidence Selection}}                                                                                                     & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Claim Verification}\\  (Oracle Evidence)\end{tabular}} \\ \hline
+                & Recall  & \begin{tabular}[c]{@{}c@{}}Verification \\ Accuracy \end{tabular} & Recall@5 & Accuracy           & Macro F1          \\ \hline
+Untreated & 56.85                                                       & \textbf{54.19}                                                            & \textbf{44.06}                                                         & \textbf{58.73}              & \textbf{56.66}             \\
+Resolved  & \textbf{67.0}                                                        & 53.86                                                            & 42.71                                                          & 58.60                   &    56.58              \\ \hline
+\end{tabular}}
+\smallskip
+\caption{Impact of coreference resolution on each stage of the fact-checking process on DialFact \textsc{Dev}.}
+\end{table}
+Coreference resolution improves document retrieval. This result is unsurprising as replacing the mentions with their referents allows GENRE to identify the relevant entities and retrieve their documents. However, this technique harms the evidence sentence selection and claim verification performance. This negative impact can be explained by incorrect resolution cases where the reference is linked to the wrong referent. Indeed, evidence sentence selection is sensitive to a reference resolution mistake as it causes the model to select the most similar sentence in the wrong document. In claim verification, the model is slightly affected because a resolution error changes a claim's label with respect to the gold evidence. For each of these stages, the linking mistakes outweigh the advantages of using this method. In contrast, for document retrieval, the chances of accurate retrieval significantly increase if the resolution is correct.
+\subsection{Claim rewrite}
+Another approach we explore to obtain self-contained claims that can be understood independent of context is claim rewrite. 
+
+We present the results of applying claim rewrite below.
+\begin{table}[H]
+\hspace{-0.4cm}
+\resizebox{8.3cm}{!}{%
+\begin{tabular}{cccccc}
+\hline
+\textbf{}       & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Document}\\  \textbf{Retrieval}\end{tabular}}                              & \multicolumn{2}{c}{\textbf{Evidence Selection}}                                                                                                     & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Claim Verification}\\  (Oracle Evidence)\end{tabular}} \\ \hline
+                & Recall  & \begin{tabular}[c]{@{}c@{}}Verification \\ Accuracy \end{tabular} & Recall@5 & Accuracy           & Macro F1          \\ \hline
+Untreated & 56.85                                                       & \textbf{54.19}                                                            & \textbf{44.06}                                                         & \textbf{58.73}              & \textbf{56.66}             \\
+Resolved  & \textbf{59.56}                                                       & 53.67                                                            & 42.12                                                          & 58.53                   &   56.4               \\ \hline
+\end{tabular}}
+\smallskip
+\caption{Impact of claim rewrite on each stage of the fact-checking process on DialFact \textsc{Dev}.}
+\end{table}
+Table C.2 shows a very similar pattern to the coreference resolution results. Indeed, claim rewrite improves document retrieval but harms evidence sentence selection and claim verification. However, a manual error analysis reveals numerous rewriting errors and an overall low resolution accuracy. This results in a poorer performance on all fact-checking subtasks than applying coreference resolution.
+\subsection{Style transfer}
+Spelling and punctuation mistakes, slang words and colloquialisms make it difficult for a model trained on formal claims to capture the intent of a colloquial claim. Another challenge is the presence of filler words, which significantly affects a retriever's ability to return the correct documents, as shown by \citet{colloquial}. Instead of retrieving relevant documents, the models return documents related to these filler words. In response, we explore style transfer in a bid to formalize the claims. The motivation behind this approach is that it would decrease the claims' wordiness and the presence of expressions that the model may find difficult to understand or recognize. Performing style transfer also expands abbreviations and corrects spelling mistakes and capitalization, which can be key to correct retrieval. 
+
+We present the results of applying style transfer below.
+\begin{table}[H]
+\hspace{-0.2cm}
+\resizebox{.5\textwidth}{!}{%
+\begin{tabular}{cccccc}
+\hline
+\textbf{}       & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Document}\\  \textbf{Retrieval}\end{tabular}}                              & \multicolumn{2}{c}{\textbf{Evidence Selection}}                                                                                                     & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}\textbf{Claim Verification}\\  (Oracle Evidence)\end{tabular}} \\ \hline
+                & Recall  & \begin{tabular}[c]{@{}c@{}}Verification \\ Accuracy \end{tabular} & Recall@5 & Accuracy           & Macro F1          \\ \hline
+Untreated & \textbf{56.85}                                                       & \textbf{54.19}                                                            & \textbf{44.06}                                                         & \textbf{58.73}              & \textbf{56.66}             \\
+Resolved  & 55.0                                                      & 53.52                                                            & 41.81                                                          & 55.76                   &   52.62               \\ \hline
+\end{tabular}}
+\smallskip
+\caption{Impact of style transfer on each stage of the fact-checking process on DialFact \textsc{Dev}.}
+\end{table}
+Table C.3 shows that style transfer does not improve the model performance on any fact-checking component despite the high quality of the formalization. We identify two possible reasons to explain the performance dip caused by this technique. First and most importantly, the generation errors that cause a detail to be omitted in the formalized claim or an incorrect reformulation. Indeed, fact-checking is very sensitive to small changes in a claim. The generation of an equivalent claim needs to be semantically perfect to preserve all details. 
+Consider Example C.1. The reformulation of this claim would score highly on most evaluation metrics for language generation. However, the subtle difference between the two claims that lies in the replacement of \textit{thinnest} with \textit{thin} changes the label of the claim with respect to evidence. Indeed, brown hair is thin compared to red hair but thick compared to fair hair in the gold evidence. In contrast, if we keep \textit{thinnest} then the claim is refuted by the evidence. 
+\vspace{0.2cm}\\
+\noindent\underline{Example C.1:}
+
+\noindent\textbf{Original Claim:} Brown is the color of hair that is the thinnest.\\
+\textbf{Formal Claim:} Brown is the hair color that is thin. \\
+\textbf{Gold Evidence:} Its strands are thicker than those of fair hair but not as much as those of red hair. 
+\vspace{0.2cm}\\
+The second main reason follows from dataset construction. As the claims are created from Wikipedia passages containing the evidence sentences needed to verify the claims, these often use the same words or formulation as the evidences. This often facilitates the job of evidence sentence selection and claim verification. However, formalizing modifies these words, decreasing the similarity of a claim with its gold evidence. Consider Example C.2. Although the two sentences are semantically equivalent, the original one uses the same words as the evidence. 
+\vspace{0.2cm}\\
+\noindent\underline{\hypertarget{ex5}{Example C.2}:}
+\vspace{0.2cm}\\
+\noindent\textbf{Original Claim:} I wonder if this associates with the fact that darker hair is more common across the entire world. \\
+\textbf{Formal Claim:} I am unsure if this is related to the widespread prevalence of darker hair in the world. \\
+\textbf{Evidence:} Black hair is the darkest and most common of all human hair colors globally.

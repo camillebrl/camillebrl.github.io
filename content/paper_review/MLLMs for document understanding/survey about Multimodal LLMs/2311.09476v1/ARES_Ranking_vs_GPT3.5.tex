@@ -1,0 +1,29 @@
+
+\begin{table*}[ht]
+\small
+\centering
+\setlength{\tabcolsep}{1.5pt}
+\begin{tabular}{lrrrrrrrrrrrr}
+\toprule
+ & \multicolumn{12}{c}{\textbf{ARES Ranking of Pseudo RAG Systems}}\\
+ \cmidrule(l{7pt}r{7pt}){2-13}
+ & \multicolumn{2}{c}{NQ}  & \multicolumn{2}{c}{HotpotQA} & \multicolumn{2}{c}{WoW} & \multicolumn{2}{c}{FEVER} & \multicolumn{2}{c}{MultiRC}  & \multicolumn{2}{c}{ReCoRD}\\
+ \cmidrule(l{7pt}r{7pt}){2-13}
+ & \multicolumn{1}{c}{C.R}& \multicolumn{1}{c}{A.R.}  & \multicolumn{1}{c}{C.R}& \multicolumn{1}{c}{A.R.}  & \multicolumn{1}{c}{C.R}& \multicolumn{1}{c}{A.R.}  & \multicolumn{1}{c}{C.R}& \multicolumn{1}{c}{A.R.}  & \multicolumn{1}{c}{C.R}& \multicolumn{1}{c}{A.R.}  & \multicolumn{1}{c}{C.R}& \multicolumn{1}{c}{A.R.}\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Kendall's Tau \\ for RAGAS \end{tabular} &  0.89 &0.89&\textbf{0.94}  &0.89&  0.94 & 0.94&  0.72 &0.61&0.83&  \textbf{0.94} &\textbf{0.89}&0.44  \\ \midrule
+\begin{tabular}[c]{@{}l@{}}Kendall's Tau \\ for GPT-3.5 Judge\end{tabular} & 0.89& 0.94& 0.67& \textbf{0.94}  & 0.94& 0.89& 0.78& \textbf{0.78}& 0.83& {0.89}& {0.83}  & \textbf{0.94}\\ \midrule
+\begin{tabular}[c]{@{}l@{}}Kendall's Tau \\ for ARES \end{tabular} & \textbf{0.94}  & \textbf{1.0}& \textbf{0.94}  & \textbf{0.94}  & \textbf{1.0}& \textbf{1.0}& \textbf{0.89}  & \textbf{0.78}  & \textbf{0.94}  & {0.89}  & {0.83}  & {0.89}  \\ \midrule
+\begin{tabular}[c]{@{}l@{}}RAGAS \\ Accuracy\end{tabular} &  31.4\% &  71.2\% & 17.2\% & 76.0\%  &36.4\%&  77.8\% &23.7\%& 69.2\%&  16.1\% &  75.0\% &  15.0\% &  72.8\%\\ \midrule
+\begin{tabular}[c]{@{}l@{}}GPT-3.5 Judge \\ Accuracy \end{tabular} & 73.8\%& 95.5\%& 75.3\%& 71.6\%& 84.3\%& 85.2\%& 60.4\%& 59.6\%& 72.4\%& 60.3\%& 81.0\%& 65.8\% \\ \midrule
+\begin{tabular}[c]{@{}l@{}} ARES  \\ Accuracy \end{tabular} & 79.3\%& 97.2\%& 92.3\%& 81.3\%& 85.7\%& 96.1\%& 88.4\%& 78.5\%& 85.8\%& 82.7\%& 67.8\%& 92.3\% \\ \bottomrule 
+\end{tabular}
+\caption{\textbf{ARES Ranking with Fine-tuned LLM Judges vs. RAGAS and GPT-3.5 Judge}: 
+For scoring context relevance and answer relevance (C.R. and A.R. in the table, respectively), we compare ARES with our fine-tuned LLM judges to RAGAS, the automated RAG scoring framework, and a few-shot GPT-3.5 judge.
+RAGAS also uses GPT-3.5 as its judge but it uses few-shot prompts that are not targeted for each evaluation domain.
+Overall, we found that ARES ranked RAG systems more accurately than RAGAS and GPT-3.5 across all the explored datasets.
+The Kendall's tau for ARES was \textit{0.065 higher on average for scoring context relevance} and \textit{0.132 higher on average for scoring answer relevance} than RAGAS.
+We selected GPT-3.5 instead of GPT-4 due to the high financial costs of running GPT-4 over the tens of thousands of queries, documents, and answers for each dataset; the lower financial costs required to run. %
+For PPI in both ARES and the GPT-3.5 judge, we used 300 human annotations for our human preference validation set.
+The prompts used for the GPT-3.5 judges are included in Sections \ref{sec:gpt_prompting_for_context_relevance_scoring}, \ref{sec:gpt_prompting_for_answer_faithfulness_scoring}, and \ref{sec:gpt_prompting_for_answer_relevance_scoring}.}
+\label{tab:ares_vs_gpt3.5}
+\end{table*}

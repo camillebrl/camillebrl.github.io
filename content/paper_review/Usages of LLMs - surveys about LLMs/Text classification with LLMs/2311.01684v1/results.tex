@@ -1,0 +1,30 @@
+% add two column for scoring model & gen model
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{l|l|l|cccccc}
+\toprule
+\textbf{Methods} & \multicolumn{2}{c|}{\textbf{LM}} & \textbf{COPA} & \textbf{SCT} & \textbf{SocialIQA} & \textbf{ARC-E} & \textbf{ARC-C} & \textbf{OBQA}\\
+\midrule
+& \enspace Scoring\quad & Generating \\
+\midrule
+LM$_{sum}$ & GPT2 & - & 69.0 & 67.6 & 43.1 & 53.5 & 25.4 & 22.4\\
+LM$_{avg}$ & GPT2 & - & 68.4 & 71.5 & 45.8 & 47.4 & 28.7 & 30.8 \\
+\midrule
+Self-talk & GPT2 & GPT2 & 66.2 & 70.4 & 47.5 & - & - & - \\
+DCPMI & GPT2 & - & 70.8 & 68.6 & 39.2 & 36.0 & 25.1 & 31.4 \\
+SEQA & SRoBERTa & GPT2 & 55.8 & 57.4 & 36.4 & 32.1 & 23.7 & 21.2  \\
+SEQA$_{GPT3}$ & SRoBERTa & GPT3 & 66.2 & 64.4 & 40.3 & 54.4 & 34.8 & 22.2  \\
+CDG & GPT2 & COMET & 72.2 & 71.5 & 45.4 & - & - & -  \\
+ArT & GPT2 & GPT2 & 69.8 & 71.6 & 47.3 & - & - & -  \\
+\midrule
+\methodnoc & GPT2 & - &70.4 & 73.0 & 46.0 & 55.8 & 28.8 & 32.6\\
+\method$_{GPT2}$ & GPT2 & GPT2 & 73.8&  76.1 & 46.1 & 54.4 & 30.8 & 30.2\\
+\method$_{GPT3}$ & GPT2 & GPT3 & \textbf{78.2} & \textbf{83.2} & \textbf{48.5} & \textbf{63.2} & \textbf{36.5} & \textbf{35.2}\\
+\midrule
+\end{tabular}
+\centering
+\caption{Accuracy (\%) of the scoring various methods on the dev sets. All scoring methods are based on GPT-2$_{xlarge}$. \method$_{GPT2}$ and \method$_{GPT3}$ denote \method{} with candidate generation by GPT-2$_{xlarge}$ and GPT-3 respectively. \textbf{Takeaway}: Weighting leads to substantial improvements. When combined with candidate generation, it outperforms all baselines by a large margin.}
+\label{tab:mainresults}
+\end{table*}

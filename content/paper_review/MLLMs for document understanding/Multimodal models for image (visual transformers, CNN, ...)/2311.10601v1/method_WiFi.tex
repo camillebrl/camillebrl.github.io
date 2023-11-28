@@ -1,0 +1,74 @@
+\section{Uncertainty-aware WiFi Localization}
+\label{sec:uncertainty_aware}
+
+\subsection{Design Motivation}
+We start off with the motivation behind our WiFi localization model. As found in \cite{wifioverview2017xia} 
+, the lengths of WiFi fingerprints $\mathbf{G}_i$ vary across locations and time even at the same location. This requires the WiFi localization model to take WiFi fingerprints in different lengths but still be able to output location coordinates. This requirement is similar to the one of natural language processing, where language models often take input as the sentences in different token lengths, but are still able to perform inference. Inspired by recent successes of transformers in natural language processing \cite{vaswani2017attention,devlin2018bert}, 
+we propose utilizing the transformer's encoder in our network design to handle the varying-length WiFi fingerprints.
+Moreover, to deal with the inherent noisy match in the crowdsourced radio map, we further introduce a network block to model the prediction uncertainty. 
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{figures/createRSSmap.png}
+%     \caption{Extract RSS Distribution from Radio Map}
+%     \label{fig:createrssi}
+% \end{figure}
+
+\subsection{Input Embedding of WiFi Fingerprint}
+\label{sub:input_embedding}
+A fingerprint in the list format of $(MAC_j, RSS_j)$ cannot be directly employed as the input to a transformer-like network. 
+Akin to the idea of distributed representations of words in natural language processing \cite{mikolov2013efficient}, 
+a fingerprint need to be represented as a continuous vector before being fed into the model. 
+Pre-trained word embedding layers are often available for language models by which the derived word embeddings are close to each other if two words have similar semantic meanings. 
+However, such a semantic-preserving embedding layer is absent in the case of WiFi fingerprints esp. for the MAC address of APs. The challenge lies in that it is difficult to relate two nearby APs by their MAC address manifestation - which is simply a 12-character alphanumeric attribute that is used to identify individual electronic devices. 
+
+To inject the location vicinity semantics in MAC address embedding, we propose to utilize the RSS distribution map associated with each WiFi MAC address, which can be obtained by retrieving from the radio map. The pixel value of a distribution map corresponds to the WiFi RSS value at a particular location retrieved from the radio map. 
+Intuitively, the MAC addresses of nearby WiFi APs tend to have similar RSS distribution. 
+The distinctions between APs can be robustly represented within the RSS distribution map, serving as a priori knowledge.
+We further use a Convolutional Neural Network (CNN) block to process the distribution maps and extract the dense vectors as MAC address embeddings. 
+As we will see in Sec.\ref{subs:input_mac_embedding} the physical vicinity can be conveyed in the similarity of the embeddings. Even for the same AP, its RSS values measured by a mobile agent can vary across places. To make use of the RSS value in the WiFi fingerprint, we introduce a learnable MLP module that maps the RSS value and multiplies with the MAC address embedding to derive the final fingerprint embedding, $\mathbf{E}_i$. Fig.~\ref{fig:wifi_overview} illustrates the input embedding. 
+
+\subsection{Multi-Head Attention Block}
+\label{sub:multi_head_attention}
+We aim to accurately predict location coordinates based on WiFi fingerprint embeddings. Given the dynamic and complex nature of WiFi fingerprints, it's crucial to capture dependencies between different features of the fingerprint for a precise location prediction. The self-attention transformer offers a promising solution, as it excels in modelling such dependencies in data. 
+We thus adopt the self-attention transformer. Essentially, it allows each feature in the WiFi fingerprint embedding to weigh the importance of other features based on their content. This is particularly advantageous for our task because certain WiFi fingerprints might carry more relevance in determining specific location coordinates than others. Diving deeper into the mechanics, let's first revisit the single-head attention mechanism:
+\begin{equation}
+\begin{aligned}
+head_h = Attention(\mathbf{E}_i \mathbf{W}_{Q_h}, \mathbf{E}_i \mathbf{W}_{K_h}, \mathbf{E}_i \mathbf{W}_{V_h}) \\
+= softmax\left(\frac{\mathbf{E}_i \mathbf{W}_{Q_h}(\mathbf{E}_i \mathbf{W}_{K_h})^T}{\sqrt{d_k}}\right)\mathbf{E}_i \mathbf{W}_{V_h}
+\end{aligned}
+\end{equation}
+where $\mathbf{E}_i$ is the input MAC embedding; $\mathbf{W}_{Qi}$, $\mathbf{W}_{Ki}$, and $\mathbf{W}_{Vi}$ are the projection matrices for query, key, and value respectively; $\sqrt{d_k}$ is the dimension of the key $k$ and query $q$.
+However, relying on a single attention head might restrict the model from capturing multiple types of relationships or dependencies between the features. This is where the multi-head attention mechanism, as proposed in \cite{vaswani2017attention} is employed:
+\begin{equation}
+\begin{aligned}
+MultiHead(\mathbf{E}_i \mathbf{W}_{Q_h}, \mathbf{E}_i \mathbf{W}_{K_h}, \mathbf{E}_i \mathbf{W}_{V_h})\\=Concat(head_1, \ldots, head_H) \cdot \mathbf{W}_O
+\end{aligned}
+\end{equation}
+where $head_1, \ldots, head_H$ represent the $H$ single-head attention results. By using multiple attention heads, the model can simultaneously attend to various subspace representations of the input. Each head potentially captures different types of dependencies within the fingerprint embeddings. 
+These concatenated results are then combined using a linear transformation matrix $\mathbf{W}_O$, to produce an attended embedding. Each attended embedding is applied a non-linear transformation before output. After processing through several of such multi-head attention layers, the output from the last layer is further refined by a feed-forward network to regress the location coordinates.
+
+
+\subsection{Uncertainty Estimation} 
+\label{sub:uncertainty_estimation}
+As mentioned earlier, crowdsourced radio maps often come with inherent noise. Using them directly to train a transformer localization model can lead to high susceptibility to errors in predictions, given the model might learn from the noise rather than the actual signal. As a natural response to this challenge, one might consider ways to make the model more resilient to noise and simultaneously offer a more informative prediction. Thus, instead of merely giving a point estimate which provides a singular location prediction, it would be more beneficial if our model could quantify the level of confidence in its predictions. 
+
+To this end, we reformulate the network's output of location coordinates as a \emph{probability distribution}. We choose the Gaussian distribution for this purpose, given its well-understood properties and ease of integration in subsequent fusion steps:
+\begin{equation}
+\mathbf{L}^{G}_i \sim \mathcal{N}(f_{\mu}(\mathbf{G}_i), f_{\sigma}(\mathbf{G}_i))
+\end{equation}
+% \begin{equation}
+% \mathbf{\check{L}}_i \sim \mathcal{N}(f_{\mu}(\mathbf{W}_i), f_{\sigma}(\mathbf{W}_i))
+% \end{equation}
+where $f_{\sigma}(\cdot)$ is an extra neural network head capturing the variance which is pivotal as it provides an estimate of the uncertainty associated with the prediction. By transitioning to this probabilistic framework, we ensure the transformer model does not blindly commit to a potentially noisy sample. Instead, it offers a range of possibilities, weighted by their likelihood. This not only makes the model less prone to overfitting to the noise but also enriches the output, as the variance gives an insight into the reliability of the prediction. 
+
+Altogether, given crowdsourced a radio map $\mathcal{M} = \{(\mathbf{G}_i, \mathbf{L}_i)|i=1,2,..,N\}$, we train our WiFi localization neural network with an uncertainty-aware loss function:
+\begin{equation}
+\mathcal{L} = \sum_{i}^{N} \frac{\lVert f_{\mu}(\mathbf{G}_i) - \mathbf{L}_i \rVert_2}{f_{\sigma}(\mathbf{G}_i)}+ln{f_{\sigma}(\mathbf{G}_i)} 
+\end{equation}
+% \begin{equation}
+% \mathcal{L} = \sum_{i}^{N} \frac{\lVert f_{\mu}(\mathbf{W}_i) - \mathbf{L}_i \rVert_2}{f_{\sigma}(\mathbf{W}_i)}+ln{f_{\sigma}(\mathbf{W}_i)}
+% \end{equation}
+
+During training, the first term drives predictions closer to the radio map location coordinates. The numerator of the first term is to ensure that a larger variance is given for samples with significant prediction errors, mitigating large gradient impacts. The second term acts as a regularizer, discouraging the network from consistently yielding high variance.

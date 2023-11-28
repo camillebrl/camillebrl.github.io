@@ -1,0 +1,16 @@
+\section{Problem Formulation}
+Presume we have an offline crowdsourced radio map containing $N$ fingerprints and their associated locations $\mathcal{M} = \{(\mathbf{G}_i, \mathbf{L}_i)|i=1,2,..,N\}$, where $\mathbf{L}_i$ denotes the location coordinates and $\mathbf{G}_i = \{(MAC_j, RSS_j)|j=1,2,..,|\mathbf{G}_i|\}$ is called a WiFi fingerprint represented as a list of MAC addresses of the WiFi Access Points (APs) and their corresponding RSS values at location $\mathbf{L}_i$. Note that the number of WiFi APs $|\mathbf{G}_i|$ varies across locations and the locations $\mathbf{L}_i$ considered in this work are two-dimensional, namely $\mathbf{L}_i= (x_i, y_i)$. As the radio map is crowdsourced rather than manually surveyed, the association between WiFi fingerprints and location coordinates can be inaccurate, rendering a \textbf{noisy radio map}.
+During the online stage and timestamp $t$, a mobile agent at an unknown location will measure a fresh WiFi fingerprint measurement $\mathbf{G}_t$ and have a location/pose change $\Delta\mathbf{\check{L}}_{t-1:t}$. predicted from an odometry module. Our objective here is to obtain an updated location coordinate $\mathbf{\hat{L}}_t$ by utilizing the noisy crowdsourced map $\mathcal{M}$, the fresh fingerprint measurement $\mathbf{G}_t$ and the location change $\Delta\mathbf{\check{L}}_{t-1:t}$. Without losing the generality, the mobile agent considered in our task can be either a smartphone or a WiFi-enabled mobile robot. In the case of smartphones, the predicted location or pose change can come from the smartphone inertial sensor and off-the-shelf inertial odometry e.g., \cite{imupdr2013Li};
+In the case of mobile robots, such prediction change can be accessed from their wheel odometry module.
+
+We propose a new method to address the problem above. At a high level, our method consists of an uncertainty-aware WiFi localization neural network model (c.f. Sec.~\ref{sec:uncertainty_aware}) and a bespoken Bayesian fusion approach (c.f. Sec.~\ref{sec:multimodal_fusion}) that combines the WiFi localization results, odometry estimates and the noisy radio map to derive a more robust location. 
+
+
+\begin{figure*}[!t]
+    % \vspace{-0.02\textwidth}
+    \centering  
+    \captionsetup{belowskip=-10pt}
+    \includegraphics[width=0.85\linewidth]{figures/ips_icra.pdf}
+    \caption{The proposed \emph{end-to-end trainable} WiFi localization model. Given a WiFi fingerprint list measured by a WiFi-enabled device (the smartphone in the figure), the MAC address part is input-embedded by applying a CNN on its AP-associated RSS distribution map; The RSS part of the fingerprint is embedded via an MLP, and multiplied with the MAC address embedding (c.f. Sec.~\ref{sub:input_embedding}). The constituted fingerprint embeddings are then fed into the transformer featuring a multi-head attention block in it (c.f. \ref{sub:multi_head_attention}). After obtaining the encoded fingerprint features by the transformer, we append two MLPs to regress the location coordinates and quantify the prediction uncertainty (c.f. Sec.~\ref{sub:uncertainty_estimation}) for subsequent fusion.}
+    \label{fig:wifi_overview}
+\end{figure*}
