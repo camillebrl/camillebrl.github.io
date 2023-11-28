@@ -20,6 +20,8 @@ pygmentsUseClasses = true
         category = "categories"
         tag = "tags"
         series = "series"
+        theme = "theme"
+        subtheme = "subtheme
 
     [[languages.en.menu.main]]
     name = "Tags"
@@ -48,6 +50,8 @@ pygmentsUseClasses = true
 
 [taxonomies]
 category = "categories"
+theme = "theme"
+subtheme = "subtheme"
 
 [[menu.main]]
 name = "Implementation Tutorials"
