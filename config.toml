@@ -21,7 +21,7 @@ pygmentsUseClasses = true
         tag = "tags"
         series = "series"
         theme = "theme"
-        subtheme = "subtheme
+        subtheme = "subtheme"
 
     [[languages.en.menu.main]]
     name = "Tags"
