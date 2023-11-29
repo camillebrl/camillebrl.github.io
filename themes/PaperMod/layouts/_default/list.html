@@ -45,26 +45,6 @@
 </div>
 {{- end }}
 
-{{/* Début de la logique d'affichage des thèmes et sous-thèmes */}}
-{{ if (eq .Type "paper_review") }}
-  {{ range $theme, $value := .Site.Taxonomies.theme }}
-    <div class="theme-block">
-      <h2>{{ $theme }}</h2>
-      {{ range $value.Pages }}
-        <div class="subtheme-block">
-          <h3>{{ .Params.subtheme }}</h3>
-          <ul>
-            {{ range .Pages }}
-              <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
-            {{ end }}
-          </ul>
-        </div>
-      {{ end }}
-    </div>
-  {{ end }}
-{{ end }}
-{{/* Fin de la logique d'affichage des thèmes et sous-thèmes */}}
-
 {{- $pages := .RegularPages }}
 
 {{- if .IsHome }}
