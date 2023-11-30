@@ -29,14 +29,6 @@
 </header>
 {{- end }}
 
-{{- if eq .Type "paper_review" }}
-  {{ partial "paper_review_menu.html" . }} <!-- Ajout du menu spécifique à la page paper_review -->
-{{- end }}
-
-{{- if isset .Params "subtheme" }}
-  {{ partial "subtheme_menu.html" . }}
-{{- end }}
-
 {{- if .Content }}
 <div class="post-content">
   {{- if not (.Param "disableAnchoredHeadings") }}
