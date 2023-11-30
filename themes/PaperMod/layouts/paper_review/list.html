@@ -1,4 +1,86 @@
-<h1>{{ .Title }}</h1>
-{{ range .Sections }}
-  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+{{ define "main" }}
+    <h1>{{ .Title }}</h1>
+
+    {{ $urlSegments := split .RelPermalink "/" }}
+    
+    {{ if eq (len $urlSegments) 3 }}
+        <!-- Affichage pour la page principale de 'paper_review' -->
+        <style>
+            .theme-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 20px;
+            }
+            .theme-item {
+                flex: 0 0 calc(33.333% - 20px); /* 3 items per row, adjust as needed */
+                border: 2px solid orange;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                background-color: #f9f9f9;
+            }
+            .theme-item a {
+                font-size: 18px;
+                color: #333;
+                text-decoration: none;
+                display: block; /* makes the entire area clickable */
+            }
+        </style>
+    
+        <h2>Thèmes:</h2>
+        <div class="theme-list">
+            {{ range .Sections }}
+                <div class="theme-item"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+            {{ end }}
+        </div>
+    {{ else if eq (len $urlSegments) 4 }}
+        <!-- Affichage pour les pages de thème -->
+        <style>
+            .theme-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 20px;
+            }
+            .theme-item {
+                flex: 0 0 calc(33.333% - 20px); /* 3 items per row, adjust as needed */
+                border: 2px solid orange;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                background-color: #f9f9f9;
+            }
+            .theme-item a {
+                font-size: 18px;
+                color: #333;
+                text-decoration: none;
+                display: block; /* makes the entire area clickable */
+            }
+        </style>
+        <h2>Sous-thèmes:</h2>
+        <div class="theme-list">
+          {{ range .Sections }}
+              <div class="theme-item"><a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+          {{ end }}
+      </div>
+    {{ else }}
+        <!-- Affichage pour les pages de sous-thème -->
+        <h2>{{ $currentSubtheme := .Title }}</h2>
+        {{ range where .Site.RegularPages "Params.subthemes" $currentSubtheme }}
+            <article class="post-entry">
+              {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" false) }}
+              <header class="entry-header">
+                  <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+              </header>
+              <div class="entry-content">
+                  <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+              </div>
+              <footer class="entry-footer">
+                  {{- partial "post_meta.html" . -}}
+              </footer>
+              <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+            </article>
+        {{ end }}
+    {{ end }}
 {{ end }}

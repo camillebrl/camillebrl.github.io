@@ -1,6 +1,6 @@
 baseURL = 'https://camillebrl.github.io/'
 languageCode = 'en-us'
-title = 'My Blog'
+title = 'Camille Barboule'
 paginate = 5
 theme = 'PaperMod'
 
