@@ -1,8 +1,19 @@
 {{ define "main" }}
 
 {{ if .IsHome }}
+    <h2>Welcome to my blog!</h2>
+    <div class="custom-text">You can find on it my insights on Language Models, Multimodal LLMs, as well as Document AI models. In this blog, I put here some papers and methodologies summaries and some tutorials / feedbacks of usage of frameworks</div>
     <!-- Affichage spécifique pour la page d'accueil -->
     <style>
+        h2 {
+            margin-bottom: 30px; /* Adjust this value as needed */
+        }
+        .custom-text {
+        margin-bottom: 60px;
+        margin-top: 20px; /* Espace au-dessus du texte */
+        font-size: 16px; /* Taille de la police */
+        color: #333; /* Couleur du texte */
+        }
         .home-categories {
             display: flex;
             justify-content: center;
@@ -24,22 +35,24 @@
             font-size: 14px;
         }
     </style>
-    <div class="home-categories">
-        <article class="post-entry">
-            <header class="entry-header">
-                <h2><a href="/paper_review">Paper Review</a></h2>
-            </header>
-            <div class="entry-content">
-                <p>Dive into in-depth reviews of research papers, academic studies, and scholarly articles. This paper review is generated automatically, offering insights and summaries of academic papers.</p>
-            </div>
-        </article>
 
+    <div class="home-categories">
+        
         <article class="post-entry">
             <header class="entry-header">
                 <h2><a href="/my_researches">My Researches</a></h2>
             </header>
             <div class="entry-content">
                 <p>Discover my research projects and findings. This section offers a glimpse into my academic and scientific subjects.</p>
+            </div>
+        </article>
+
+        <article class="post-entry">
+            <header class="entry-header">
+                <h2><a href="/paper_review">Paper Review</a></h2>
+            </header>
+            <div class="entry-content">
+                <p>Dive into in-depth reviews of research papers, academic studies, and scholarly articles. This paper review is generated automatically, offering insights and summaries of academic papers.</p>
             </div>
         </article>
 

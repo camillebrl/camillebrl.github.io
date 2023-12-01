@@ -6,6 +6,16 @@
     {{ if eq (len $urlSegments) 3 }}
         <!-- Affichage pour la page principale de 'paper_review' -->
         <style>
+            h2 {
+            margin-bottom: 30px; /* Adjust this value as needed */
+            }
+            .custom-text {
+                margin-bottom: 30px;
+                margin-top: 20px; /* Espace au-dessus du texte */
+                font-size: 16px; /* Taille de la police */
+                color: #333; /* Couleur du texte */
+                /* Autres propriétés CSS selon vos besoins */
+            }
             .theme-list {
             display: flex;
             flex-wrap: wrap;
@@ -27,7 +37,7 @@
                 display: block; /* makes the entire area clickable */
             }
         </style>
-    
+        <div class="custom-text">Welcome to the "Paper Review" category. Here, I put summarizations done by gpt3.5 and gpt4 of research papers in the domain of Language Models and Knowledge Graphs.</div>
         <h2>Thèmes:</h2>
         <div class="theme-list">
             {{ range .Sections }}
