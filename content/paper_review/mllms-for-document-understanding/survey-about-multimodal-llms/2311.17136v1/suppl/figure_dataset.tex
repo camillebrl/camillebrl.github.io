@@ -1,0 +1,163 @@
+\definecolor{lightblue}{rgb}{233, 237, 201}
+
+\definecolor{lightgray}{RGB}{237, 237, 233} % Define light gray color
+
+\begin{figure*}[t!]
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    \tabcolsep 2pt
+    \begin{tabular}{m{1.8cm}m{1.8cm}m{3.5cm}m{2.1cm}>{\columncolor{lightgray}}m{3.5cm}>{\columncolor{lightgray}}m{2cm}}
+            \toprule
+             \textbf{Task} & \textbf{Dataset} & \textbf{Query Text} & \textbf{Query Image} & \textbf{Retrieved Text} & \textbf{Retrieved Image} \\
+            \midrule
+            \multirow{13}{*}{1. $q_t \to c_i$}
+                  & VisualNews~\citep{liu2020visual}
+                  & \textit{Identify the news-related image in line with the described event.} \newline
+                  Apple CEO Tim Cook talks about the new iPhones at an event in California 9 September 2015.
+                  & -
+                  & -
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_visualnews.png}\\
+            \cmidrule{2-6}
+                  & MSCOCO~\citep{lin2014microsoft}
+                  & \textit{Find me an everyday image that matches the given caption.} \newline A teddy bear that is on top of a desk.
+                  & -
+                  & -
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_mscoco.png}\\
+            \cmidrule{2-6}
+                  & Fashion200K~\citep{han2017automatic}
+                  & \textit{Based on the following fashion description, retrieve the best matching image.} \newline Blue nomad suede side zip mini skirt.
+                  & -
+                  & -
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_fashion200k.png}\\
+            \midrule
+            $2. q_t \to c_t$
+                  & WebQA~\citep{chang2022webqa}
+                  & \textit{Retrieve passages from Wikipedia that provide answers to the following question.} \newline Who was the first emperor to visit the the city that is at the head of the Adriatic and the seat of an ancient episcopal see?
+                  & -
+                  & Augustus was the first of a number of emperors to visit Aquileia, notably during the Pannonian wars in 12–10 BC. It was the birthplace of Tiberius ' son by Julia, in the latter year. The Roman poet Martial praised Aquileia as his hoped for haven and resting place in his old age.
+                  & -\\
+            \midrule
+            \multirow{15}{*}{3. $q_t \to$ ($c_i, c_t$)}
+                  & &&&&\\
+                  & EDIS~\citep{liu2023edis}
+                  & \textit{Find a news image that matches the provided caption.} \newline Bulgarian President Rosen Plevneliev speaks during the 68th session of the UN General Assembly.
+                  & -
+                  &
+                  
+                   National SecurityIran leader open to meeting Obama at later date.
+                  & 
+                  \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_edis.png}\\
+            \cmidrule{2-6}
+                  & &&&&\\
+                  & WebQA~\citep{chang2022webqa} 
+                  & \textit{Find a Wikipedia image that answers this question.} \newline Do both the Hays County Courthouse in San Marcos, Texas and the Ike Wood House at 227 Mitchell Street in San Marcos, Texas have six columns on their front entrance?   
+                  & -
+                  & Hays County Courthouse (2018), San Marcos, TX The Hays County Courthouse in San Marcos, Texas. Listed on the National Register of Historic Places. 
+                  227 Mitchell, San Marcos, Texas  Ike Wood House at 227 Mitchell Street in San Marcos, Texas.
+                  &
+                  \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_webqa.png}\\
+            \midrule
+            \multirow{13}{*}{4. $q_i \to c_t$}
+                  & VisualNews~\citep{liu2020visual}
+                  & \textit{Find a caption for the news in the given photo.}
+                  & 
+                  \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_visualnews.png}
+                  & Participants run in front of Jandilla s bulls during the fifth bullrun of the San Fermin Festival in Pamplona northern Spain on July 11.
+                  & -\\
+            \cmidrule{2-6}
+                  & MSCOCO~\citep{lin2014microsoft}
+                  & \textit{Find an image caption describing the following everyday image.}
+                  & 
+                  \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_mscoco.png}
+                  & A young boy blows on candles on a fire truck cake.
+                  & -\\
+            \cmidrule{2-6}
+                  & Fashion200K~\citep{han2017automatic}
+                  & \textit{Find a product description for the fashion item in the image.}
+                  & 
+                  \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_fashion200k.png}
+                  & Blue washed chambray shirt.
+                  & -\\
+            \midrule
+            \bottomrule
+    \end{tabular}
+    \caption{Examples of datasets in MBEIR. \textit{Query instructions} are written in italic font style.}
+    \end{center}
+\end{figure*}
+
+
+
+\begin{figure*}[t!]
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    \tabcolsep 2pt
+    \begin{tabular}{m{2.6cm}m{1.8cm}m{3.2cm}m{2.1cm}>{\columncolor{lightgray}}m{3cm}>{\columncolor{lightgray}}m{2cm}}
+            \toprule
+             \textbf{Task} & \textbf{Dataset} & \textbf{Query Text} & \textbf{Query Image} & \textbf{Retrieved Text} & \textbf{Retrieved Image} \\
+            \midrule
+            5. $q_i \to c_i$
+                  & NIGHTS~\citep{fu2023learning}
+                  & \textit{Find a day-to-day image that looks similar to the provided image.}
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_nights.png}
+                  & -
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_nights.png}
+                  \\
+            \midrule
+            \multirow{8}{*}{6. ($q_i, q_t$) $\to c_t$}
+                  & OVEN~\citep{hu2023open}
+                  & \textit{Retrieve a Wikipedia paragraph that provides an answer to the given query about the image.} \newline What is the name of this bridge?
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_oven-1.png}
+                  & The \textbf{Humber Bridge}, near Kingston upon Hull, East Riding of Yorkshire, England, is a 2.22 km (2,430 yd; 7,300 ft; 1.38 mi) single-span road suspension bridge, which opened to traffic on 24 June 1981. 
+                  & -
+                  \\
+            \cmidrule{2-6}
+                  & InfoSeek~\citep{chen2023infoseek}
+                  & \textit{Retrieve a Wikipedia paragraph that provides an answer to the given query about the image.} \newline What country does this bridge belong to?
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_infoseek.png}
+                  & Aqueduct of Segovia. The Aqueduct of Segovia () is a Roman aqueduct in Segovia, \textbf{Spain}. It is one of the best-preserved elevated Roman aqueducts and the foremost symbol of Segovia...
+                  & -
+                  \\
+            \midrule
+            \multirow{8}{*}{7. ($q_i, q_t$) $\to c_i$}
+                  & FashionIQ~\citep{wu2021fashion}
+                  & \textit{Find a fashion image that aligns with the reference image and style note.} \newline Does not have writing in it and has less font and simpler graphics.
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_fashioniq.png}
+                  & -
+                  & \includegraphics[width=16mm,height=16mm]{tables_and_figures/images/target_fashioniq.png}
+                  \\
+            \cmidrule{2-6}
+                  & CIRR~\citep{liu2021image}
+                  & \textit{Retrieve a day-to-day image that aligns with the modification instructions of the provided image.} \newline White fuzzy animal sits by the food bowl.
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_cirr.png}
+                  & -
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_cirr.png}
+                  \\
+            \midrule
+            \multirow{20}{*}{\parbox{2.5cm}{8. ($q_i, q_t$) $\to$ ($c_i, c_t$)}}
+                  & &&&& \\
+                  & OVEN~\citep{hu2023open}
+                  &\textit{Retrieve a Wikipedia image-description pair that provides evidence for the question of this image.} \newline What is the model of this aircraft?
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_oven-2.png}
+                  & 
+                  Identify the news-related image that aligns with the described event. The \textbf{British Aerospace 146} (also BAe 146) is a short-haul and regional airliner that was manufactured in the United Kingdom by British Aerospace, later part of BAE Systems. 
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_oven-2.png}
+                  \\
+            \cmidrule{2-6}
+                    & &&&&\\
+                  & InfoSeek~\citep{chen2023infoseek}
+                  & \textit{Retrieve a Wikipedia image-description pair that provides evidence for the question of this image.} \newline What is the country of origin of this animal?
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/query_infoseek-2.png}
+                  &
+                  The Old English Sheepdog is a large breed of dog that emerged in \textbf{England} from early types of herding dog. 
+                  & \includegraphics[width=15mm,height=15mm]{tables_and_figures/images/target_infoseek-2.png}
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Additional examples of datasets in MBEIR. \textit{Query instructions} are written in italic font style.
+    }
+    \end{center}
+\end{figure*}

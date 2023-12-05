@@ -1,0 +1,20 @@
+\begin{table}
+    \centering
+    \small
+    \resizebox{0.8\columnwidth}{!}{
+    \begin{tabular}{l|cc|cc}
+    \toprule
+         & \multicolumn{2}{c|}{\textbf{Multi-task}} &  \multicolumn{2}{c}{\textbf{UniIR}} \\
+         \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+         \textbf{Error Types} & CLIP$_{\text{SF}}$ & BLIP$_{\text{FF}}$ &  CLIP$_{\text{SF}}$ & BLIP$_{\text{FF}}$ \\
+         \midrule
+         \ding{55} modality&  58.8\%& 50.9\% &  2.7\% & 15.2\%\\
+         \ding{55} domain &  0.3\%&  0.5\%&  0.1\%&  0.0\%\\
+         Other &  40.9\%&  48.6\%&  97.2\%&  84.8\%\\
+         \bottomrule
+    \end{tabular}
+    }
+    \caption{Error analysis on M-BEIR.}
+    \label{tab:union_error}
+    \vspace{-15pt}
+\end{table}

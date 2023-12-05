@@ -1,0 +1,73 @@
+\definecolor{positive}{HTML}{008000} % You can use a custom color for positive changes
+\definecolor{negative}{HTML}{FF0000}
+
+
+\begin{table*}
+    \centering
+    \large
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{ll|c|ccccc|lllll}
+    \toprule
+    &&\textbf{Zero-shot}&\multicolumn{5}{c|}{\textbf{Multi-task} (\ding{55} instruction)}& \multicolumn{5}{c}{\textbf{UniIR}(\checkmark instruction)}\\
+    \cmidrule(lr){3-3}\cmidrule(lr){4-8}\cmidrule(lr){9-13}
+    \textbf{Task} & \textbf{Dataset}  
+    & BLIP2 & CLIP$_{\text{SF}}$ & CLIP$_{\text{FF}}$ & BLIP$_{\text{SF}}$ & BLIP$_{\text{FF}}$ &
+    BLIP$_{\text{FF, 384}}$ 
+    & CLIP$_{\text{SF}}$ {\large ($\Delta$)}& CLIP$_{\text{FF}}$ {\large ($\Delta$)} & BLIP$_{\text{SF}}$ {\large ($\Delta$)} & BLIP$_{\text{FF}}$ {\large ($\Delta$)} &
+    BLIP$_{\text{FF, 384}}$ 
+ {\large ($\Delta$)}\\
+    \cmidrule(lr){1-2}    \cmidrule(lr){3-3}\cmidrule(lr){4-8}\cmidrule(lr){9-13}
+
+
+\multirow{3}{*}{1. $q_t \to c_i$}
+         & VisualNews               & 0.0 & 12.7 & 8.8 & 5.0 & 8.3 & 10.5  & \textbf{42.6}~\textcolor{positive}{\large (+29.9)} & \underline{28.8}~\textcolor{positive}{\large (+20.0)}& 20.9~\textcolor{positive}{\large (+15.8)}& 23.0~\textcolor{positive}{\large (+14.8)}& 26.5~\textcolor{positive}{\large (+16.0)}\\
+         % \cmidrule(lr){2-13}
+         & MSCOCO                 & 0.0& 27.3 & 24.6 & 22.9 & 27.7 & 35.2  & \textbf{77.9}~\textcolor{positive}{\large (+50.6)} & 74.7~\textcolor{positive}{\large (+50.1)}& 71.6~\textcolor{positive}{\large (+48.7)}& 75.6~\textcolor{positive}{\large (+47.8)}& \underline{75.7}~\textcolor{positive}{\large (+40.4)}\\
+         % \cmidrule(lr){2-13}
+         & Fashion200K             & 0.0& 5.9 & 5.9 & 5.7 & 9.0 & 13.1  & 17.8~\textcolor{positive}{\large (+11.9)} & 15.5~\textcolor{positive}{\large (+9.7)}& 24.3~\textcolor{positive}{\large (+18.6)}& \underline{25.4}~\textcolor{positive}{\large (+16.4)}& \textbf{26.7}~\textcolor{positive}{\large (+13.6)}\\
+         \midrule
+         2. $q_t \to c_t$
+         & WebQA     & 35.2& 82.3 & 67.9 & 74.4 & 76.1 & 76.9  & \textbf{84.7}~\textcolor{positive}{\large (+2.5)} & 78.4~\textcolor{positive}{\large (+10.6)}& 78.9~\textcolor{positive}{\large (+4.4)}& \underline{79.5}~\textcolor{positive}{\large (+3.4)}& 79.2~\textcolor{positive}{\large (+2.4)}\\
+         \midrule
+         \multirow{2}{*}{3. $q_t \to$ ($c_i, c_t$)}
+         & EDIS  & 0.0& 41.1 & 38.3 & 33.6 & 36.0 & 38.5  & \textbf{59.4}~\textcolor{positive}{\large (+18.3)} & 50.0~\textcolor{positive}{\large (+11.7)}& 47.2~\textcolor{positive}{\large (+13.6)}& 50.3~\textcolor{positive}{\large (+14.4)}& \underline{51.4}~\textcolor{positive}{\large (+12.9)}\\
+         % \cmidrule(lr){2-13}
+         & WebQA & 0.0& 68.2 & 62.5 & 73.2 & 74.7 & 75.2  & 78.8~\textcolor{positive}{\large (+10.6)} & 75.3~\textcolor{positive}{\large (+12.8)}& 76.8~\textcolor{positive}{\large (+3.6)}& \textbf{79.7}~\textcolor{positive}{\large (+5.0)}& \underline{79.4}~\textcolor{positive}{\large (+4.2)}\\
+         \midrule
+         \multirow{3}{*}{4. $q_i \to c_t$}
+         & VisualNews              & 0.0& 12.1 & 8.2 & 4.8 & 4.9 & 6.0  & \textbf{42.8}~\textcolor{positive}{\large (+30.7)} & \underline{28.6}~\textcolor{positive}{\large (+20.4)}& 19.4~\textcolor{positive}{\large (+14.6)}& 21.1~\textcolor{positive}{\large (+16.3)}& 22.9~\textcolor{positive}{\large (+16.9)}\\
+         % \cmidrule(lr){2-13}
+         & MSCOCO                & 0.0& 84.6 & 80.8 & 74.9 & 76.9 & 81.4  & \textbf{92.3}~\textcolor{positive}{\large (+7.8)} & 89.0~\textcolor{positive}{\large (+8.2)}& 88.2~\textcolor{positive}{\large (+13.4)}& 88.8~\textcolor{positive}{\large (+11.9)}& \underline{90.1}~\textcolor{positive}{\large (+8.7)}\\
+         % \cmidrule(lr){2-13}
+         & Fashion200K          & 0.0& 1.2 & 1.3 & 2.6 & 3.6 & 4.0  & 17.9~\textcolor{positive}{\large (+16.7)} & 13.7~\textcolor{positive}{\large (+12.4)}& 24.3~\textcolor{positive}{\large (+21.7)}& \underline{27.6}~\textcolor{positive}{\large (+24.1)}& \textbf{28.4}~\textcolor{positive}{\large (+24.4)}\\
+         \midrule
+         5. $q_i \to c_i$
+         & NIGHTS     & 24.0& 31.0 & 30.8 & 32.9 & 31.3 & 32.5  & 32.0~\textcolor{positive}{\large (+1.0)} & 31.9~\textcolor{positive}{\large (+1.2)}& \underline{33.4}~\textcolor{positive}{\large (+0.4)}& 33.0~\textcolor{positive}{\large (+1.6)}& \textbf{33.7}~\textcolor{positive}{\large (+1.3)}\\
+         \midrule
+         \multirow{2}{*}{6. ($q_i, q_t$) $\to c_t$}
+         & OVEN                        & 0.0& 36.8 & 31.6 & 33.2 & 37.7 & \underline{39.2}  & \underline{39.2}~\textcolor{positive}{\large (+2.4)} & 34.7~\textcolor{positive}{\large (+3.1)}& 35.2~\textcolor{positive}{\large (+2.0)}& 38.7~\textcolor{positive}{\large (+1.0)}& \textbf{40.7}~\textcolor{positive}{\large (+1.5)}\\
+         % \cmidrule(lr){2-13}
+         & InfoSeek                & 0.0& 18.3 & 15.4 & 11.9 & 17.8 & 17.1  & \textbf{24.0}~\textcolor{positive}{\large (+5.8)} & 17.5~\textcolor{positive}{\large (+2.1)}& 16.7~\textcolor{positive}{\large (+4.8)}& \underline{19.7}~\textcolor{positive}{\large (+1.9)}& 19.2~\textcolor{positive}{\large (+2.0)}\\
+         \midrule
+         \multirow{2}{*}{7. ($q_i, q_t$) $\to c_i$}
+         & FashionIQ                & 3.9& 22.8 & 19.7 & 26.1 & 28.1 & \underline{29.0}  & 24.3~\textcolor{positive}{\large (+1.5)} & 20.5~\textcolor{positive}{\large (+0.9)}& 26.2~\textcolor{positive}{\large (+0.1)}& 28.5~\textcolor{positive}{\large (+0.5)}& \textbf{29.8}~\textcolor{positive}{\large (+0.9)}\\
+         % \cmidrule(lr){2-13}
+         & CIRR                     & 6.2& 32.0 & 32.7 & 36.7 & 45.1 & 47.4  & 43.9~\textcolor{positive}{\large (+11.9)} & 40.9~\textcolor{positive}{\large (+8.2)}& 43.0~\textcolor{positive}{\large (+6.3)}& \textbf{51.4}~\textcolor{positive}{\large (+6.3)}& \underline{51.1}~\textcolor{positive}{\large (+3.8)}\\
+         \midrule
+         \multirow{2}{*}{8. ($q_i, q_t$) $\to$ ($c_i, c_t$)}
+         & OVEN                       & 13.8& 58.7 & 50.1 & 51.0 & 51.6 & 53.1  & \textbf{60.2}~\textcolor{positive}{\large (+1.5)} & 55.8~\textcolor{positive}{\large (+5.7)}& 51.8~\textcolor{positive}{\large (+0.8)}& 57.8~\textcolor{positive}{\large (+6.2)}& \underline{59.5}~\textcolor{positive}{\large (+6.4)}\\
+         % \cmidrule(lr){2-13}
+          & InfoSeek               & 11.4& \underline{42.3} & 31.5 & 23.0 & 25.4 & 25.2  & \textbf{44.6}~\textcolor{positive}{\large (+2.4)} & 36.8~\textcolor{positive}{\large (+5.3)}& 25.4~\textcolor{positive}{\large (+2.5)}& 27.7~\textcolor{positive}{\large (+2.3)}& 31.1~\textcolor{positive}{\large (+5.9)}\\
+         \midrule
+         & Average     & 5.9& 36.1 & 31.9 & 32.0 & 34.6 & 36.5  & \textbf{48.9}~\textcolor{positive}{\large (+12.8)} & 43.3~\textcolor{positive}{\large (+11.4)}& 42.7~\textcolor{positive}{\large (+10.7)}& 45.5~\textcolor{positive}{\large (+10.9)}& \underline{46.6}~\textcolor{positive}{\large (+10.1)}\\
+
+
+
+         \bottomrule
+    \end{tabular}
+    }
+    \caption{Benchmarking universal information retrieval on M-BEIR (5.6M candidates) with Recall@5 (except using Recall@10 for Fashion200K, FashionIQ). 
+    $\Delta$: UniIR - Multi-task. 384 refers to image resolution. \textbf{Bold}: top-1 performance. \underline{Underline}: top-2.}
+    \label{tab:union_small}
+    \vspace{-2pt}
+\end{table*}

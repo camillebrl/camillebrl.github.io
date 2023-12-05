@@ -1,0 +1,76 @@
+
+% \begin{table}
+% \centering
+% \begin{minipage}[t]{0.44\linewidth}\centering
+% \resizebox{0.98\textwidth}{!}{%
+% \begin{tabular}{rllll}
+% \toprule
+% \multicolumn{1}{r}{}                                                                            & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} \\ %& \multicolumn{1}{c}{ImageNet} \\ \cmidrule(lr){2-6}
+% \cmidrule(lr){2-5}
+% \textit{ZS CLIP-B-16}                                                                  & 71.15                       & 89.04                    & 64.71                    & 88.73                  \\ %& 68.33                        \\
+% \textit{LP w/ $\bsetU^{\texttt{cls}}$}                                            & 86.24 \upg{15.09}           & 92.61 \upg{3.57}         & 80.52 \upg{15.81}        & 88.97 \upg{0.24}      \\% &        69.05 \upg{0.72}    \\
+% % \textit{LP with $\bDyU^{cls+cap}$ (Scikit)}                                        & 85.35 \upg{14.2}            & 92.45 \upg{3.41}         & 80.33 \upg{15.62}        & 88.89 \upg{0.16}       &          \\
+
+% \textit{\begin{tabular}[c]{@{}c@{}}LoRa w/ $\bsetU^{\texttt{cls}}$\end{tabular}}                 & 84.29 \upg{13.14}           & 92.56 \upg{3.52}         & 80.55 \upg{15.84}        & 88.98 \upg{0.25}     \\% &                              \\ 
+% \bottomrule
+% \end{tabular}%\vspace{-3mm}
+% }%\vspace{-3mm}
+% \caption{\small{Our results of training a LP vs using \textbf{LoRa} on $\bsetU^{\texttt{cls}}$}}
+% \label{tab:lora}
+% % \vspace{-4mm}
+% \end{minipage}~\qquad~
+% \begin{minipage}[t]{0.44\linewidth}\centering
+% \resizebox{0.98\textwidth}{!}{%
+% \begin{tabular}{clllll}
+% \toprule
+%        & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} \\ \midrule%& \multicolumn{1}{c}{ImageNet} \\\midrule%(lr){5-9}
+%  \textit{ZS CLIP-B-16}& 71.15                       & 89.04                    & 64.71                    & 88.73  \\ %& 68.33                        \\ 
+%  \textit{Using LAION-5B}& 61.86 \downr{-9.29}         & 80.84 \downr{-8.20}      & 56.60 \downr{-8.10}      & 88.35 \downr{-0.38}      &                              \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \caption{\small{Accuracy results of using the search results from LAION-5B compared to to retrieved images.}}
+% \label{tab:image_based_retrieved}
+% \end{minipage}
+
+% \end{table}
+
+
+\begin{table}
+\centering
+% \begin{minipage}[t]{0.44\linewidth}\centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tabular}{rllll}
+\toprule
+\multicolumn{1}{r}{}                                                                            & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} \\ %& \multicolumn{1}{c}{ImageNet} \\ \cmidrule(lr){2-6}
+\cmidrule(lr){2-5}
+\textit{ZS CLIP-B-16}                                                                  & 71.15                       & 89.04                    & 64.71                    & 88.73                  \\ %& 68.33                        \\
+\cmidrule(lr){1-5}
+ \textit{Using LAION-5B}& 61.86 \downr{-9.29}         & 80.84 \downr{-8.20}      & 56.60 \downr{-8.10}      & 88.35 \downr{-0.38}                                    \\
+\cmidrule(lr){1-5}
+\textit{LP w/ $\bsetU^{\texttt{cls}}$}                                            & 86.24 \upg{15.09}           & 92.61 \upg{3.57}         & 80.52 \upg{15.81}        & 88.97 \upg{0.24}      \\% &        69.05 \upg{0.72}    \\
+% \textit{LP with $\bDyU^{cls+cap}$ (Scikit)}                                        & 85.35 \upg{14.2}            & 92.45 \upg{3.41}         & 80.33 \upg{15.62}        & 88.89 \upg{0.16}       &          \\
+
+\textit{\begin{tabular}[c]{@{}c@{}}LoRa w/ $\bsetU^{\texttt{cls}}$\end{tabular}}                 & 84.29 \upg{13.14}           & 92.56 \upg{3.52}         & 80.55 \upg{15.84}        & 88.98 \upg{0.25}     \\% &                              \\ 
+\bottomrule
+\end{tabular}%\vspace{-3mm}
+}
+\vspace{-1mm}
+\caption{\small{Accuracy results of training a LP vs using \textbf{LoRa} on $\bsetU^{\texttt{cls}}$ and also the results of using LAION-5B to retrieved images and train our LP.}}
+\label{tab:lora}
+\vspace{-5mm}
+% \end{minipage}~\qquad~
+% \begin{minipage}[t]{0.44\linewidth}\centering
+% \resizebox{0.98\textwidth}{!}{%
+% \begin{tabular}{clllll}
+% \toprule
+%        & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} \\ \midrule%& \multicolumn{1}{c}{ImageNet} \\\midrule%(lr){5-9}
+%  \textit{ZS CLIP-B-16}& 71.15                       & 89.04                    & 64.71                    & 88.73  \\ %& 68.33                        \\ 
+% \bottomrule
+% \end{tabular}%
+% }
+% \caption{\small{Accuracy results of using the search results from LAION-5B compared to to retrieved images.}}
+% \label{tab:image_based_retrieved}
+% \end{minipage}
+
+\end{table}

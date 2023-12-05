@@ -1,0 +1,12 @@
+\begin{figure*}[!t]
+      \centering
+      \includegraphics[width=0.98\textwidth]{figs/main_pipeline_final_new.pdf}
+      \vspace{-0.3cm}
+      \caption{
+      \textbf{Method Overview}. To facilitate multi-hypothesis reasoning for CAD model retrieval and alignment to a single image, we employ diffusion modeling over scene scale, object pose, and shape.
+      From an input RGB image, we employ machine-generated estimates of depth and instance segmentation.
+      From the estimated depth, we estimate scene scales with  $\SceneScaleDiffusionModel$. $\CADAlignmentDiffusionModel$ uses the back-projected estimated depth of each detected object to output hypotheses for its Normalized Object Coordinates (NOCs). $\CADRetrievalDiffusionModel$ then uses the estimated NOCs to predict the object shape as a latent vector that can be used for retrieval.
+      Our probabilistic modeling also enables robust real-world CAD retrieval and alignment while training only on synthetic data.
+      }
+      \label{figure:pipeline}
+\end{figure*}

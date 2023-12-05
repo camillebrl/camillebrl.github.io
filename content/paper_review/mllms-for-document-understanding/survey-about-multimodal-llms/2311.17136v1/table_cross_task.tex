@@ -1,0 +1,30 @@
+\definecolor{positive}{HTML}{008000} % You can use a custom color for positive changes
+\definecolor{negative}{HTML}{FF0000}
+
+\begin{table}[ht!]
+    \centering
+    \scriptsize
+    \begin{tabular}{llp{0.2cm}p{0.2cm}p{0.6cm}p{0.2cm}p{0.6cm}p{0.2cm}}
+    \toprule
+     &   & \multicolumn{2}{c}{\textbf{Zero-Shot}} & 
+    \multicolumn{2}{c}{\textbf{UniIR} (CLIP$_{\text{SF}}$)} & \multicolumn{2}{c}{\textbf{UniIR} (BLIP$_{\text{FF}}$)}\\
+    \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8}
+        \textbf{Task}        & \textbf{Dataset}           &  CLIP & BLIP  &  \ding{55} inst & \checkmark inst  & \ding{55} inst & \checkmark inst \\
+        \midrule
+         $q_i \to$ 
+         & EDIS              & 52.6 & 32.7\\
+         ($r_t, r_i$)
+         & WebQA                &  53.8 & 28.4 \\         
+         \midrule
+         ($q_i, q_t$) 
+         
+         & OVEN       &                 30.7 & 18.0 \\
+         
+         
+         
+         $\to$ $r_t$ & InfoSeek      &      28.8 & 11.4\\
+         \bottomrule
+    \end{tabular}
+    \caption{\textbf{Held-out task generalization} experiments: we train one UniLR model on 6 held-in tasks from M-BEIR and perform zero-shot evaluation on 2 held-out tasks. Retrieval is conducted from individual task candidate pool.}
+    \label{tab:cross_dataset}
+\end{table}

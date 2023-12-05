@@ -1,0 +1,57 @@
+% \begin{wrapfigure}[24]{r}{0.3\textwidth}
+\begin{figure}[h]
+    % \vspace{-2.5em}
+    \centering
+    % \begin{subfigure}[b]{.49\textwidth}
+    %     \includegraphics[width=0.5\textwidth]{figs/umap_flowers_0.7.pdf}
+    %     % \includegraphics[width=0.245\textwidth]{figs/umap_flowers_0.3.pdf}
+    %     % \includegraphics[width=0.245\textwidth]{figs/umap_flowers_0.14.pdf}
+    %     \includegraphics[width=0.49\textwidth]{figs/umap_flowers_0.1.pdf}
+    %     \caption{Flowers dataset}
+    % \end{subfigure}
+    % \hfill
+    % \begin{subfigure}[b]{0.60\textwidth}
+        \includegraphics[width=0.3\textwidth]{figs/umap_cars_strict.pdf}
+        % \includegraphics[width=0.245\textwidth]{figs/umap_cars_0.3.pdf}
+        % \includegraphics[width=0.245\textwidth]{figs/umap_cars_0.14.pdf}
+        \includegraphics[width=0.3\textwidth]{figs/umap_cars_loose.pdf}
+        % \caption{Cars dataset}
+    % \end{subfigure}
+    \caption{UMAP visualization of the distribution of the image features from CLIP-B-16 for the training split of the original and retrieved dataset. It shows the effect of the choice of the threshold $\tau_R$ refinement method on the retrieved dataset from a less (bottom) to a more strict (top) refinement.} %\CRO{1. use only one legend. 2. increase font size. 3. remove the value of $\tau_R$ and change it for loose and strict refinement 4. Better to be prepared to use just one of those plots (Cars maybe) we need to add the plot of $\tau_R$ vs accuracy}} %\CRO{We have to do these figures again}}
+    \label{fig:umap_distribution}
+    % \vspace{-4.5em}
+\end{figure}
+% \end{wrapfigure}
+
+% \begin{wrapfigure}{l}{0.6\textwidth}
+% \centering
+%     \begin{subfigure}{\textwidth}
+%         \includegraphics[width=0.5\textwidth]{figs/umap_cars_0.7.pdf}
+%         \caption{Flowers dataset}
+%     \end{subfigure}
+%     \vspace{1em}
+%     \begin{subfigure}{\textwidth}
+%         \includegraphics[width=0.47\textwidth]{figs/umap_cars_0.12.pdf}
+%         \caption{Cars dataset}
+%     \end{subfigure}
+% \label{fig:qualitative_refinement}
+% \end{wrapfigure}
+
+% \begin{wrapfigure}[26]{r}{0.4\textwidth}
+%     \begin{subfigure}{\linewidth}
+%         \centering
+%         \includegraphics[width=0.9\textwidth]{figs/umap_cars_strict.pdf}
+%         \caption{Strict Threshold}
+%         \label{fig:sub1}
+%     \end{subfigure}\\
+%     \begin{subfigure}{\linewidth}
+%         \centering
+%         \includegraphics[width=0.9\textwidth]{figs/umap_cars_loose.pdf}
+%         \caption{Soft Threshold}
+%         \label{fig:sub2}
+%     \end{subfigure}
+%     \caption{UMAP visualization of the distribution of the image features from CLIP-B-16 for the training split of the original and retrieved dataset. It shows the effect of the refinement method on the retrieved dataset from a less (left) to a more strict (right) refinement.}
+%     \label{fig:main}
+%     % \vspace{-1em}
+% \end{wrapfigure}
+% \CRO{1. use only one legend. 2. increase font size. 3. remove the value of $\tau_R$ and change it for loose and strict refinement 4. Better to be prepared to use just one of those plots (Cars maybe) we need to add the plot of $\tau_R$ vs accuracy}} %\CRO{We have to do these figures again}}

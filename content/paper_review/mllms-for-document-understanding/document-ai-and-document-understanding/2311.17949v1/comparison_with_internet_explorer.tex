@@ -1,0 +1,19 @@
+\begin{table} % [8]{r}{0.5\textwidth}
+\centering
+\vspace{-1mm}
+\resizebox{0.48\textwidth}{!}{
+\small{\begin{tabular}{rllll}
+\toprule
+& \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Food} & $\times$ Images       \\ \cmidrule{2-5}
+\textit{ZS CLIP}     & 66.22                       & 85.72                    & 80.97                    &              \\
+% LP w/ $\bDyU$                   &                             &                          &                          &$1 \times 10^4$     \\
+IE                 & \textbf{99.10}\upg{4.50}      & 90.80\upg{5.50}          & 84.60\upg{3.60}          & $\times  10^6$ \\
+Ours                            & 90.39\upg{24.17}               & \textbf{91.17}\upg{5.45} & \textbf{85.97}\upg{5.00} & $\times 10^4$    \\
+\bottomrule
+\end{tabular}}
+}
+\vspace{-2mm}
+\caption{\small{Comparison with Internet Explorer (IE): Our approach excels in the Food and Pets dataset with far fewer retrieved images. Here, $\times$ Images indicates the order of magnitude difference in retrieved images. We used ResNet-50 for this comparison.}}
+\label{tab:comparisonIE}
+\vspace{-4mm}
+\end{table}

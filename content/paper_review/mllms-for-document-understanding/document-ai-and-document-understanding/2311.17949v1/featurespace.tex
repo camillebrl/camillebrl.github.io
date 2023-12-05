@@ -1,0 +1,67 @@
+% \begin{table}[h]
+%     \centering
+%     \resizebox{\columnwidth}{!}{%
+%     \begin{tabular}{lccccc}
+%         \toprule
+%         & Pets & Flowers & Cars & Food101 & ImageNet \\ \midrule
+%         Label Span & 0.2885 & 0.2620 & 0.3298 & 0.4496 & 0.1579 \\ 
+%         Span Ratio & 0.3156 & 0.2723 & 0.3333 & 0.4915 & 0.1579 \\ 
+%         Image Span & 0.657 & 0.631 & 0.546 & 0.388 & -0.150 \\
+%         Dataset Gap & 0.330 & 0.343 & 0.276 & 0.318 & 0.322 \\
+%         $\bDyU$ Gap & 0.330 & 0.335 & 0.268 & 0.278 & 0.303 \\
+%         Gap diff & 0.0004 & 0.0070 & 0.0070 & 0.0402 & 0.0192  \\
+%         Mean DS to Cls & 0.954 & 0.959 & 0.980 & 0.893 & 0.935 \\
+%         Top-1 Improvement & 3.96 & 15.47 & 17.67 & 0.24 & 2.00 \\ \bottomrule
+%     \end{tabular}}
+%     \label{tab:structure}
+%     \caption{Class-based}
+% \end{table}
+
+% \begin{table}[h]
+%     \centering
+%     \resizebox{\columnwidth}{!}{%
+%     \begin{tabular}{lccccc}
+%         \toprule
+%         & Pets & Flowers & Cars & Food101 & ImageNet \\ \midrule
+%         Label Span & 0.2885 & 0.2620 & 0.3298 & 0.4496 & 0.1579 \\ 
+%         Span Ratio & 0.3156 & 0.2723 & 0.3333 & 0.4915 & 0.1579 \\ 
+%         Image Span & 0.657 & 0.631 & 0.546 & 0.388 & -0.150 \\
+%         Gap($\bDyU^{cls}$)-Gap(Dataset) & 0.0003 & 0.0077 & 0.0073 & 0.0402 & 0.0192 \\
+%         Gap($\bDyU^{cap}$)-Gap(Dataset) & 0.0074 & 0.0071 & 0.0157 & 0.0344 & 0.0116 \\
+%         Gap($\bDyU^{des}$)-Gap(Dataset) & 0.0034 & 0.0064 & 0.0018 & 0.03592 & 0.0184 \\
+%         Gap($\bDyU$)-Gap(Dataset) & 0.0037 & 0.0070 & 0.0082 & 0.0368 & 0.0164 \\
+%         Sim($\bDyU^{cls}$, Dataset) & 0.9617 & 0.9842 & 0.9923 & 0.8921 & 0.9695 \\
+%         Sim($\bDyU^{cap}$, Dataset) & 0.9570 & 0.9832 & 0.9923 & 0.8984 & 0.9600 \\
+%         Sim($\bDyU^{des}$, Dataset) & 0.9667 & 0.9834 & 0.9823 & 0.8924 & 0.9718 \\
+%         Sim($\bDyU$, Dataset) & 0.9618 & 0.9836 & 0.9889 & 0.8943 & 0.9671 \\
+%         Gap($\bDy_\text{refined}^{cls}$)-Gap(Dataset) & 0.0000 & 0.0085 & 0.0073 & 0.0297 & 0.0208 \\
+%         Gap($\bDy_\text{refined}^{cap}$)-Gap(Dataset) & 0.0074 & 0.0076 & 0.0157 & 0.0272 & 0.0143 \\
+%         Gap($\bDy_\text{refined}^{des}$)-Gap(Dataset) & 0.0031 & 0.0076 & 0.0018 & 0.0297 & 0.0197 \\
+%         Gap($\bDy_\text{refined}$)-Gap(Dataset) & 0.0035 & 0.0079 & 0.0082 & 0.0288 & 0.0182 \\
+%         Sim($\bDy_\text{refined}^{cls}$, Dataset) & 0.9618 & 0.9845 & 0.9923 & 0.9186 & 0.9706 \\
+%         Sim($\bDy_\text{refined}^{cap}$, Dataset) & 0.9570 & 0.9835 & 0.9923 & 0.9231 & 0.9624 \\
+%         Sim($\bDy_\text{refined}^{des}$, Dataset) & 0.9669 & 0.9843 & 0.9823 & 0.9184 & 0.9730 \\
+%         Sim($\bDy_\text{refined}$, Dataset) & 0.9619 & 0.9841 & 0.9889 & 0.9200 & 0.9686 \\
+%         Top-1 Improvement & 3.96 & 15.47 & 17.67 & 0.24 & 2.00 \\ \bottomrule
+%     \end{tabular}}
+%     \label{tab:structure}
+%     \caption{Geometric analysis over the CLIP feature space}
+% \end{table}
+
+\begin{table}[h]
+    \centering
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{lccccc}
+        \toprule
+        & Pets & Flowers & Cars & Food101 & ImageNet \\ \midrule
+        Label Span & 0.2885 & 0.2620 & 0.3298 & 0.4496 & 0.1579 \\ 
+        Dataset-$\bDyU$ Modality Sim. & 0.9618 & 0.9836 & 0.9889 & 0.8943 & 0.9671 \\
+        Dataset-$\bDyU$ Class Sim. & 0.9540 & 0.9590 & 0.9800 & 0.8930 & 0.9350 \\
+        % Dataset-$\bDy_\text{refined}$ Similarity & 0.9619 & 0.9841 & 0.9889 & 0.9200 & 0.9686 \\
+        % Top-1 Improvement & 3.96 & 15.47 & 17.67 & 0.24 & 2.00 \\ 
+        \bottomrule
+    \end{tabular}}
+    \caption{Geometric analysis over the CLIP feature space and the expected improvements. As shown, both label span and dataset similarity for Food101 are substantially different from the others.}
+    \label{tab:featurespace}
+    \vspace{-2mm}
+\end{table}

@@ -1,0 +1,2174 @@
+% \definecolor{lightblue}{RGB}{173,216,230} % Light blue color
+\definecolor{lightblue}{RGB}{204,229,255} % Very light blue color
+% \definecolor{lightpurple}{RGB}{177,156,217} % Light purple color
+\definecolor{lightpurple}{RGB}{230,230,250} % Very light purple color
+\definecolor{lightred}{RGB}{255,204,204} % Very light red color
+\definecolor{lightgreen}{RGB}{204,255,204} % Very light green color
+\definecolor{green}{RGB}{0,180,0} % This is a darker shade of green
+
+
+
+% VisualNews
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightblue}}m{1.5cm} >{\columncolor{lightblue}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    VisualNews 
+    & News
+    & 1. $q_t$ $\to$ $c_i$
+    & Based on the caption, provide the most fitting image for the news story. 
+    & -
+    &
+    Robert Gates and President Obama salute during a farewell ceremony for Gates as outgoing defense secretary Gates served in that position under Obama and President George W Bush He was known as a savvy manager of the bureaucracy and a ruthlessly efficient defense secretary In his new memoir Gates asserts that Obama had more than doubts about his course in Afghanistan.
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightblue}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 $c_i$} & \textbf{Rank 2 $c_i$} & \textbf{Rank 3 $c_i$} & \textbf{Rank 4 $c_i$} & \textbf{Rank 5 $c_i$} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/visualnews_ci_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/visualnews_ci_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/visualnews_ci_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/visualnews_ci_4.png} 
+                  & % Rank 5
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/visualnews_ci_5.png}
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png}
+                  \tiny Robert Gates and President Obama salute during a farewell ceremony for Gates as outgoing defense secretary Gates served in that position under Obama and President George W Bush He was known as a savvy manager of the bureaucracy and a ruthlessly efficient defense secretary In his new memoir Gates asserts that Obama had more than doubts about his course in Afghanistan.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \tiny Former Defense Secretary Robert Gates acknowledges applause as President Obama speaks at Gates s farewell ceremony at the Pentagon in June 2011.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \tiny Former Defense secretary Robert Gates is seen with President Obama.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \tiny President Obama and Robert Gates.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \tiny Obama presents Gates with the Presidential Medal of Freedom The citation said Gates had selflessly dedicated his life to ensuring the security of the American people Gates cultivated an eventempered image in his years in government.
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/visualnews_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/visualnews_2.png} 
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}                  
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/visualnews_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/visualnews_4.png} 
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/visualnews_5.png}
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \tiny Robert Gates and President Obama salute during a farewell ceremony for Gates as outgoing defense secretary Gates served in that position under Obama and President George W Bush He was known as a savvy manager of the bureaucracy and a ruthlessly efficient defense secretary In his new memoir Gates asserts that Obama had more than doubts about his course in Afghanistan.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \tiny Former Defense Secretary Robert Gates acknowledges applause as President Obama speaks at Gates s farewell ceremony at the Pentagon in June 2011.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline \scriptsize
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \tiny Former Defense secretary Robert Gates is seen with President Obama.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline \scriptsize
+                  \\
+            % \midrule
+            %       % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/visualnews_ci_1.png}
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/visualnews_ci_2.png} 
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/visualnews_ci_3.png} 
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/visualnews_ci_4.png} 
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/visualnews_ci_5.png} 
+            %       \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \tiny Robert Gates and President Obama salute during a farewell ceremony for Gates as outgoing defense secretary Gates served in that position under Obama and President George W Bush He was known as a savvy manager of the bureaucracy and a ruthlessly efficient defense secretary In his new memoir Gates asserts that Obama had more than doubts about his course in Afghanistan.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \tiny Former Defense Secretary Robert Gates acknowledges applause as President Obama speaks at Gates s farewell ceremony at the Pentagon in June 2011.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline 
+                  \tiny Former US president George W Bush center shakes hands with his father former President George HW Bush as they attend the opening ceremony of the George W Bush Presidential Center on April 25 2013 in Dallas Texas.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \tiny President Obama right and Senior Chief Special Warfare Operator Edward Byers Jr arrive for a ceremony at the White House where Byers received the Medal of Honor for his courageous actions in Afghanistan in 2012.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline 
+                  \tiny President Obama right and former president George W Bush arrive for a wreathlaying ceremony for victims of the 1998 bombing at the US Embassy in Dar es Salaam Tanzania.
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a VisualNews Query}
+    \label{fig:retrieval_results_visualnews}
+    \end{center}
+\end{figure*}
+
+
+% MSCOCO
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightpurple}}m{1.5cm} >{\columncolor{lightpurple}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    MSCOCO 
+    & Common
+    & 1. $q_t$ $\to$ $c_i$
+    & Show me an image that best captures the following common scene description. 
+    & -
+    &
+    An antilope is eating grass in between two zebra.
+\end{tabular}
+
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightpurple}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 $c_i$} & \textbf{Rank 2 $c_i$} & \textbf{Rank 3 $c_i$} & \textbf{Rank 4 $c_i$} & \textbf{Rank 5 $c_i$} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/mscoco_ci_1.png}
+                  &  % Rank 2
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/mscoco_ci_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/mscoco_ci_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/mscoco_ci_4.png} 
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/mscoco_ci_5.png} 
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png}
+                  \scriptsize An antilope is eating grass in between two zebra.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Two zebras and another animal grazing in the grass.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize A couple of zebras stand next to a antelope.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Monkey standing behind two zebras as they graze.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Three zebras and two other animals grazing.
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/mscoco_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/mscoco_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/mscoco_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/mscoco_4.png} 
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/mscoco_5.png}
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/mscoco_1.png}
+                  \newline \scriptsize An antilope is eating grass in between two zebra.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/mscoco_2.png}
+                  \newline \scriptsize Two zebras and another animal grazing in the grass.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/mscoco_3.png}
+                  \newline \scriptsize A couple of zebras graze on some grass.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/mscoco_4.png} 
+                  \newline \scriptsize Two zebras are feeding on the grass by themselves.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/mscoco_5.png}
+                  % \newline \scriptsize
+                  \\
+            % \midrule
+            %       % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/mscoco_ci_1.png}
+            %       &  % Rank 2
+            %       % \Large \textcolor{red}{\texttimes}
+            %       \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/mscoco_ci_2.png} 
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/mscoco_ci_3.png} 
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/mscoco_ci_4.png} 
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/mscoco_ci_5.png} 
+            %       \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \scriptsize An antilope is eating grass in between two zebra.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \scriptsize A couple of zebra's leaned over eating grass in a field.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline 
+                  \scriptsize A zebra eating green grassy items for his lunch.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \scriptsize A zebra eating long clipped grass on the ground.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline 
+                  \scriptsize A zebra standing in a field grazing as another looks alert.
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for an MSCOCO Query}
+    \label{fig:retrieval_results_mscoco}
+    \end{center}
+\end{figure*}
+
+
+
+% Fashion200K
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightred}}m{1.5cm} >{\columncolor{lightred}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    Fashion200K 
+    & Fashion
+    & 1. $q_t$ $\to$ $c_i$
+    & Based on the following fashion description, retrieve the best matching image. 
+    & -
+    &
+    Natural pebbled chevron alpaca drape front jacket.
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightred}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 $c_i$} & \textbf{Rank 2 $c_i$} & \textbf{Rank 3 $c_i$} & \textbf{Rank 4 $c_i$} & \textbf{Rank 5 $c_i$} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashion200k_ci_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashion200k_ci_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashion200k_ci_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashion200k_ci_4.png} 
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashion200k_ci_5.png} 
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png}
+                  \scriptsize Natural pebbled chevron alpaca drape front jacket.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Natural drape front open jacket.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Multicolor drape front jacket.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Multicolor crepe drape front jacket.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/empty_image.png} 
+                  \scriptsize Multicolor drape front wool jacket.
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashion200k_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashion200k_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashion200k_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashion200k_4.png} 
+                  & % Rank 5                  
+                  % \Large \textcolor{red}{\texttimes}   
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashion200k_5.png}
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashion200k_1.png}
+                  \newline \scriptsize Natural pebbled chevron alpaca drape front jacket.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashion200k_2.png}
+                  \newline \scriptsize Beige textured terry draped jacket.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashion200k_3.png}
+                  % \newline \scriptsize
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashion200k_4.png} 
+                  % \newline \scriptsize
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashion200k_5.png}
+                  \newline \scriptsize Multicolor cashmere shawl collar jacket.
+                  \\
+            % \midrule
+            %       % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashion200k_ci_1.png}
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashion200k_ci_2.png} 
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashion200k_ci_3.png} 
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashion200k_ci_4.png} 
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashion200k_ci_5.png} 
+            %       \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \scriptsize Natural pebbled chevron alpaca drape front jacket.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \scriptsize Beige corded zigzag knit jacket.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline 
+                  \scriptsize Natural drape front open jacket.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \scriptsize Beige textured terry draped jacket.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline 
+                  \scriptsize Natural vegan sherpa drape jacket.
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a Fashion200K Query}
+    \label{fig:retrieval_results_fashion200k}
+    \end{center}
+\end{figure*}
+
+
+% EDIS
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightblue}}m{1.5cm} >{\columncolor{lightblue}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    EDIS 
+    & News
+    & 3. $q_t$ $\to$ ($c_i, c_t$)
+    & Find a news image that matches the provided caption. 
+    & -
+    & Barack Obama with Germany's chancellor Angela Merkel at the Brandenburg Gate Berlin on 19 June.
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightblue}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 ($c_i, c_t$)} & \textbf{Rank 2 ($c_i, c_t$)} & \textbf{Rank 3 ($c_i, c_t$)} & \textbf{Rank 4 ($c_i, c_t$)} & \textbf{Rank 5 ($c_i, c_t$)} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_1.png}
+                  \newline \scriptsize Obama Speaks at a Berlin Event With Angela Merkel.
+                  &  % Rank 2
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_2.png} 
+                  \newline \scriptsize Obama's Berlin visit to coincide with Trump in Brussels - Barack Obama.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_3.png} 
+                  \newline \scriptsize Obama meets Germany's Merkel at chancellery in Berlin.
+                  & % Rank 4
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_4.png} 
+                  \newline \scriptsize President Obama Speaks to the People of Berlin from the Brandenburg Gate.
+                  & % Rank 5
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_5.png} 
+                  \newline \scriptsize When Barack Obama visited Berlin two years ago, he charmed a city.
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_1.png}
+                  \scriptsize President Obama stands next to German Chancellor Angela Merkel in front of Brandenburg Gate in Berlin on June 19.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_2.png}
+                  \scriptsize President Obama and German Chancellor Angela Merkel in 2011.
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_3.png}
+                  \scriptsize When Barack Obama visited Berlin two years ago, he charmed a city.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_4.png} 
+                  \scriptsize  Barack Obama with German Chancellor Angela Merkel at the G20 summit in November.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                 % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_5.png} 
+                  \scriptsize US president Barack Obama at the Brandenburg Gate.
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/edis_1.png}
+                  \newline \scriptsize When Barack Obama visited Berlin two years ago, he charmed a city.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/edis_2.png} 
+                  \newline \scriptsize Obama Gets Warm Welcome in Berlin, Praises Merkel.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/edis_3.png} 
+                  \newline \scriptsize Obama to give speech at Berlin's Brandenburg Gate.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/edis_4.png} 
+                  \newline \scriptsize As President Obama's team grapples with complaints from other countries about U.
+                  & % Rank 5                  
+                  % \Large \textcolor{red}{\texttimes}   
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/edis_5.png}
+                  \newline \scriptsize President Obama Speaks to the People of Berlin from the Brandenburg Gate.
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/edis_1.png}
+                  % \newline 
+                  \scriptsize President Obama stands next to German Chancellor Angela Merkel in front of Brandenburg Gate in Berlin on June 19.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/edis_2.png}
+                  % \newline 
+                  \scriptsize  President Obama and German Chancellor Angela Merkel in 2011.
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/edis_3.png}
+                  % \newline 
+                  \scriptsize When Barack Obama visited Berlin two years ago, he charmed a city.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/edis_4.png} 
+                  % \newline 
+                  \scriptsize Angela Merkel greets Barack Obama May 2012 Merkel Finally the Germans get to make love not war.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/edis_5.png}
+                  % \newline 
+                  \tiny  US President Barack Obama waves next to German Chancellor Angela Merkel before they deliver speeches to invited guests in front of the Brandenburg Gate at Pariser Platz in Berlin on June 19 2013 during the official visit of the US President Barack Obama walks in John F Kennedy s footsteps on his first visit to Berlin as US president but encounter a more powerful...
+                  \\
+            % \midrule
+            %       % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       % \Large \textcolor{red}{\texttimes}
+            %       \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/edis_ci_1.png}
+            %       \newline \scriptsize Will a Half-Step by Macron Be Enough to Blunt France’s Second Wave?.
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/edis_ci_2.png} 
+            %       \newline \scriptsize France's Big Decision.
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/edis_ci_3.png} 
+            %       \newline \scriptsize Macron and Le Pen Trade Punches in Pivotal French Election Debate.
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/edis_ci_4.png} 
+            %       \newline \scriptsize Interview with President Emmanuel Macron in "Face the Nation" on CBS.
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/edis_ci_5.png} 
+            %       \newline \scriptsize France's Macron vows to 'do better' amid 'yellow vest' protests - Emmanuel Macron News.
+            %       \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \tiny President Obama stands next to German Chancellor Angela Merkel in front of Brandenburg Gate in Berlin on June 19.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \tiny US President Barack Obama waves next to German Chancellor Angela Merkel before they deliver speeches to invited guests in front of the Brandenburg Gate at Pariser Platz in Berlin on June 19 2013 during the official visit of the US President Barack Obama walks in ...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline 
+                  \tiny Barack Obama with German chancellor Angela Merkel at the G20 summit in November.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \tiny BERLIN GERMANY JUNE 19 US President Barack Obama meets German Chancellor Angela Merkel for bilateral talks at the Chancellery on June 19 2013 in Berlin Germany Obama is visiting Berlin for the first time during his presidency and his speech at the Brandenburg Gate...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline 
+                  \tiny President Obama walks with Germany s Chancellor Angela Merkel in St Petersburg Russia on Sept 6.
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for an EDIS Query}
+    \label{fig:retrieval_results_edis}
+    \end{center}
+\end{figure*}
+
+% WebQA
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightgreen}}m{1.5cm} >{\columncolor{lightgreen}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    WebQA 
+    & Wikipedia
+    & 3. $q_t$ $\to$ ($c_i, c_t$)
+    & Find a Wikipedia image that answers this question.
+    & -
+    & What supports the statues standing on top of a structure at the burial site of Saint Peter?
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightgreen}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 ($c_i, c_t$)} & \textbf{Rank 2 ($c_i, c_t$)} & \textbf{Rank 3 ($c_i, c_t$)} & \textbf{Rank 4 ($c_i, c_t$)} & \textbf{Rank 5 ($c_i, c_t$)} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/webqa_1.png}
+                  \newline \scriptsize Statue of St. Peter in St. Peter's Square at the Vatican.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/webqa_2.png} 
+                  \newline \scriptsize Symbol and statues in St. Peter symbol and statues in St. Peter.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/webqa_3.png} 
+                  \newline \scriptsize St-peter St. Peter.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/webqa_4.png} 
+                  \newline \scriptsize Statue in St. Peter's Basilica.
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/webqa_5.png} 
+                  \newline \scriptsize The floor above Saint Peter's tomb.
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/webqa_1.png} 
+                  \newline \scriptsize Saint Peter's tomb is supposedly directly below the high altar of the basilica. For this reason, many popes have been interred at St. Peter's since the Early Christian period.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/webqa_2.png} 
+                  \newline \tiny Since the crucifixion and burial of Saint Peter in 64 AD, the spot was thought to be the location of the tomb of Saint Peter, where there stood a small shrine. With its increasing prestige the church became richly decorated with statues, furnishings and elaborate chandeliers, and side tombs and altars were continuously added.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/webqa_3.png} 
+                  \newline \scriptsize Saint Peter's tomb is a site under St. Peter's Basilica that includes several graves and a structure said by Vatican authorities to have been built to memorialize the location of Saint Peter's grave.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/webqa_4.png} 
+                  \newline \tiny Catholic tradition holds that the basilica is the burial site of Saint Peter, chief among Jesus 's apostles and also the first Bishop of Rome (Pope). Saint Peter's tomb is supposedly directly below the high altar of the basilica. For this reason, many popes have been interred at St. Peter's since the Early Christian period.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/webqa_5.png}  
+                  \newline \scriptsize Symbol and statues in St. Peter symbol and statues in St. Peter.
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/webqa_1.png}
+                  \newline \scriptsize Statue of St. Peter in St. Peter's Square at the Vatican.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/webqa_2.png} 
+                  \newline \scriptsize St-peter St. Peter.
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}                  
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/webqa_3.png} 
+                  \newline \scriptsize Saint Peter's Basilica, Vatican City, Rome Burial site of Saint Peter, the "First Pope"!
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/webqa_4.png} 
+                  \newline \scriptsize Symbol and statues in St. Peter symbol and statues in St. Peter.
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/webqa_5.png}
+                  % \newline 
+                  \scriptsize St. Peter's Basilica, believed to be the burial site of St. Peter, seen from the River Tiber.
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/webqa_1.png}
+                  \newline \scriptsize Statue of St. Peter in St. Peter's Square at the Vatican.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/webqa_2.png} 
+                  \newline \scriptsize Symbol and statues in St. Peter symbol and statues in St. Peter.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/webqa_3.png} 
+                  \newline \scriptsize A Sculpture Featuring Jesus, Saint Paul, Saint Peter and a Pope, St. Peter Basilica, Vatican, Italy Editorial Photo.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/webqa_4.png} 
+                  \newline \scriptsize Statue in St. Peter's Basilica.
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/webqa_5.png}
+                  % \newline 
+                  \scriptsize Saint Peter's tomb is a site under St. Peter's Basilica that includes several graves and a structure said by Vatican authorities to have been built to memorialize the location of Saint Peter's grave.
+                  \\
+            % \midrule
+            %      % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       % \Large \textcolor{red}{\texttimes}
+            %       \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/webqa_ci_1.png}
+            %       \newline \scriptsize Cornell Law School Tower 2019-10-04 22-20 Cornell Law School Tower.
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/webqa_ci_2.png} 
+            %       \newline \scriptsize Cornell Olin Library 3 Olin Library, with McGraw Tower in the background, at Cornell University.
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/webqa_ci_3.png} 
+            %       \newline \scriptsize Cornell McGraw Tower and Uris Library March09 2 Uris Library and Jennie McGraw Tower at Cornell University.
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/webqa_ci_4.png} 
+            %       \newline \scriptsize Cornell McGraw Tower and Uris Library March09 1 Uris LibraryandJennie McGraw ToweratCornell University.
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/webqa_ci_5.png} 
+            %       \newline \scriptsize Cornell+University.
+            % \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \tiny Also a bronze statue of the apostle St. Paul was placed on the top platform, to go with that of St. Peter on Trajan's Column (27 October 1588). (Originally the top platform probably had a statue of Marcus Aurelius, but it had been already lost by the 16th century.).
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \tiny Pope Sixtus V was determined to erect the obelisk in front of St Peter's, of which the nave was yet to be built.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline 
+                  \tiny Along the roofline, by contrast, there is a line of statues, many in their own small pavilions, culminating in Saint Mark flanked by six angels in the centre, above a large gilded winged lion (his symbol, and that of Venice).
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \tiny Saint Peter's tomb is a site under St. Peter's Basilica that includes several graves and a structure said by Vatican authorities to have been built to memorialize the location of Saint Peter's grave. St. Peter's tomb is near the west end of a...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline 
+                  \tiny Saint Peter's tomb is a site under St. Peter's Basilica that includes several graves and a structure said by Vatican authorities to have been built to memorialize the location of Saint Peter's grave.
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a WebQA Query}
+    \label{fig:retrieval_results_webqa}
+    \end{center}
+\end{figure*}
+
+
+
+
+% Nights
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightpurple}}m{1.5cm} >{\columncolor{lightpurple}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    NIGHTS 
+    & Common
+    & 5. $q_t$ $\to$  $c_t$
+    & Which everyday image is the most similar to the reference image?
+    & \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/nights_qi_1.png}
+    & -
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightpurple}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 ($c_t$)} & \textbf{Rank 2 ($c_t$)} & \textbf{Rank 3 ($c_t$)} & \textbf{Rank 4 ($c_t$)} & \textbf{Rank 5 ($c_t$)} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/nights_ci_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/nights_ci_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/nights_ci_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/nights_ci_4.png} 
+                  & % Rank 5
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/nights_ci_5.png} 
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_1.png}  
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_3.png}  
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_5.png}  
+                  % \newline \scriptsize 
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/nights_1.png}
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/nights_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}                  
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/nights_3.png} 
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/nights_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/nights_5.png}
+                  % \newline \scriptsize 
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/nights_1.png}  
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/nights_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/nights_3.png} 
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/nights_5.png}  
+                  % \newline \scriptsize 
+                  \\
+            % \midrule
+            %      % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/nights_ci_1.png}
+            %       % \newline \scriptsize
+            %       &  % Rank 2
+            %       % \Large \textcolor{red}{\texttimes}
+            %       \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/nights_ci_2.png} 
+            %       % \newline \scriptsize
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/nights_ci_3.png} 
+            %       % \newline \scriptsize
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/nights_ci_4.png} 
+            %       % \newline \scriptsize
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/nights_ci_5.png} 
+            %       % \newline \scriptsize
+            % \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/nights_1.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/nights_2.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/nights_3.png}
+                  % \newline 
+                  % \tiny 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/nights_4.png} 
+                  % \newline 
+                  % \tiny 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/nights_5.png}
+                  % \newline 
+                  % \tiny 
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a NIGHTS Query}
+    \label{fig:retrieval_results_nights}
+    \end{center}
+\end{figure*}
+
+
+% FashionIQ
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightred}}m{1.5cm} >{\columncolor{lightred}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    FashionIQ 
+    & Fashion
+    & 7. ($q_i, q_t$) $\to$ $c_i$
+    & Find a fashion image that aligns with the reference image and style note.
+    & \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/fashioniq_qi_1.png}
+    & Is white with dots and a black belt.
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightred}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 $c_t$} & \textbf{Rank 2 $c_t$} & \textbf{Rank 3 $c_t$} & \textbf{Rank 4 $c_t$} & \textbf{Rank 5 $c_t$} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashioniq_ci_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashioniq_ci_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashioniq_ci_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashioniq_ci_4.png} 
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/fashioniq_ci_5.png} 
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_1.png}  
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_3.png}  
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_5.png}  
+                  % \newline \scriptsize 
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashioniq_1.png}
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashioniq_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}                  
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashioniq_3.png} 
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashioniq_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/fashioniq_5.png}
+                  % \newline \scriptsize 
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashioniq_1.png}  
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashioniq_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/fashioniq_3.png} 
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/fashioniq_5.png}  
+                  % \newline \scriptsize 
+                  \\
+            % \midrule
+            %      % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashioniq_ci_1.png}
+            %       % \newline \scriptsize
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashioniq_ci_2.png} 
+            %       % \newline \scriptsize
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashioniq_ci_3.png} 
+            %       % \newline \scriptsize
+            %       & % Rank 4
+            %       % \Large \textcolor{red}{\texttimes}
+            %       \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashioniq_ci_4.png} 
+            %       % \newline \scriptsize
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/fashioniq_ci_5.png} 
+            %       % \newline \scriptsize
+            % \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/fashioniq_1.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/fashioniq_2.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/fashioniq_3.png}
+                  % \newline 
+                  % \tiny 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/fashioniq_4.png} 
+                  % \newline 
+                  % \tiny 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/fashioniq_5.png}
+                  % \newline 
+                  % \tiny 
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a FashionIQ Query}
+    \label{fig:retrieval_results_fashioniq}
+    \end{center}
+\end{figure*}
+
+
+% CIRR
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightpurple}}m{1.5cm} >{\columncolor{lightpurple}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    CIRR 
+    & Common
+    & 7. ($q_i, q_t$) $\to$ $c_i$
+    & I'm looking for a similar everyday image with the described changes.
+    & \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/cirr_qi_1.png}
+    & The target photo is of a black and brown dog laying in the grass with a small red ball at his feet.
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightpurple}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 $c_t$} & \textbf{Rank 2 $c_t$} & \textbf{Rank 3 $c_t$} & \textbf{Rank 4 $c_t$} & \textbf{Rank 5 $c_t$} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/cirr_ci_1.png}
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/cirr_ci_2.png} 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/cirr_ci_3.png} 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/cirr_ci_4.png} 
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/cirr_ci_5.png} 
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_1.png}  
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_3.png}  
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_5.png}  
+                  % \newline \scriptsize 
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/cirr_1.png}
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/cirr_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/cirr_3.png} 
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}                  
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/cirr_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5                  
+                  \Large \textcolor{red}{\texttimes}   
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/cirr_5.png}
+                  % \newline \scriptsize 
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/cirr_1.png}  
+                  % \newline \scriptsize 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/cirr_2.png} 
+                  % \newline \scriptsize 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/cirr_3.png} 
+                  % \newline \scriptsize 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_4.png} 
+                  % \newline \scriptsize 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/cirr_5.png}  
+                  % \newline \scriptsize 
+                  \\
+            % \midrule
+            %      % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/cirr_ci_1.png}
+            %       % \newline \scriptsize
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/cirr_ci_2.png} 
+            %       % \newline \scriptsize
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/cirr_ci_3.png} 
+            %       % \newline \scriptsize
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/cirr_ci_4.png} 
+            %       % \newline \scriptsize
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/cirr_ci_5.png} 
+            %       % \newline \scriptsize
+            %       \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/cirr_1.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/cirr_2.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/cirr_3.png}
+                  % \newline 
+                  % \tiny 
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/cirr_4.png} 
+                  % \newline 
+                  % \tiny 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/cirr_5.png}
+                  % \newline 
+                  % \tiny 
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a CIRR Query}
+    \label{fig:retrieval_results_cirr}
+    \end{center}
+\end{figure*}
+
+
+% OVEN
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightgreen}}m{1.5cm} >{\columncolor{lightgreen}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    OVEN 
+    & Wikipedia
+    & 8. ($q_i, q_t$) $\to$ ($c_i, q_t$)
+    & Determine the Wikipedia image-snippet pair that clarifies the entity in this picture.
+    & \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/oven_qi_1.png}
+    & What is the name of this place?
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightgreen}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 ($c_i, c_t$)} & \textbf{Rank 2 ($c_i, c_t$)} & \textbf{Rank 3 ($c_i, c_t$)} & \textbf{Rank 4 ($c_i, c_t$)} & \textbf{Rank 5 ($c_i, c_t$)} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/oven_1.png}
+                  \newline \tiny  Pará mangroves. other than the city of Belém and its surroundings. The mangroves are used by artisanal fishermen as a source of crabs and wood.Threats include subsistence agriculture and livestock raising, tourism, logging, mining and urban development.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/oven_2.png} 
+                  \newline \tiny Pará mangroves. The Pará mangroves (NT1427) is an ecoregion along the Atlantic coast of the state of Pará in Brazil.They constitute the western extension of the Maranhão mangroves ecoregion.The mangroves are relatively intact, although they are under...
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/oven_3.png} 
+                  \newline \tiny Itaúnas State Park. by squatters. Activities. As of 2015 the opening hours were from 8:30 to 17:30.The park is suitable for ecotourism, hiking and swimming in the river and the ocean.Visitors may take guided horseback tours, or may explore by kayak, canoe, jeep...
+                  & % Rank 4
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/oven_4.png} 
+                  \newline \tiny Itaúnas State Park. archaeological sites with traces of human settlements such as chipped stones, indigenous pottery and artifacts from the colonial era.Vegetation includes coastal forest, with fragments of forest endangered in Espírito Santo...
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/oven_5.png} 
+                  \newline \tiny Tree of Life (Bahrain). the list.In October 2010, archaeologists unearthed 500-year-old pottery and other artefacts in the vicinity of the tree. A soil and dendrochronology analysis conducted in the 1990s concluded that the tree was an "Acacia"...
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_1.png}  
+                  \newline \tiny Natal Dunes State Park. The Natal Dunes State Park "Journalist Luiz Maria Alves" (), or simply the Dunes Park () is a state park in the state of Rio Grande do Norte in the Northeast Region of Brazil. It protects an area of dunes and native ...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_2.png} 
+                  \newline \tiny Cresmina Dune. Cresmina Dune from the north.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_3.png}   
+                  \newline \tiny Kijal. Kijal (est. pop. (2000 census): 4,375) is a mukim in Kemaman District, Terengganu, Malaysia. The town is well known for the Awana Kijal Golf and Beach Resort, a luxury resort which is owned by the...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_4.png} 
+                  % \newline 
+                  \tiny Maspalomas Dunes. The Maspalomas Dunes () are sand dunes located on the south coast of the island of Gran Canaria, Province of Las Palmas, in the Canary Islands. A 404 (ha) area of the municipality of San Bartolomé de Tirajana, they have been protected...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_5.png}  
+                  % \newline 
+                  \tiny Maspalomas Dunes. They were one of the contenders in the 12 Treasures of Spain competition.They were formed by sand from the now subdued marine shelf, when it was laid dry during the last ice age and the wind blew the sand towards the coast of the island...
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/oven_1.png}
+                  \newline \tiny Cronulla sand dunes. context of its setting, intactness, aesthetic qualities and social significance is held in high community esteem. The water bodies formed by sand removal surrounding the Cronulla Sand Dune have been identified ...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/oven_2.png} 
+                  \newline \tiny Cronulla sand dunes. referred to as the Kurnell sand dune is estimated to be about 15,000 years old. It was formed when the sea reached its present level and began to stabilise, between 9000 and 6000 ...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/oven_3.png} 
+                  \newline \tiny Tel Tanninim. Tel Tanninim (), in Arabic Tell al-MilÄt (lit. 'Mortar Mound') is an ancient tell (archaeological mound) on the shore of the Mediterranean, near the mouth of Nahal Tanninim ('Crocodiles Stream') ...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/oven_4.png} 
+                  \newline \tiny Thuli Parks and Wildlife Land. black rhinoceros, lion, Cape wild dog, Namibian cheetah and African leopard, many of which move freely between the protected area and neighbouring Botswana and South Africa ...
+                  & % Rank 5
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/oven_5.png} 
+                  \newline \tiny Itaúnas State Park. archaeological sites with traces of human settlements such as chipped stones, indigenous pottery and artifacts from the colonial era. Vegetation includes coastal forest, with fragments of forest ...
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/oven_1.png}  
+                  \newline \tiny Cronulla sand dunes. in New South Wales for social, cultural or spiritual reasons.The site has historic and cultural significance for the Aboriginal community. The Cronulla Sand Dune is of cultural heritage and spiritual significance to the La Perouse ...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/oven_2.png} 
+                  \newline \tiny Cronulla sand dunes. men in the colony. During the 1860s Holt consolidated his landholdings on the Peninsular (which included Captain Cook's landing place). His accumulated holdings represented 5261 (ha) of what is the present day...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/oven_3.png} 
+                  \newline \tiny Samalayuca Dune Fields. areas of El Paso del Norte in the north and the village of Carrizal in the south. Experiences of travelers in the 1800s.In order to avoid the delay of traveling around the dune fields on the detour, many travelers on the trail...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_4.png} 
+                  \newline \tiny Maspalomas Dunes. The Maspalomas Dunes () are sand dunes located on the south coast of the island of Gran Canaria, Province of Las Palmas, in the Canary Islands. A 404 (ha) area of the municipality of San BartolomÃ© de Tirajana, they have been protected....
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/oven_5.png}  
+                  \newline \tiny Maspalomas Dunes. The Maspalomas Dunes () They were one of the contenders in the 12 Treasures of Spain competition. They were formed by sand from the now subdued marine shelf, when it was laid dry during the last ice age and the wind blew the sand towards the...
+                  \\
+            % \midrule
+                 % % UniIR(CLIP_FF)
+                 %  UniIR
+                 %  \newline (CLIP$_{\text{FF}}$)
+                 %  \newline \checkmark inst
+                 %  &  % Rank 1
+                 %  % \Large \textcolor{red}{\texttimes}
+                 %  \large \textcolor{green}{\checkmark}
+                 %  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/oven_ci_1.png}
+                 %  \newline \tiny Giant Wild Goose Pagoda. Giant Wild Goose Pagoda or Big Wild Goose Pagoda (, literally "big swan goose pagoda"), is a monumental Buddhist pagoda located in southern Xi'an, Shaanxi, China. It was built in 648/649(?) during the Tang dynasty and originally had five stories ...
+                 %  &  % Rank 2
+                 %  \Large \textcolor{red}{\texttimes}
+                 %  % \large \textcolor{green}{\checkmark}
+                 %  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/oven_ci_2.png} 
+                 %  \newline \tiny Tianning Temple (Beijing). The Tianning Temple () is a Buddhist temple complex located in Xicheng District of Beijing, in northern China. The temple contains the 12th-century Pagoda of Tianning Temple. The 8 sided pagoda is of the Liao Dynasty, built from around 1100 to 1119 ...
+                 %  &  % Rank 3
+                 %  \Large \textcolor{red}{\texttimes}
+                 %  % \large \textcolor{green}{\checkmark}
+                 %  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/oven_ci_3.png} 
+                 %  \newline \tiny Taiyuan. District of southern Taiyuan, dates back to the Zhou Dynasty. In Jinci, there are three treasures: the Nanlao Spring, the Beauty Status and the Queen status. The Flying Bridge Across the Fish Pond was built during the Song Dynasty, which is famous for  ...
+                 %  & % Rank 4
+                 %  \Large \textcolor{red}{\texttimes}
+                 %  % \large \textcolor{green}{\checkmark}
+                 %  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/oven_ci_4.png} 
+                 %  \newline \tiny Famen Temple. been abroad four times, 1994/11/29 - 1995/02/29 in Thailand, 2002/02/23 - 2002/03/30 in Taiwan, 2004/05/26 - 2004/06/05 in Hong Kong, 2005/11/11 - 2005/12/21 in South Korea. Gold silver relics.The underground "Palace" is now a museum, and contains ...
+                 %  & % Rank 5
+                 %  \Large \textcolor{red}{\texttimes}
+                 %  % \large \textcolor{green}{\checkmark}
+                 %  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/oven_ci_5.png} 
+                 %  \newline \tiny Chongxi Pagoda. Chongxi Pagoda () is a Ming-era pagoda located in Duanzhou District, Zhaoqing, Guangdong, China. History.Chongxi Pagoda was first built in 1582 and completed in 1585. It was built to "lock" the Xi River dragon which was believed to be behind...
+                 %  \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/oven_1.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/oven_2.png}
+                  % \newline 
+                  % \tiny 
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/oven_3.png}
+                  % \newline 
+                  \tiny Ād. Imam of Grand Mosque of Mecca, along with the officials of Ministry of Islamic Affairs, Dawah and Guidance also agreed the verse were speaking about ...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/oven_4.png} 
+                  % \newline 
+                  % \tiny 
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/oven_5.png}
+                  % \newline 
+                  % \tiny 
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for a OVEN Query}
+    \label{fig:retrieval_results_oven}
+    \end{center}
+\end{figure*}
+
+
+
+% InfoSeek
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightgreen}}m{1.5cm} >{\columncolor{lightgreen}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    InfoSeek 
+    & Wikipedia
+    & 8. ($q_i, q_t$) $\to$ ($c_i, c_t$)
+    & Retrieve a Wikipedia image-description pair that provides evidence for the question of this image.
+    & \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/infoseek_qi_1.png}
+    & Where is the lake outflow to?
+\end{tabular}
+\centering
+    \scriptsize
+    \begin{center}
+    % \resizebox{1.0\linewidth}{!}
+    % \tabcolsep 2pt
+    \begin{tabular}{>{\columncolor{lightgreen}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 ($c_i, c_t$)} & \textbf{Rank 2 ($c_i, c_t$)} & \textbf{Rank 3 ($c_i, c_t$)} & \textbf{Rank 4 ($c_i, c_t$)} & \textbf{Rank 5 ($c_i, c_t$)} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/infoseek_ci_1.png}
+                  \newline \tiny Titisee. the promenade. Furthermore, plenty of open-air events are organised around the lake each summer.In winter, the 1.2 km long Saig-Titisee toboggan is open. The largest natural ski jump in Germany, the Hochfirstschanze, is also located at ...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/infoseek_ci_2.png} 
+                  \newline \tiny Titisee. and burbot on the lake bed. In addition there are small fish varieties such as sunbleak, minnow and brook lamprey. Around the lake, grey heron may be seen.The shores of the Titisee are home to two rare types of quillworts, the spring quillwort ...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/infoseek_ci_3.png} 
+                  \newline \tiny Titisee. could be the origin of the name, even though it no longer occurs by the Titisee. Tourism.At the north shore of the Titisee lies a popular spa town of the same name. Lots of wellness and health hotels are settled there. Spa therapy offers ...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/infoseek_ci_4.png} 
+                  \newline \tiny Titisee. a tractor with a snowplough was clearing the landing strip of snow when it broke through the ice and sank to the bottom of the lake, taking the driver, Walter Wilde (29), with it. His body was only recovered 2 weeks later. Fauna and flora ...
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/infoseek_ci_5.png} 
+                  \newline \tiny Titisee. great fire. In the 18th century, the clockmaking trade developed in the town to become a major part of the economy.During World War I and shortly thereafter, a dearth of staple foods prevailed. In May 1919 the first municipa ...
+                  \\
+            \midrule
+                  % multi-task(CLIP_SF)
+                  multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/infoseek_1.png}  
+                  \newline 
+                  \tiny  Wörthersee. ("Coregonus lavaretus"). Etymology.First mentioned as "Werdse" in an 1143 deed, the lake's name originates from the islands in the lake, most notably Maria Wörth, a peninsula since the building of the Glanfurt outlet in 1770...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/infoseek_2.png} 
+                  \newline 
+                  \tiny Wörthersee. The lake's water is of a distinctive blue-green colour and transparent. Lake Wörth and its basin in the central Carinthian foothills were largely formed by glaciers during the last ice age. The lake is divided into three basins by several...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/infoseek_3.png} 
+                  \newline 
+                  \tiny Titisee. the High Black Forest had been unsettled during the first millennium. Origin of the name.There are various theories about the origin of the unusual name "Titisee": In the Alemannic dialect "Teti" means "little child" or "baby"...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/infoseek_4.png} 
+                  \newline 
+                  \tiny  Titisee. and burbot on the lake bed. In addition there are small fish varieties such as sunbleak, minnow and brook lamprey. Around the lake, grey heron may be seen.The shores of the Titisee are home to two rare types of quillworts, the ...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/infoseek_5.png} 
+                  % \newline 
+                  \tiny Atwood Lake. Atwood Lake is a reservoir located in Tuscarawas and Carroll counties in east central Ohio. The lake is formed by Atwood Dam across Indian Fork, a tributary of Conotton Creek. The lake is named for the community of Atwood which was purchased...
+                  \\
+            \midrule
+                  % UniIR(BLIP_FF)
+                  UniIR
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/infoseek_1.png}
+                  \newline \tiny Wörthersee. ("Coregonus lavaretus"). Etymology.First mentioned as "Werdse" in an 1143 deed, the lake's name originates from the islands in the lake, most notably Maria Wörth, a peninsula since the building of the Glanfurt outlet in 1770...
+                  &  % Rank 2
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/infoseek_2.png} 
+                  \newline \tiny Titisee. The Titisee is a lake in the southern Black Forest in Baden-Württemberg... The lake's outflow, at 840 (m) above sea level, is the \textcolor{green}{\textbf{River Gutach}}, which merges with the Haslach stream below Kappel to form the Wutach. The waters of ...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/infoseek_3.png} 
+                  \newline \tiny Mikorzyńskie Lake. Mikorzyńskie Lake is a lake in central Poland known as Jezioro Mikorzyńskie in Polish. It is located in Konin County in Gmina Ślesin, near the town of Licheń Stary. It is a post-glacial ribbon lake with a strongly developed shoreline...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/infoseek_4.png} 
+                  \newline \tiny Lake Hallwil. Lake Hallwil (German: "Hallwilersee") is a lake largely in the Canton of Aargau, Switzerland, located at . It is the largest lake in Aargau and lies mostly in the districts of Lenzburg and Kulm on the southern edge of the canton...
+                  & % Rank 5
+                  \Large \textcolor{red}{\texttimes}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/Instruct/infoseek_5.png} 
+                  \newline \tiny Głuszyńskie Lake. Głuszyńskie is a lake in Poland near the city of Radziejów in the Kuyavian-Pomeranian Voivodship...
+                  \\
+            \midrule
+                  % multi-task(BLIP_FF)
+                  multi-task
+                  \newline (BLIP$_{\text{FF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/infoseek_1.png}  
+                  \newline \tiny Titisee. and burbot on the lake bed. In addition there are small fish varieties such as sunbleak, minnow and brook lamprey. Around the lake, grey heron may be seen. The shores of the Titisee are home to two rare types of quillworts, the...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/infoseek_2.png} 
+                  \newline \tiny Wdzydze Lake. Wdzydze (Kashubian "Jezoro Wdzydzcz"), also known as the "Kashubian Sea", "Big Water" and "Szerzawa", is a lake in the Tuchola Forest in the Kocierzyna County (Pomeranian Voivodeship), in the region of South Kashubia...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/infoseek_3.png} 
+                  \newline \tiny Loch Lomond. Powan are one of the commonest fish species in the loch, which has more species of fish than any other loch in Scotland, including lamprey, lampern, brook trout, perch, loach, common roach and flounder...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/infoseek_4.png} 
+                  % \newline 
+                  \tiny Mountain Lake (Ontario). Mountain Lake (Ontario) may refer to one of a number of lakes in Ontario, Canada with this precise name or to others with similar names. Mountain Lake (Algoma County)...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/infoseek_5.png}  
+                  % \newline 
+                  \tiny Atwood Lake. Atwood Lake is a reservoir located in Tuscarawas and Carroll counties in east central Ohio. The lake is formed by Atwood Dam across Indian Fork, a tributary of Conotton Creek. The lake is named for the community of Atwood...
+                  \\
+            % \midrule
+            %      % UniIR(CLIP_FF)
+            %       UniIR
+            %       \newline (CLIP$_{\text{FF}}$)
+            %       \newline \checkmark inst
+            %       &  % Rank 1
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/infoseek_ci_1.png}
+            %       \newline \tiny Vistula. and Oder came to be called Magna Germania by Roman authors of the first century AD. This does not imply that the inhabitants were "Germanic peoples" in the modern sense of the term;Tacitus, when describing the Venethi, Peucini and Fenni, wrote that he was not...
+            %       &  % Rank 2
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/infoseek_ci_2.png} 
+            %       \newline \tiny Nickajack. The area known as "Nickajack" generally refers to the rugged Appalachian foothills in eastern Tennessee and northeastern Alabama. "Nickajack" is a corruption of the Cherokee word (Ani-Kusati-yi) which translates to Coosa Town, but more likely ...
+            %       &  % Rank 3
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/infoseek_ci_3.png} 
+            %       \newline \tiny Arosa. population) belong to the Orthodox Church, and 17 individuals (about 0.6\% of the population) who belong to another Christian church. The remainder belong to other religions or did not specify a religion.The historical population is given in the following table...
+            %       & % Rank 4
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/infoseek_ci_4.png} 
+            %       \newline \tiny Lutter (Leine). Lutter is a river in GÃttingen, Lower Saxony, Germany. It is a tributary from the right (east) to the Leine.The stream lies entirely within the city of GÃttingen, rising in the southern GÃttingen Forest and flowing into the Leine as a canalized ditch...
+            %       & % Rank 5
+            %       \Large \textcolor{red}{\texttimes}
+            %       % \large \textcolor{green}{\checkmark}
+            %       \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/CLIP_FF/Instruct/infoseek_ci_5.png} 
+            %       \newline \tiny Aubure. Aubure is a commune in the Haut-Rhin department in Grand Est in north-eastern France. Communes of the Haut-Rhin department.
+            %       \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/infoseek_1.png}
+                  \newline 
+                  \tiny Lake Annecy. Human-Modified Channel Systems to Lake Annecy, SE France" (2004) Vol 20 (4) Journal of Coastal Research pp...
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/infoseek_2.png}
+                  \newline 
+                  \tiny Lake Annecy. Lake Annecy (, ) is a perialpine lake in Haute-Savoie in France. It is named after the city of Annecy...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/infoseek_3.png}
+                  \newline 
+                  \tiny Lake Annecy. time the large alpine glaciers melted. It is fed by many small rivers from the surrounding mountains...
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/infoseek_4.png} 
+                  \newline 
+                  \tiny Monte Pizzocolo. Monte Pizzocolo is a mountain of Lombardy, Italy. It has an elevation of 1,581 metres...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=20mm,height=20mm]{tables_and_figures/suppl/retrieval_results/BLIP2/infoseek_5.png}
+                  \newline 
+                  \tiny Lake Como, Wikimania 2016, MP 126 Lake Como. Wikimania 2016, Esino Lario, Italy...
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of the Top 5 Candidates Retrieved from M-BEIR (5.6M candidates) by Different Models for an Infoseek Query}
+    \label{fig:retrieval_results_infoseek}
+    \end{center}
+\end{figure*}
+
+

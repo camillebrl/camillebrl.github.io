@@ -1,0 +1,43 @@
+\definecolor{positive}{HTML}{008000} % You can use a custom color for positive changes
+\definecolor{negative}{HTML}{FF0000}
+
+\begin{table}[ht!]
+    \centering
+    \large
+    \resizebox{0.49\textwidth}{!}{%
+    \begin{tabular}{lcclccl}
+    \toprule
+     & \textbf{ZS} & \textbf{Multi.} & \textbf{UniIR} & \textbf{ZS} & \textbf{Multi.} & \textbf{UniIR}\\
+     \cmidrule(lr){1-1}
+     % \cmidrule(lr){2-2}
+     % \cmidrule(lr){3-3}
+     % \cmidrule(lr){4-4}
+     % \cmidrule(lr){5-5}
+     % \cmidrule(lr){6-6}
+     % \cmidrule(lr){7-7}
+     \cmidrule(lr){2-4}
+     \cmidrule(lr){5-7}
+     
+ \textbf{Task} & CLIP & CLIP$_{\text{SF}}$ & CLIP$_{\text{SF}}$ {\small ($\Delta$)} & BLIP & BLIP$_{\text{FF}}$ & BLIP$_{\text{FF}}$ {\small ($\Delta$)} \\
+        \midrule
+
+1. & 0.0 & 15.3 & 46.1~\textcolor{positive}{\small (+30.8)} & 0.0 & 15.0 & 41.3~\textcolor{positive}{\small (+26.3)}\\
+2. & 32.1 & 82.3 & 84.7~\textcolor{positive}{\small (+2.5)} & 38.1 & 76.1 & 79.5~\textcolor{positive}{\small (+3.4)}\\
+3. & 6.1 & 54.6 & 69.1~\textcolor{positive}{\small (+14.5)} & 0.0 & 62.0 & 65.0~\textcolor{positive}{\small (+3.0)}\\
+4. & 0.0 & 32.6 & 51.0~\textcolor{positive}{\small (+18.4)} & 0.0 & 28.4 & 45.9~\textcolor{positive}{\small (+17.4)}\\
+5. & 25.3 & 31.0 & 32.0~\textcolor{positive}{\small (+1.0)} & 25.1 & 31.3 & 33.0~\textcolor{positive}{\small (+1.6)}\\
+6. & 0.0 & 27.5 & 31.6~\textcolor{positive}{\small (+4.1)} & 0.0 & 27.8 & 29.2~\textcolor{positive}{\small (+1.5)}\\
+7. & 4.9 & 27.4 & 34.1~\textcolor{positive}{\small (+6.7)} & 4.8 & 36.6 & 40.0~\textcolor{positive}{\small (+3.4)}\\
+8. & 23.3 & 50.5 & 52.4~\textcolor{positive}{\small (+1.9)} & 9.0 & 38.5 & 42.7~\textcolor{positive}{\small (+4.2)}\\
+\midrule
+Avg. & 7.9 & 36.1 & 48.9~\textcolor{positive}{\small (+12.8)} & 5.7 & 34.6 & 45.5~\textcolor{positive}{\small (+10.9)}\\
+
+
+\bottomrule
+    \end{tabular}
+    }
+    \caption{\textbf{Experiments of instruction-tuning}. Retrieve from the M-BEIR (Recall@5). 
+    $\Delta$: UniIR - Multi-task (Multi.).}
+    \label{tab:union_instruction}
+    \vspace{-2pt}
+\end{table}

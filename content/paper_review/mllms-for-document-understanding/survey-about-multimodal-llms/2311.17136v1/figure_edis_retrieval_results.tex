@@ -1,0 +1,127 @@
+\definecolor{lightblue}{RGB}{204,229,255} % Very light blue color
+\definecolor{green}{RGB}{0,180,0} % This is a darker shade of green
+
+% EDIS
+\begin{figure*}[t!]
+\centering
+\scriptsize
+% \tabcolsep 2pt
+\begin{tabular}{>{\columncolor{lightblue}}m{1.5cm} >{\columncolor{lightblue}}m{1cm} m{2.2cm} m{3.8cm} m{2.4cm} m{3.8cm}}
+    \toprule
+    \textbf{Dataset} & \textbf{Domain} & \textbf{Task} & \textbf{Query Instruction  $q_{\texttt{inst}}$} & \textbf{Query Image $q_i$} & \textbf{Query Text $q_t$} \\
+    \midrule
+    EDIS 
+    & News
+    & 3. $q_t$ $\to$ ($c_i, c_t$)
+    & Find a news headline image that matches the provided caption. 
+    & -
+    & Barack Obama with Germany's chancellor Angela Merkel at the Brandenburg Gate Berlin on 19 June.
+\end{tabular}
+
+    \begin{tabular}{>{\columncolor{lightblue}}m{1.2cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}m{2.7cm}}
+            \toprule
+            \textbf{Model} & \textbf{Rank 1 ($c_i, c_t$)} & \textbf{Rank 2 ($c_i, c_t$)} & \textbf{Rank 3 ($c_i, c_t$)} & \textbf{Rank 4 ($c_i, c_t$)} & \textbf{Rank 5 ($c_i, c_t$)} \\
+            \midrule
+                  % UniIR(CLIP_SF)
+                  UniIR
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \checkmark inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_1.png}
+                  \newline \scriptsize Obama Speaks at a Berlin Event With Angela Merkel.
+                  &  % Rank 2
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_2.png} 
+                  \newline \scriptsize Obama's Berlin visit to coincide with Trump in Brussels - Barack Obama.
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_3.png} 
+                  \newline \scriptsize Obama meets Germany's Merkel at chancellery in Berlin.
+                  & % Rank 4
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_4.png} 
+                  \newline \scriptsize President Obama Speaks to the People of Berlin from the Brandenburg Gate.
+                  & % Rank 5
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/Instruct/edis_5.png} 
+                  \newline \scriptsize When Barack Obama visited Berlin two years ago, he charmed a city.
+                  \\
+            \midrule
+                  % Multitask(CLIP_SF)
+                  Multi-task
+                  \newline (CLIP$_{\text{SF}}$)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_1.png}
+                  \scriptsize President Obama stands next to German Chancellor Angela Merkel in front of Brandenburg Gate in Berlin on June 19.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_2.png}
+                  \scriptsize President Obama and German Chancellor Angela Merkel in 2011.
+                  &  % Rank 3
+                  % \Large \textcolor{red}{\texttimes}
+                  \large \textcolor{green}{\checkmark}
+                  \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_3.png}
+                  \scriptsize When Barack Obama visited Berlin two years ago, he charmed a city.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_4.png} 
+                  \scriptsize  Barack Obama with German Chancellor Angela Merkel at the G20 summit in November.
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                 % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/CLIP_SF/NoInstruct/edis_5.png} 
+                  \scriptsize US president Barack Obama at the Brandenburg Gate.
+                  \\
+            \midrule
+                  % Zero-shot(BLIP2)
+                  Zero-shot
+                  \newline (BLIP2)
+                  \newline \ding{55} inst
+                  &  % Rank 1
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_1.png}
+                  % \newline 
+                  \tiny President Obama stands next to German Chancellor Angela Merkel in front of Brandenburg Gate in Berlin on June 19.
+                  &  % Rank 2
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_2.png}
+                  % \newline 
+                  \tiny US President Barack Obama waves next to German Chancellor Angela Merkel before they deliver speeches to invited guests in front of the Brandenburg Gate at Pariser Platz in Berlin on June 19 2013 during the official visit of the US President Barack Obama walks in ...
+                  &  % Rank 3
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_3.png}
+                  % \newline 
+                  \tiny Barack Obama with German chancellor Angela Merkel at the G20 summit in November.
+                  & % Rank 4
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_4.png} 
+                  % \newline 
+                  \tiny BERLIN GERMANY JUNE 19 US President Barack Obama meets German Chancellor Angela Merkel for bilateral talks at the Chancellery on June 19 2013 in Berlin Germany Obama is visiting Berlin for the first time during his presidency and his speech at the Brandenburg Gate...
+                  & % Rank 5 
+                  \Large \textcolor{red}{\texttimes}
+                  % \large \textcolor{green}{\checkmark}
+                  % \includegraphics[width=18mm,height=18mm]{tables_and_figures/suppl/retrieval_results/BLIP_FF/NoInstruct/visualnews_5.png}
+                  % \newline 
+                  \tiny President Obama walks with Germany s Chancellor Angela Merkel in St Petersburg Russia on Sept 6.
+                  \\
+            \bottomrule
+    \end{tabular}
+    \caption{Visualization of top 5 retrieved candidates from M-BEIR with 3 models on EDIS. Without instructions, zero-shot and multi-task training models mostly retrieve the wrong modality (text-only). UniIR retrieves candidates accurately with the right modality (image, text).}
+    \label{fig:retrieval_results_edis_main}
+
+\end{figure*}

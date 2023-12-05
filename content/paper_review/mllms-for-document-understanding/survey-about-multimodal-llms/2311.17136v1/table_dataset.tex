@@ -1,0 +1,48 @@
+\begin{table*}
+    \centering
+    \small
+    \tabcolsep 5pt
+    \resizebox{0.99\textwidth}{!}{%
+    \begin{tabular}{@{}lllcr@{\;\;}r@{\;\;}r@{\;\;}r@{}}
+    \toprule
+        \textbf{Task} \tiny{(query $\to$ candidate)}        & \textbf{Dataset}             & \textbf{Instruction} (shown 1 out of 4)                                             & \textbf{Domain} & \textbf{Train} & \textbf{Dev} & \textbf{Test} & \textbf{Pool} \\
+        \midrule
+         \multirow{3}{*}{1. $q_t \to c_i$} 
+         & VisualNews~\citep{liu2020visual}                 & Identify news-related image match with the description          & News      & 99K    & 20K        & 20K    & 542K   \\
+         & MSCOCO~\citep{lin2014microsoft}                  & Find an everyday image match with caption                      & Misc.     & 100K   & 24.8K        & 24.8K    & 5K   \\
+         & Fashion200K~\citep{han2017automatic}             & Based on fashion description, retrieve matched image             & Fashion   & 15K    & 1.7K         & 1.7K     & 201K   \\
+         \midrule
+         2. $q_{t} \to c_t$ & WebQA~\citep{chang2022webqa}   & Find an paragraph from Wikipedia to answer the question          & Wiki      & 16K    & 1.7K         & 2.4K     & 544K   \\
+         \midrule
+         \multirow{2}{*}{3. $q_t \to (c_i, c_t)$}
+         & EDIS~\citep{liu2023edis}                         & Find a news image matching with the caption                     & News      & 26K    & 3.2K         & 3.2K     & 1M \\
+         & WebQA~\citep{chang2022webqa}                     & Find a Wiki image that answer the question                      & Wiki      & 17K    & 1.7K         & 2.5K     & 403K   \\
+         \midrule
+         \multirow{3}{*}{4. $q_i \to c_t$}
+         & VisualNews~\citep{liu2020visual}                 & Provide a news-related caption for the displayed image               & News      & 100K   & 20K        & 20K    & 537K   \\
+         & MSCOCO~\citep{lin2014microsoft}                  & Find a caption describe the an image                             & Misc.     & 113K   & 5K         & 5K     & 25K   \\
+         & Fashion200K~\citep{han2017automatic}             & Find a description for the fashion item in the image            & Fashion   & 15K    & 4.8K         & 4.8K     & 61K   \\
+         \midrule
+         5. $q_i  \to c_i$ & NIGHTS~\citep{fu2023learning}  & Find an image that is identical to the given image              & Misc.     & 16K    & 2K         & 2K     & 40K    \\
+         \midrule
+         \multirow{2}{*}{6. $(q_i, q_t) \to c_t$} 
+         & OVEN~\citep{hu2023open}                          & Retrieve a Wiki text that answer the given query about the image  & Wiki      & 150K   & 50K        & 50K    & 676K   \\
+         & InfoSeek~\citep{chen2023infoseek}                & Find an article that answers the given question about the image & Wiki      & 141K  & 11K        & 11K    & 611K \\
+         \midrule
+         \multirow{2}{*}{7. $(q_i, q_t) \to c_i$} 
+         & FashionIQ~\citep{wu2021fashion}                  & Find an image to match the fashion image and style note          & Fashion   & 16K    & 2K      & 6K         & 74K    \\
+         & CIRR~\citep{liu2021image}                        &  I'm looking for a similar everyday image with the described changes        & Misc.     & 26K    & 2K      & 4K         & 21K    \\
+         \midrule
+         \multirow{2}{*}{8. $(q_i, q_t) \to (c_i, c_t)$} 
+         & OVEN~\citep{hu2023open}                          & Find a Wiki image-text pair to answer a question regarding an image    & Wiki      & 157K   & 14.7K      & 14.7K         & 335K   \\
+         & InfoSeek~\citep{chen2023infoseek}                & Find a Wiki image-text pair to answers my question about this image    & Wiki      & 143K   & 17.6K      & 17.6K         & 481K \\
+         \midrule
+                       & 10 datasets & 64 instructions & 4 domains & 1.1M & 182K & 190K & 5.6M \\
+         \bottomrule
+    \end{tabular}
+    }
+    
+    \caption{The overview of M-BEIR training/validation/test set. More detailed query instruction design can be found in Appendix.} 
+    \label{tab:dataset}
+    \vspace{-2pt}
+\end{table*}

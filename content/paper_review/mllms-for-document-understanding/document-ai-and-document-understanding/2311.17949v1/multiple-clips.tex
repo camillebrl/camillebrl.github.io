@@ -1,0 +1,93 @@
+% \begin{table}[t]
+% \centering
+% \caption{}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{cccccclclcc}
+% \toprule
+% Dataset &
+%   \multicolumn{2}{c}{ZS-Other} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Other + LP \\ (1)\end{tabular}} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Other + LP\\ (2)\end{tabular}} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Other + LP \\ (3)\end{tabular}} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}Other + LP \\ Original DB\end{tabular}} \\
+% \multicolumn{1}{l}{} & Top-1 & Top-3 & Top-1 & Top-3 & Top-1 & \multicolumn{1}{c}{Top-3} & Top-1 & \multicolumn{1}{c}{Top-3} & Top-1                & Top-3                \\ \midrule
+% Flowers              &       &       &       &       &       &                           &       &                           &                      &                      \\
+% Pets                 &       &       &       &       &       &                           &       &                           &                      &                      \\
+% Cars                 &       &       &       &       &       &                           &       &                           &                      &                      \\
+% Food                 &       &       &       &       &       &                           &       &                           &                      &                      \\
+% ImageNet             &       &       &       &       &       &                           &       &                           &  &  \\ \bottomrule
+% \end{tabular}
+% \label{tab:image_class_other}
+% }
+% \end{table} 
+
+% Please add the following required packages to your document preamble:
+% % \usepackage{multirow}
+% \begin{table}[]
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{lcccccccccc}
+% & \multicolumn{10}{c}{\begin{tabular}[c]{@{}c@{}}CLIP ViT-g-14 \\ LAION-2B\end{tabular}}                                \\ \cmidrule{2-11}
+%                                     & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} & \multicolumn{5}{c}{\textbf{Top-3 Accuracy}} \\ 
+% \multicolumn{1}{c}{\textit{}}       & Flowers  & Pets  & Cars  & Food  & ImageNet & Flowers  & Pets  & Cars  & Food  & ImageNet \\ 
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \multicolumn{1}{r}{Zero Shot}       & 77.35    & 94.33 & 92.92 & 91.55 & 76.64    & 88.60    & 99.45 & 99.46 & 98.10 & 91.72    \\ 
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Retrieved dataset methods}  &          &       &       &       &          &          &       &       &       &          \\
+% \multicolumn{1}{r}{Labels name}     & 86.53    & 94.41 & 93.73 & 91.61 & 77.12    & 92.68    & 99.45 & 99.36 & 97.98 & 91.09    \\
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Target dataset}             & 98.74    & 93.95 & 94.96 & 92.13 & 79.34    & 99.72    & 99.43 & 99.47 & 97.91 & 92.53    \\ 
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Retrieved + Target dataset} &          &       &       &       &          &          &       &       &       &          \\ 
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \\
+% & \multicolumn{10}{c}{\begin{tabular}[c]{@{}c@{}}CLIP ViT-L-14 \\ OpenAI\end{tabular}}                                            \\ \cmidrule{2-11}
+%                                     & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} & \multicolumn{5}{c}{\textbf{Top-3 Accuracy}} \\ 
+% \multicolumn{1}{c}{\textit{}}       & Flowers  & Pets  & Cars  & Food  & ImageNet & Flowers  & Pets  & Cars  & Food  & ImageNet \\ 
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \multicolumn{1}{r}{Zero Shot}       & 79.17    & 93.43 & 77.94 & 97.36 & 75.53    & 89.35    & 99.70 & 95.84 & 98.72 & 91.25    \\  
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Retrieved dataset methods}  &          &       &       &       &          &          &       &       &       &          \\ 
+% \multicolumn{1}{r}{Labels name}     & 87.88    & 94.28 & 85.76 & 97.24 & 76.06    & 93.61    & 99.51 & 97.28 & 98.65 & 92.60    \\  
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Target dataset}             & 98.92    & 94.98 & 90.79 & 94.05 & 79.06    & 99.72    & 99.45 & 98.63 & 98.60 & 92.60    \\  
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Retrieved + Target dataset} &          &       &       &       &          &          &       &       &       &         \\
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \end{tabular}
+% }
+% \caption{}
+% \label{tab:image_class_other}
+% \end{table}
+
+\begin{table}[t]
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{rlllll}
+% & \multicolumn{5}{c}{CLIP ViT-g-14  LAION-2B}    \\ & \multicolumn{5}{c}{CLIP ViT-L-14  OpenAI}  \\ 
+                                    % & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} \\
+\toprule
+\multicolumn{1}{c}{\textit{}}       & Flowers  & Pets  & Cars  & Food  & ImageNet \\ \midrule
+\textit{Zero Shot CLIP ViT-g-14 LAION-2B}   & 77.35    & 94.33 & 92.92 & 91.55 & 76.64    \\
+Ours     & 86.53  \upg{9.18} & 94.41  \upg{0.81} & 93.73  \upg{0.81} & 91.61  \upg{0.06}  & 77.12  \upg{0.48}   \\ \cmidrule(lr){2-6}
+\textit{Zero Shot CLIP ViT-L-14 OpenAI}     & 79.17    & 93.43 & 77.94 & 97.36 & 75.53     \\ 
+Ours& 87.88  \upg{8.71}    & 94.28  \upg{0.85}  & 85.76  \upg{7.82}  & 97.24  \downr{0.12} & 76.06   \upg{0.53}    \\ \bottomrule
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+% \textit{Target dataset}             & 98.74    & 93.95 & 94.96 & 92.13 & 79.34    & 98.92    & 94.98 & 90.79 & 94.05 & 79.06     \\ 
+% \textit{Retrieved + Target} &    93.66\downr{-5.08}     &   95.34\upg{1.39}    &    94.44\downr{0.52}   &    93.54\upg{1.41}   &    81.97\upg{2.63}      &     96.57\downr{2.35}     &    95.20\upg{0.22}   &   90.06\downr{0.73}    &   94.95\upg{0.9}    &      82.10\upg{3.04}    \\ 
+% \cmidrule(lr){2-6}
+% \cmidrule(lr){7-11}
+\end{tabular}
+}
+\caption{Performance of different CLIP backbones by using our method. We can see a consistent performance improvement in each of the datasets. }
+\label{tab:image_class_other}
+\end{table}

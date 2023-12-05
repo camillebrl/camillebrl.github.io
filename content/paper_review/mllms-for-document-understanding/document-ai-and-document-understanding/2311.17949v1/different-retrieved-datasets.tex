@@ -1,0 +1,77 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \begin{table}[t]
+% \centering
+% \resizebox{0.8\textwidth}{!}{%
+% \begin{tabular}{rlllll}
+%     & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} & \multicolumn{1}{c}{ImageNet} \\
+% \cmidrule(lr){2-6}\textit{ZeroShot}     & 71.15             & 89.04            & 64.71             & 88.73            & 68.33             \\
+% \textit{LP with $\bDyU^{image}$}        &    61.86 \downr{-9.29}       &   80.84 \downr{-8.20}   &  56.60 \downr{-8.10} &  88.35 \downr{-0.38}               &                   \\
+% \textit{LP with $\bDyU^{cls}$}          & 86.24 \upg{15.09} & 92.61 \upg{3.57} & 80.52 \upg{15.81} & 88.97 \upg{0.24} & 69.05 \upg{0.72}  \\
+% \textit{LP with $\bDyR^{cls}$}          &  86.32 \upg{15.17} & 92.64 \upg{3.60} & 80.48 \upg{15.77} & 88.35 \downr{-0.38} & 65.61 \downr{-2.72}  \\
+% \textit{LP with $\bDyU^{cls+cap}$}      & 85.44 \upg{14.29}      & 92.45 \upg{3.41} & 80.33 \upg{15.62} & 88.89 \upg{0.16} &       69.54 \upg{1.21}       \\
+% \textit{LP with $\bDyR^{cls+cap}$}      & 86.27 \upg{15.12}      & 92.56 \upg{3.52} & 81.82 \upg{17.11} & 88.87 \upg{0.14} &       69.78 \upg{1.45}       \\
+% \textit{LP with $\bDyU^{cls+desc}$}     &                   & 92.59 \upg{3.55}            &                   & 88.87 \upg{0.14}           & 69.80 \upg{1.47}   \\
+% \textit{LP with $\bDyR^{cls+desc}$}     &                   &  \upg{}            &                   &  \upg{}           &  \upg{}   \\
+% \textit{LP with $\bDyU^{cls+cap+desc}$} &                   & 92.78 \upg{3.74}            &                   & 88.86 \upg{0.13}            &       70.14 \upg{1.81}        \\
+% \textit{LP with $\bDyR^{cls+cap+desc}$} &                   &  \upg{}            &                   &  \upg{}            &        \upg{}        \\
+% \cmidrule(lr){2-6}
+% \end{tabular}%
+% }
+% \caption{Accuracy results for different retrieval techniques. \textit{Image} retrieved images using LAiON to search for images similar to the query image. \textit{Cap} . \textit{Cls}. \textit{Desc}}
+% \label{tab:diff_retrieval_techniques}
+% \end{table}
+
+
+% \begin{table*}
+% \centering
+% \resizebox{0.78\textwidth}{!}{%
+% \begin{tabular}{cccclllll}
+% \toprule
+%        $\bsetU^{\texttt{cls}}$ & $\bsetU^{\texttt{cap}}$ & $\bsetU^{\texttt{desc}}$ & Refined & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} & \multicolumn{1}{c}{ImageNet} \\\midrule%(lr){5-9}
+% \xfill{.1em} & \multicolumn{2}{c}{\textit{ZeroShot CLIP-B-16}}   &  \xfill{.1em}  & 71.15                       & 89.04                    & 64.71                    & 88.73                    & 68.33                        \\ \midrule
+%                       % &                       &                        &                & 61.86 \downr{-9.29}         & 80.84 \downr{-8.20}      & 56.60 \downr{-8.10}      & 88.35 \downr{-0.38}      &                              \\
+% \CheckmarkBold        &                       &                        &                & 86.24 \upg{15.09}  & 92.61 \upg{3.57} & 80.52 \upg{15.81} & 88.97 \upg{0.24}         & 69.05 \upg{0.72}             \\
+% \CheckmarkBold        &                       &                        & \CheckmarkBold & 86.32 \upg{15.17}  & 92.64 \upg{3.60} & 80.48 \upg{15.77} & 88.35 \downr{-0.38}      & 67.04 \downr{-1.29}          \\ \midrule
+% \CheckmarkBold        & \CheckmarkBold        &                        &                & 85.44 \upg{14.29}  & 92.45 \upg{3.41} & 80.33 \upg{15.62} & 88.89 \upg{0.16}         & 69.54 \upg{1.21}             \\
+% \CheckmarkBold        & \CheckmarkBold        &                        & \CheckmarkBold & 86.27 \upg{15.12}  & 92.56 \upg{3.52} & 81.82 \upg{17.11} & 88.87 \upg{0.14}         & 69.78 \upg{1.45}             \\ \midrule
+% \CheckmarkBold        &                       & \CheckmarkBold         &                & 85.77 \upg{14.62}       & 92.59 \upg{3.55} & 80.81 \upg{17.10}      & 88.87 \upg{0.14}         & 69.80 \upg{1.47}             \\
+% \CheckmarkBold        &         & \CheckmarkBold         & \CheckmarkBold &   86.09 \upg{14.94}  & 92.67 \upg{3.63}           &  80.79 \upg{17.08}  & 88.63 \downr{-0.10}                   & 69.73 \upg{1.40}                       \\ \midrule
+% \CheckmarkBold        & \CheckmarkBold        & \CheckmarkBold         &                & 86.36 \upg{15.21}       & 92.78 \upg{3.74} & 82.32 \upg{17.61}     & 88.86 \upg{0.13}         & 70.14 \upg{1.81}             \\
+% \CheckmarkBold        & \CheckmarkBold        & \CheckmarkBold         & \CheckmarkBold &  86.62 \upg{15.47}  & 93.00 \upg{3.96}           & 82.38 \upg{17.67} & 88.82 \upg{0.09}                   & 70.33 \upg{2.00}                      \\
+% \bottomrule
+% \end{tabular}%
+% }
+% \caption{\small{Accuracy results by training our method with the different retrieval techniques $\bsetU^{\texttt{cls}}$, $\bsetU^{\texttt{cap}}$, $\bsetU^{\texttt{desc}}$ and the effect of our refinement procedure.}}
+% \label{tab:diff_retrieval_techniques}
+% \vspace{-4mm}
+% \end{table*}
+
+\begin{table*}
+\centering
+\resizebox{0.7\textwidth}{!}{%
+\begin{tabular}{@{}rccc|ccccc@{}}
+\toprule
+\multirow{2}{*}{Dataset} & \multicolumn{3}{c|}{Number of Images} & \multicolumn{5}{c}{Accuracy Results (\%)} \\
+ & \multicolumn{3}{c|}{\small{(Unrefined / Refined)}} & \multicolumn{5}{c}{\small{(Unrefined / Refined)}} \\
+% \cmidrule(l){2-4} \cmidrule(l){5-9}
+\midrule
+ & $\bsetU^{\texttt{cls}}$ & $\bsetU^{\texttt{cap}}$ & $\bsetU^{\texttt{des}}$ & Zero-Shot & $\bsetU^{\texttt{cls}}$ & $\bsetU^{\texttt{cls+cap}}$ & $\bsetU^{\texttt{cls+des}}$ & $\bsetU^{\texttt{cls+cap+des}}$ \\
+\midrule
+Pets & \begin{tabular}[c]{@{}c@{}}4096\\4011\end{tabular} & \begin{tabular}[c]{@{}c@{}}50653\\50428\end{tabular} & \begin{tabular}[c]{@{}c@{}}23226\\22973\end{tabular} & 89.04 & \begin{tabular}[c]{@{}c@{}}92.61 \upg{3.57}\\92.64 \upg{3.60}\end{tabular} & \begin{tabular}[c]{@{}c@{}}92.45 \upg{3.41}\\92.56 \upg{3.52}\end{tabular} & \begin{tabular}[c]{@{}c@{}}92.59 \upg{3.55}\\92.67 \upg{3.63}\end{tabular} & \begin{tabular}[c]{@{}c@{}}92.78 \upg{3.74}\\\textbf{93.00} \upg{3.96}\end{tabular} \\ 
+\midrule
+Flowers & \begin{tabular}[c]{@{}c@{}}11197\\10938\end{tabular} & \begin{tabular}[c]{@{}c@{}}27932\\27506\end{tabular} & \begin{tabular}[c]{@{}c@{}}79508\\75111\end{tabular} & 71.15 & \begin{tabular}[c]{@{}c@{}}86.24 \upg{15.09}\\86.32 \upg{15.17}\end{tabular} & \begin{tabular}[c]{@{}c@{}}85.44 \upg{14.29}\\86.27 \upg{15.12}\end{tabular} & \begin{tabular}[c]{@{}c@{}}85.77 \upg{14.62}\\86.09 \upg{14.94}\end{tabular} & \begin{tabular}[c]{@{}c@{}}86.36 \upg{15.21}\\\textbf{86.62} \upg{15.47}\end{tabular} \\
+\midrule
+Cars & \begin{tabular}[c]{@{}c@{}}21514\\19416\end{tabular} & \begin{tabular}[c]{@{}c@{}}149820\\139458\end{tabular} & \begin{tabular}[c]{@{}c@{}}156491\\120293\end{tabular} & 64.71 & \begin{tabular}[c]{@{}c@{}}80.52 \upg{15.81}\\80.48 \upg{15.77}\end{tabular} & \begin{tabular}[c]{@{}c@{}}80.33 \upg{15.62}\\81.82 \upg{17.11}\end{tabular} & \begin{tabular}[c]{@{}c@{}}80.81 \upg{17.10}\\80.79 \upg{17.08}\end{tabular} & \begin{tabular}[c]{@{}c@{}}82.32 \upg{17.61}\\\textbf{82.38} \upg{17.67}\end{tabular} \\
+\midrule
+Food101 & \begin{tabular}[c]{@{}c@{}}11100\\7062\end{tabular} & \begin{tabular}[c]{@{}c@{}}619521\\362849\end{tabular} & \begin{tabular}[c]{@{}c@{}}56929\\31228\end{tabular} & 88.73 & \begin{tabular}[c]{@{}c@{}}\textbf{88.97} \upg{0.24}\\88.35 \downr{-0.38}\end{tabular} & \begin{tabular}[c]{@{}c@{}}88.89 \upg{0.16}\\88.87 \upg{0.14}\end{tabular} & \begin{tabular}[c]{@{}c@{}}88.87 \upg{0.14}\\88.63 \downr{-0.10}\end{tabular} & \begin{tabular}[c]{@{}c@{}}88.86 \upg{0.13}\\88.82 \upg{0.09}\end{tabular} \\
+\midrule
+Imagenet & \begin{tabular}[c]{@{}c@{}}198044\\21725\end{tabular} & \begin{tabular}[c]{@{}c@{}}558868\\25000\end{tabular} & \begin{tabular}[c]{@{}c@{}}502898\\61160\end{tabular} & 68.33 & \begin{tabular}[c]{@{}c@{}}69.05 \upg{0.72}\\67.04 \downr{-1.29}\end{tabular} & \begin{tabular}[c]{@{}c@{}}69.54 \upg{1.21}\\69.78 \upg{1.45}\end{tabular} & \begin{tabular}[c]{@{}c@{}}69.80 \upg{1.47}\\69.73 \upg{1.40}\end{tabular} & \begin{tabular}[c]{@{}c@{}}70.14 \upg{1.81}\\\textbf{70.33} \upg{2.00}\end{tabular} \\
+\bottomrule
+\end{tabular}
+}
+\vspace{-1mm}
+\caption{Results of training with retrieval techniques $\bsetU^{\texttt{cls}}$, $\bsetU^{\texttt{cap}}$, $\bsetU^{\texttt{desc}}$ and the impact of refinement alongside the retrieved number of images.}
+\label{tab:combined_data}
+\vspace{-3mm}
+\end{table*}

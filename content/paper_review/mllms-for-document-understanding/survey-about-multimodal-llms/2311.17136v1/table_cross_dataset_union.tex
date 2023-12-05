@@ -1,0 +1,38 @@
+\definecolor{positive}{HTML}{008000} % You can use a custom color for positive changes
+\definecolor{negative}{HTML}{FF0000}
+
+\begin{table}[ht!]
+    \centering
+    \large
+    \resizebox{0.49\textwidth}{!}{%
+    \begin{tabular}{llcc|ccc|ccc}
+    \toprule
+     % Recall@10
+    &   & \textbf{ZS} & \textbf{ZS} & \textbf{ZS}&
+    \textbf{Multi.} & \textbf{UniIR} & \textbf{ZS} & \textbf{Multi.} & \textbf{UniIR}\\
+    \cmidrule(lr){3-3} \cmidrule(lr){4-4}\cmidrule(lr){5-5} \cmidrule(lr){6-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}\cmidrule(lr){9-9}\cmidrule(lr){10-10}
+        \textbf{Task}        & \textbf{Dataset}  & SigLIP & BLIP2 &  CLIP  &  CLIP$_{\text{SF}}$ & CLIP$_{\text{SF}}$  & BLIP & BLIP$_{\text{FF}}$ & BLIP$_{\text{FF}}$\\
+         \midrule
+         2.
+         & WebQA     & 34.1 & 35.2 & 32.1  &35.0 &51.8 & 38.1 & 36.7 & 37.1\\
+         \midrule
+         3.
+         & WebQA     & 2.2 & 0.0 &5.5  &10.2 &20.8  & 0.0 & 30.4 & 35.3\\
+         \midrule
+         6.
+         & OVEN      & 0.0 & 0.0 &0.0  &8.9 &6.2  & 0.0 & 10.9 & 12.0\\
+         \midrule
+         7.
+         & CIRR      & 7.1 & 6.2 &5.4  &14.1 &16.9  & 7.4 & 15.7 & 34.1\\
+         \midrule
+         8.
+         & OVEN      & 27.2 & 13.8 &24.5  &34.4 &43.7 & 10.1 & 20.5 & 24.9\\
+         \midrule
+         - & Average & 14.1 & 11.0 & 13.5 &20.5 &27.9  & 11.1 & 22.8 & 28.7 \\
+         \bottomrule
+    \end{tabular}
+    }
+    \caption{\textbf{Held-out dataset generalization} experiments (Recall@5) on M-BEIR: we train a Multi-task (Multi.) and a UniIR model on 7 held-in datasets and test on 3 held-out datasets (WebQA, OVEN, CIRR).}
+    \label{tab:held_out_union}
+    \vspace{-2pt}
+\end{table}

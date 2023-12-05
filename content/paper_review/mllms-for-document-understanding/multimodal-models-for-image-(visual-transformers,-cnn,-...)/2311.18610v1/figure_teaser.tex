@@ -1,0 +1,19 @@
+\begin{figure}
+\twocolumn[{%
+\renewcommand\twocolumn[1][]{#1}%
+\maketitle
+\begin{center}
+    \centering
+    \includegraphics[width=0.98\textwidth]{figs/teaser_scene0549_01_000900_horizontal_new.pdf}
+    \vspace{-3mm}
+    \caption{
+    We introduce \OURS, a weakly-supervised approach for CAD model retrieval and alignment to a single RGB image.
+    Unlike existing methods that require expensive CAD associations to real images for supervision, our approach is only trained on synthetic data, yet it can demonstrate superior performance on real-world datasets. 
+    We develop a probabilistic model to capture inherent depth/scale ambiguities in monocular 3D perception, leveraging diffusion to model 3D shape, pose, and scale for retrieval and alignment. 
+    \OURS{} predicts a plausible distribution of multiple candidate CAD retrieval and alignments for the objects in an RGB image.
+    }
+    \label{figure:teaser}
+    \vspace{-1mm}
+\end{center}%
+}]
+\end{figure}

@@ -1,0 +1,182 @@
+% \begin{table}[t]
+% \centering
+% \caption{}
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{cccccclclcc}
+% \toprule
+% Dataset &
+%   \multicolumn{2}{c}{ZS-CLIP} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}CLIP + LP \\ (1)\end{tabular}} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}CLIP + LP\\ (2)\end{tabular}} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}CLIP + LP \\ (3)\end{tabular}} &
+%   \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}CLIP + LP \\ Original DB\end{tabular}} \\
+% \multicolumn{1}{l}{} & Top-1 & Top-3 & Top-1 & Top-3 & Top-1 & \multicolumn{1}{c}{Top-3} & Top-1 & \multicolumn{1}{c}{Top-3} & Top-1                & Top-3                \\ \midrule
+% Flowers              & 71.32 & 83.44 & 86.44 & 92.83 &       &                           &       &                           & 96.41                & 99.12                \\
+% Pets                 & 89.07 & 98.66 & 92.04 & 99.21 &       &                           &       &                           & 92.83                & 99.21                \\
+% Cars                 & 64.73 & 89.05 & 78.98 & 94.33 &       &                           &       &                           & 85.41                & 96.68                \\
+% Food                 & 87.69 & 96.96 & 87.81 & 96.38 &       &                           &       &                           & 89.05                & 96.82                \\
+% ImageNet             & 60.89 & 80.76 & 65.63 & 81.92 &       &                           &       &                           & 
+% & \\ \bottomrule
+% \end{tabular}
+% }
+% \label{tab:image_class_clip}
+% \end{table}
+% Please add the following required packages to your document preamble:
+% \begin{table}[]
+% \centering
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{rccccccc}
+% \toprule
+%                                                         & \multicolumn{2}{c}{Prompt Technique} & \multicolumn{5}{c}{Dataset Top-1 Accuracy} \\
+% \multicolumn{1}{l}{\textit{Method}}                     & Classnames       & ZS Template       & Flowers & Pets  & Cars  & Food  & ImageNet \\ \midrule
+% \multirow{2}{*}{CLIP ViT-B-16}                          &   \checkmark     &                   & 65.77   & 87.41 & 64.08 & 87.79 & 66.62    \\
+%                                                         &                  &  \checkmark       & 71.15   & 89.04 & 64.71 & 88.73 & 68.33    \\ \midrule
+% \multicolumn{1}{l}{\textit{Retrieved dataset methods}}  &                  &                   &         &       &       &       &          \\
+% \multirow{2}{*}{Labels name}                            &  \checkmark      &                   & 85.54   & 89.16 & 79.23 & 83.16 & 67.34    \\
+%                                                         &                  &  \checkmark       & 86.57   & 90.14 & 79.32 & 88.69 & 68.51    \\ 
+% Labels name + Caption                                   &                  &  \checkmark       & 88.89   & 93.35 & 81.37 & 89.09 & -        \\
+% Labels name + Descriptor                                &                  &  \checkmark       & -       & 92.42 & -     & ?     & 69.80    \\
+% Labels name + Caption + Descriptor                      &                  &  \checkmark       & -       & 93.16 & -     & 88.74 & -        \\ \midrule
+% \multicolumn{1}{l}{\textit{Target dataset}}             &                  &  \checkmark       & 96.44   & 92.56 & 85.57 & 89.92 & 74.09    \\ \midrule
+% \multicolumn{1}{l}{\textit{Retrieved + Target dataset}} &                  &  \checkmark       &         &       &       &       &         \\
+% \bottomrule
+% \end{tabular}
+% }
+% \caption{}
+% \end{table}
+
+%%% WITH TOP-3
+% \begin{table}[t]
+% \centering
+% \resizebox{\columnwidth}{!}{%
+% \begin{tabular}{rcccccccccc}
+% % \toprule
+%                                                         & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} & \multicolumn{5}{c}{\textbf{Top-3 Accuracy}} \\
+%                                                         & Flowers  & Pets  & Cars  & Food  & ImageNet & Flowers  & Pets  & Cars  & Food  & ImageNet \\ \cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% CLIP ViT-B-16                                           & 71.15    & 89.04 & 64.71 & 88.73 & 68.33    & 83.72    & 98.66 & 89.07 & 97.45 & 87.19    \\ %\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{\textit{Retrieved}}  &          &       &       &       &          &          &       &       &       &          \\
+% 1                                            & 86.57 {\scriptsize \color{ForestGreen} $\uparrow$15.4}    & 90.14 \upg{1.1} & 79.32 \upg{14.61}& 88.69 {\scriptsize \color{BrickRed}$\downarrow$0.04} & 68.51 \upg{0.18}    & 93.07    & 99.18 & 94.50 & 96.88 & 85.26    \\
+% 1,2                                 & 88.89  \upg{17.7}   & 93.35 \upg{4.3} & 81.37 \upg{16.66} & 89.09 \upg{0.36} & -        & 94.94    & 99.40 & 95.47 & 97.27 & -        \\
+% 1,3                               & -        & 92.42  \upg{3.4}& -     & ?     & 69.80 \upg{1.47}   & -        & 99.29 & -     & ?     & 86.93    \\
+% 1,2,3                 & -        & 93.16 \upg{4.1}& -     & 88.74 \upg{0.01}& -        & -        & 99.40 & -     & 97.30 & -        \\ \cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{\textit{Target}}             & 96.44    & 92.56 & 85.57 & 89.92 & 74.09    & 99.15    & 99.16 & 96.74 & 97.01 & 89.94    \\ %\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{\textit{Retrieved + Target}} &          &       &       &       &          &          &       &       &       &         \\ \cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \end{tabular}
+% }
+% \caption{}
+% \end{table}
+
+%%%% JUST TOP-1
+% \begin{table}[t]
+% \centering
+% \begin{tabular}{rccccc}
+% % \toprule
+% & \multicolumn{5}{c}{\textbf{CLIP-B-16}} \\
+%                                                         & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} \\
+%                                                         & Flowers  & Pets  & Cars  & Food  & ImageNet \\ \cmidrule(lr){2-6}
+% \multicolumn{1}{l}{\textit{ZeroShot}}                                          & 71.15    & 89.04 & 64.71 & 88.73 & 68.33    \\ %\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{\textit{Retrieved}}  &          &       &       &       &                        \\
+% 1                                            & 86.57 {\scriptsize \color{ForestGreen} $\uparrow$15.4}    & 90.14 \upg{1.1} & 79.32 \upg{14.61}& 88.69 {\scriptsize \color{BrickRed}$\downarrow$0.04} & 68.51 \upg{0.18}     \\
+% 1,2                                 & 88.89  \upg{17.7}   & 93.35 \upg{4.3} & 81.37 \upg{16.66} & 89.09 \upg{0.36} & -           \\
+% 1,3                               & -        & 92.42  \upg{3.4}& -     & ?     & 69.80 \upg{1.47}     \\
+% 1,2,3                 & -        & 93.16 \upg{4.1}& -     & 88.74 \upg{0.01}& -         \\ \cmidrule(lr){2-6}
+% \multicolumn{1}{l}{\textit{Target}}             & 96.44    & 92.56 & 85.57 & 89.92 & 74.09       \\ %\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{{\footnotesize Retrieved \& Target}} &          &       &       &       &                 \\ \cmidrule(lr){2-6} 
+% \end{tabular}
+% \caption{}
+% \end{table}
+
+%%% TRANSPOSE
+% \begin{table}[t]
+% \centering
+% \begin{tabular}{rccccc}
+% % \toprule
+% & \multicolumn{5}{c}{\textbf{CLIP-B-16}} \\
+%                                                         & \multicolumn{5}{c}{\textbf{Top-1 Accuracy}} \\
+%                                                         & Flowers  & Pets  & Cars  & Food  & ImageNet \\ \cmidrule(lr){2-6}
+% \multicolumn{1}{l}{\textit{ZeroShot}}                                          & 71.15    & 89.04 & 64.71 & 88.73 & 68.33    \\ %\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{\textit{Retrieved}}  &          &       &       &       &                        \\
+% 1                                            & 86.57 {\scriptsize \color{ForestGreen} $\uparrow$15.4}    & 90.14 \upg{1.1} & 79.32 \upg{14.61}& 88.69 {\scriptsize \color{BrickRed}$\downarrow$0.04} & 68.51 \upg{0.18}     \\
+% 1,2                                 & 88.89  \upg{17.7}   & 93.35 \upg{4.3} & 81.37 \upg{16.66} & 89.09 \upg{0.36} & -           \\
+% 1,3                               & -        & 92.42  \upg{3.4}& -     & ?     & 69.80 \upg{1.47}     \\
+% 1,2,3                 & -        & 93.16 \upg{4.1}& -     & 88.74 \upg{0.01}& -         \\ \cmidrule(lr){2-6}
+% \multicolumn{1}{l}{\textit{Target}}             & 96.44    & 92.56 & 85.57 & 89.92 & 74.09       \\ %\cmidrule(lr){2-6} \cmidrule(lr){7-11}
+% \multicolumn{1}{l}{{\footnotesize Retrieved \& Target}} &          &       &       &       &                 \\ \cmidrule(lr){2-6} 
+% \end{tabular}
+% \caption{}
+% \end{table}
+
+
+% \begin{table}[t]
+% \centering
+% \resizebox{\textwidth}{!}{%
+% \begin{tabular}{@{}rrclllllll@{}}
+
+%    &          &          & \multicolumn{4}{c}{Retrieved Method}                                                                                                &        & Retrieved \\
+%  &          & ZeroShot & \multicolumn{1}{c}{1}                                                      & \multicolumn{1}{c}{1,2}                                                    & \multicolumn{1}{c}{1,3}                                                 & \multicolumn{1}{c}{1,2,3}                                               & Target & Target    \\ \cmidrule(lr){3-3} \cmidrule(lr){4-7} \cmidrule(lr){8-9}
+%  & Flowers  & 71.15    & 86.57 \upg{15.4} & 88.89 \upg{17.7} & \multicolumn{1}{c}{-}                               & \multicolumn{1}{c}{-}                                                     & 96.44  &  \multicolumn{1}{c}{?}          \\
+%  & Pets     & 89.04    & 90.14 \upg{1.1} & 93.35 \upg{4.3} & 92.42\upg{3.4}   & 93.16 \upg{4.1}  & 92.72  &  93.46 \upg{0.74}  \\
+%  & Cars     & 64.71    & 79.32 \upg{14.61} & 81.37 \upg{16.66} &  \multicolumn{1}{c}{-}                            &    \multicolumn{1}{c}{-}                                                     & 85.57  &           \\
+%  & Food     & 88.73    & 88.69 \downr{0.04} & 89.09 \upg{0.36} &  \multicolumn{1}{c}{?}                           & 88.74 \upg{0.01}  & 89.92  &           \\
+%  & ImageNet & 68.33    & 68.51 \upg{0.18}  & \multicolumn{1}{c}{-}                             & 69.80 \upg{1.47} &    \multicolumn{1}{c}{-}                                                    & 74.02  &  
+%  \\ \cmidrule(lr){3-3} \cmidrule(lr){4-7} \cmidrule(lr){8-9}
+% \end{tabular}%
+% }
+% \caption{}
+% \label{tab:my-table}
+% \end{table}
+
+% \begin{table}[t]
+% \resizebox{0.9\textwidth}{!}{%
+% \begin{tabular}{rlllll}
+% \multicolumn{1}{r}{}                                                                            & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} & \multicolumn{1}{c}{ImageNet} \\ \cmidrule(lr){2-6}
+% \textit{ZeroShot}                                                                  & 71.15                       & 89.04                    & 64.71                    & 88.73                  & 68.33                        \\
+% % \textit{LP with $\bDyU^{cls}$}                                                     & 86.57 \upg{15.4}            & 90.14 \upg{1.1}          & 79.32 \upg{14.61}        & 88.69 \downr{0.04}     & 68.51 \upg{0.18}             \\
+% % \textit{LP with $\bDyU^{cls+cap}$}                                                 & 85.69 \upg{14.54}           & 92.23 \upg{3.19}         & 79.12 \upg{14.41}        & 88.74 \upg{0.01}       &               \\
+% \textit{LP with $\bDyU^{cls}$}                                            & 86.24 \upg{15.09}           & 92.61 \upg{3.57}         & 80.52 \upg{15.81}        & 88.97 \upg{0.24}       &        69.05 \upg{0.72}    \\
+% % \textit{LP with $\bDyU^{cls+cap}$ (Scikit)}                                        & 85.35 \upg{14.2}            & 92.45 \upg{3.41}         & 80.33 \upg{15.62}        & 88.89 \upg{0.16}       &          \\
+
+% % \textit{\begin{tabular}[c]{@{}c@{}}LoRa with $\bDyU^{cls}$\end{tabular}}                 & 84.29 \upg{13.14}           & 92.56 \upg{3.52}         & 80.55 \upg{15.84}        & 88.98 \upg{0.25}      &                              \\ 
+% \cmidrule(lr){2-6}
+% \textit{\begin{tabular}[c]{@{}c@{}}LP with Target dataset\end{tabular}}            & 96.41                       & 92.72                    & 85.64                    & 92.08                    & 78.66                        \\
+% % \textit{\begin{tabular}[c]{@{}c@{}}LP with $\bDyU$ + Target datasets\end{tabular}} & 94.10 \downr{2.00}         & 93.46 \upg{0.74}         &   84.80 \downr{0.84}    &   92.15 \upg{0.07}       &  78.57 \downr{0.09}                          \\ 
+% \textit{\begin{tabular}[c]{@{}c@{}}LP with $\bDyU$ + Target datasets \end{tabular}} &  96.57 \upg{0.16}*      &    93.62 \upg{0.9}    &    86.03 \upg{0.39}    &    92.15 \upg{0.07}    &   78.94 \upg{0.28}    \\ 
+
+% % \textit{\begin{tabular}[c]{@{}c@{}}LoRa with Target dataset\end{tabular}}            &                       & 93.02                   &   84.09               &                     &                         \\
+
+
+% % \textit{\begin{tabular}[c]{@{}c@{}}LoRa with $\bDyU$ + Target datasets\end{tabular}} &              &   &                          &                          &                            \\ \cmidrule(lr){2-6}
+% \end{tabular}
+% }
+% \caption{Our best results of training a \textbf{LinearProbe} (LP) on the retrieved dataset $\bDyU$, the train split of the target dataset and the combination of these two. \hl{add the internet explorer row, include the number of images they had and the number of descriptions}}% *Reducing the number of retrieved images, we need to try with  the refinement in the loop}
+% % \caption{Accuracy of CLIP-B-16 for each dataset on ZeroShot setting and using LinearProbe (LP) or LoRa trained on our retrieved dataset $\bDyU$ or the training set of the target dataset or the combination of them.}
+% \label{tab:main_table}
+% \end{table}
+
+\begin{table}
+\centering
+\resizebox{0.49\textwidth}{!}{%
+\centering
+\begin{tabular}{rlllll}
+\toprule
+
+                                                                                    & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} & \multicolumn{1}{c}{ImageNet} \\ \cmidrule(lr){2-6}
+% \textit{ZeroShot ResNet-50}                                       & 66.22                       & 85.72                    & -                        & 80.97                    & -                            \\
+% Best Performance                                                                    & \upg{}                      & \upg{}                   &  \upg{}                  &  \upg{}                  &  \upg{}                      \\ \cmidrule(lr){2-6}
+% CLIP-ResNet-50 Linear Probe w/ Training  Dataset                                    & 92.36                       & 88.33                    & -                        & 86.15                    & -                            \\
+% CLIP-ResNet-50 Linear Probe w/ Training  Dataset+$\bDyU$                            & 90.39  \upg{}               & 91.17                    & -                        & 85.97                    & -                            \\
+% Internet Explorer \cite{} ResNet-50                                                 & 99.10                       & 90.80                    & -                        & 84.60                    & -                            \\
+\cmidrule(lr){2-6}\textit{ZS CLIP-B-16}                                 & 71.15                       & 89.04                    & 64.71                    & 88.73                    & 68.33                        \\
+Ours                                                                    & 86.62 \upg{15.47}           & 93.00 \upg{3.96}         & 82.38 \upg{17.67}        & 88.97 \upg{0.24}         & 70.33 \upg{2.00}             \\ \cmidrule(lr){2-6}
+LP w/ $\mathbf{T}_r$                                       & 96.41                       & 92.72                    & 85.64                    & 92.08                    & 78.66                        \\ 
+\begin{tabular}[c]{@{}c@{}}LP w/ $\bDyU$ + $\mathbf{T}_r$ \end{tabular} & 96.57 \upg{0.16}           & 93.62 \upg{0.9}          & 86.03 \upg{0.39}         & 92.15 \upg{0.07}         & 78.94 \upg{0.28}             \\
+ % Linear Probe w/ Training  Dataset+$\bDyU$                                 & 96.57 \upg{0.16}*           & 93.62 \upg{0.9}          & 86.03 \upg{0.39}         & 92.15 \upg{0.07}         & 78.94 \upg{0.28}  
+ \bottomrule
+\end{tabular}
+}
+% \caption{\small{Our results of training a \textbf{LinearProbe} (LP) on the retrieved dataset $\bDyU$ using the uncertain class names as label with (1) the train split of the target dataset, (2) the combination of these two.}\todo{clarify}}%\hl{add the Internet Explorer row, include the number of images they had and the number of descriptions}}%\EA{is best performance obtained from the search engine images? maybe we can just say ``Ours"?}DONE}% *Reducing the number of retrieved images, we need to try with  the refinement in the loop}
+% % \caption{Accuracy of CLIP-B-16 for each dataset on ZeroShot setting and using LinearProbe (LP) or LoRa trained on our retrieved dataset $\bDyU$ or the training set of the target dataset or the combination of them.}
+\caption{\small{Comparison of training a {LinearProbe} (LP) using (1) the labelled training set ($\mathbf{T}_r$) and (2) the training set ($\mathbf{T}_r$) augmented with the retrieved dataset $\bDyU$.}}
+\label{tab:main_table}
+\vspace{-3mm}
+\end{table}

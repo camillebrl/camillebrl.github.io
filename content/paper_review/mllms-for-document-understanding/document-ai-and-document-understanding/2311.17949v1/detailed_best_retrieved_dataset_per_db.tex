@@ -1,0 +1,38 @@
+% \begin{table}[t]
+% \centering
+% \resizebox{\columnwidth}{!}{%
+% % \begin{tabular}{l|llll|llll}
+% % \toprule
+% %          & \multicolumn{4}{|c}{Uncertain}            & \multicolumn{4}{|c}{Certain}             \\ 
+% %          & Solved & Unsolved & Reverted & Unchanged & Solved  & Unsolved & Reverted & Unchanged \\ \midrule
+% % Cars     & 24.43  & 19.83    & 4.68     & 51.05     &  0.000  &  2.046   &  0.000   &  97.95    \\
+% % Flowers  & 19.36  & 19.50    & 1.02     & 60.11     &  0.867  &  2.371   &  0.000   &  96.76    \\
+% % Pet      & 11.87  & 12.82    & 3.57     & 71.73     &  0.000  &  0.713   &  0.047   &  99.23    \\
+% % Food     &  3.73  & 24.35    & 4.39     & 67.52     &  0.044  &  1.309   &  0.314   &  98.61    \\
+% % ImageNet &  3.93  & 41.94    & 2.80     & 51.33     &  0.115  &  7.373   &  0.015   &  92.37    \\ \bottomrule
+% % \end{tabular}
+% \begin{tabular}{l|ccccc|ccccc}
+% \toprule
+%          & \multicolumn{5}{|c}{Uncertain}           & \multicolumn{5}{|c}{Certain}             \\ 
+%          & Solved & Unsolved & Reverted & Unchanged & \# Images & Solved  & Unsolved & Reverted & Unchanged & \# Images \\ \midrule
+% Cars     & 25.16  & 19.29    & 5.29     & 50.26     & 6331      &  0.000  &  1.871   &  0.001   &  98.07    & 1710      \\
+% Flowers  & 23.03  & 15.71    & 2.81     & 58.44     & 4399      &  1.314  &  1.714   &  0.001   &  96.91    & 1750      \\
+% Pet      & 12.11  & 12.49    & 3.95     & 71.44     & 1569      &  0.000  &  0.714   &  0.048   &  99.24    & 2100      \\
+% Food     &  1.24  & 25.99    & 0.99     & 71.77     & 9607      &  0.011  &  1.259   &  0.000   &  98.73    & 15643     \\
+% ImageNet &  3.93  & 41.94    & 2.80     & 51.33     & 31501     &  0.115  &  7.373   &  0.015   &  92.37    & 18499     \\ \bottomrule
+% \end{tabular}
+% }
+% % \caption{Detailed view of the effect of our method on CLIP's uncertain and certain cases. \textbf{Solved} shows the percentage of cases incorrectly predicted before and corrected. \textbf{Unsolved} cases are incorrectly predicted cases both before and after. \textbf{Reverted} cases refer to cases correctly predicted before but wrongly predicted after we applied our method. \textbf{Unchanged} cases were correctly predicted before fine-tuning and are still correctly predicted afterwards}
+% \caption{Detailed view of the effect of our method on CLIP's uncertain and certain cases. \textbf{Solved} shows the percentage of cases incorrectly predicted before and corrected. \textbf{Unsolved} cases are incorrectly predicted before and after. \textbf{Reverted} cases refer to cases correctly predicted before but wrongly predicted after we applied our method. \textbf{Unchanged} cases were correctly predicted before fine-tuning and are still correctly predicted afterwards. \textbf{\# Images} number of images in the uncertain or certain set}
+% \label{tab:detailed_clip_imgclass}
+% \end{table}
+\begin{figure}%{r}{0.5\textwidth}
+% \vspace{-10mm}
+\centering
+\vspace{-3mm}
+\includegraphics[width=0.33\textwidth]{results/detailed_performance_per_dataset.pdf}\vspace{-2mm}
+\caption{\small{Analysis of improvements or certain/uncertain instances: \textbf{Solved}: shows the percentage of cases incorrectly predicted before linear probe and corrected afterwards. \textbf{Unsolved} cases are incorrectly predicted before and after when using search engine data; \textbf{Reverted}: instances predicted correctly when using CLIP but wrongly predicted after linear probe; \textbf{Unchanged}: cases were correctly predicted before fine-tuning and are still correctly predicted afterwards.}} %\textbf{\# Images} number of images in the uncertain or certain set}
+\label{tab:detailed_clip_imgclass}
+\vspace{-3mm}
+\end{figure}
+

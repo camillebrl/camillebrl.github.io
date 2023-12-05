@@ -1,0 +1,17 @@
+% \begin{table}[t]
+\begin{wraptable}[]{}{}
+\centering
+\resizebox{0.5\textwidth}{!}{%
+\begin{tabular}{clllll}
+\toprule
+       & \multicolumn{1}{c}{Flowers} & \multicolumn{1}{c}{Pets} & \multicolumn{1}{c}{Cars} & \multicolumn{1}{c}{Food} \\ \midrule%& \multicolumn{1}{c}{ImageNet} \\\midrule%(lr){5-9}
+ \textit{ZeroShot CLIP-B-16}& 71.15                       & 89.04                    & 64.71                    & 88.73  \\ %& 68.33                        \\ 
+ \textit{Search Image using LAION-5B}& 61.86 \downr{-9.29}         & 80.84 \downr{-8.20}      & 56.60 \downr{-8.10}      & 88.35 \downr{-0.38}      &                              \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Accuracy results by training our method with searching images by certain images using LAION-5B}
+\label{tab:image_based_retrieved}
+% \vspace{-2em}
+% \end{table}
+\end{wraptable}
