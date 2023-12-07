@@ -6,9 +6,9 @@ math: true
 author: ["Camille Barboule"]
 categories: ["my_researches"]
 ---
-I will explore here the inner workings of Multimodal Large Language Models (MLLMs), integrating both linguistic and visual data processing. This post will delve into their different architectures, how they process and merge diverse data types, and the principles behind their functionalities.
 
 ---
+I will explore here the inner workings of Multimodal Large Language Models (MLLMs), integrating both linguistic and visual data processing. This post will delve into their different architectures, how they process and merge diverse data types, and the principles behind their functionalities.
 
 Not all multimodal systems are LLMs: text-to-image models (Midjourney, Stable Diffusion, Dall-E are multimodal but do not have a language model component). Multimodal models can mean several things:
 - Input and output are of different modalities (e.g. text-to-image, image-to-text)
