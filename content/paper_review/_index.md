@@ -1,6 +1,6 @@
 ---
 title: "Paper Review"
-description: "Discover insightful reviews of research papers."
+description: "Discover automatic reviews (done by gpt3.5) of research papers."
 ---
 
-Welcome to the "Paper Review" category. Here, you'll dive into reviews and summaries of noteworthy research papers I have done.
+Welcome to the "Paper Review" category. Here, you'll dive into automatic reviews and summaries research papers done by gpt3.5.

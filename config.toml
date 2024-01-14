@@ -101,13 +101,13 @@ weight = 30
         title = "Welcome to my blog ! "
     
     [[params.homeSections]]
-    title = "Implementation Tutorials"
+    title = "Tutorials"
     description = "Explore our collection of detailed tutorials that guide you through the implementation of various projects and concepts. These tutorials provide step-by-step instructions to help you learn and build."
-    category = "implementation_tutorials"
+    category = "tutorials"
 
     [[params.homeSections]]
     title = "Paper Review"
-    description = "Dive into in-depth reviews of research papers, academic studies, and scholarly articles. My paper reviews offer insights and summaries of academic papers"
+    description = "Discover automatic reviews (done by gpt3.5) of research papers."
     category = "paper_review"
 
     [[params.homeSections]]
