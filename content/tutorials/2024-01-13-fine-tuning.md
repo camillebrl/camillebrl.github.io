@@ -12,7 +12,6 @@ Here is a simple tutorial, accessible to everyone, on Fine-Tuning Causal Languag
 
 *Causal LLMs are the typical LLMs you heard about (gpt-type, llama-type, falcon-type, claude-type, etc), as opposed to Masked Language Models of Bert-type and Seq-to-Seq language models of T5-type. If you want to know more about the different types of LLMs, I recommend you to read this [blog post](https://medium.com/@tom_21755/understanding-causal-llms-masked-llm-s-and-seq2seq-a-guide-to-language-model-training-d4457bbd07fa).*
 
-[TOC]
 
 # Introduction
 Causal Language Models are trained using 3 steps:
