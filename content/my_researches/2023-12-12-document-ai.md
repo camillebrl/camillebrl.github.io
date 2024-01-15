@@ -1,6 +1,6 @@
 ---
 title: Document AI Models
-date: 2023-12-12
+date: 2024-01-05
 tags: ["DocumentAI"]
 math: true
 author: ["Camille Barboule"]
@@ -43,7 +43,7 @@ as the classified tokens have to be correctly aggregated into fields and fields 
 
 ## 2.1. Datasets for Information Extraction from documents
 
-### 2.1.1. taset for Key Information Localization and Extraction (KILE) and Line Item Recognition (LIR)
+### 2.1.1. Dataset for Key Information Localization and Extraction (KILE) and Line Item Recognition (LIR)
 [DocILE: Document Information Localization and Extraction Benchmark](https://github.com/rossumai/docile) is a large-scale research benchmark for cross-evaluation of machine learning methods for Key Information Localization and Extraction (KILE) and Line Item Recognition (LIR) from semi-structured business documents such as invoices, orders etc. Such large-scale benchmark was previously missing (Skalický et al., 2022), hindering comparative evaluation. DocILE is the largest dataset of business documents with KILE and LIR labels for 106680 documents (6680 annotated and 100k synthetic) and almost 1M unlabeled documents for unsupervised pre-training.
 <img src="docice_LIR.PNG" width="500"/>
 <img src="docile_KILE.PNG" width="500"/>
@@ -106,8 +106,42 @@ PlotQA se positionne donc comme un dataset crucial pour faire progresser la rech
 
 
 ## 2.2. Models for information extraction in documents
-### 2.2.1. Models dedicated to information extraction in documents
-#### LayoutLM : Document Foundation Model
+There are 3 models-approaches for information extraction in documents: 
+- Most of the well-known approaches use a Vision Encoder to handle the layout-information of the document and an OCR method to retrieve the text from the document. They handle both inputs in the model through a Language Model, which is used to exploit these informations for information extraction.
+- Some other approaches do not use any Vision Encoder, but exploit rather spatial informations extracted from the OCR (like bounding boxes, ...).
+- Some more recent approaches get rid of OCR and have a Vision Encoder only. This input is also handled by a language model for information extraction. This is the case with what we call Multimodal Large Language Models (MLLMs).
+
+Before going in detail in these different methods, let's explain what these Vision Encoder are and how they work.
+
+### 2.2.1. Vision Encoders: how do they work?
+#### 2.2.1.1. ViT: Visual Transformer
+**to complete**
+#### 2.2.1.2. SwinViT: hierarchical Visual Transformer whose representation is computed with shifted windows.
+Les [Swin Transformers](https://arxiv.org/pdf/2103.14030.pdf), qui est un type spécifique de Visual Transformer, qui lui permet de traiter des patchs de toute petite taille (ressemblant à un pixel) sans augmenter la complexité computationnelle du modèle. En effet, cela est rendu possible grâce à l'approche "Shifted Window" du visual transformer: on découpe l'image (la page du document) en tout petits patchs, et la self-attention n'est calculée qu'entre chaque patchs d'une même window: le modèle possède une complexité de calcul linéaire par rapport à la taille de l'image d'entrée, grâce au calcul de self-attention uniquement au sein de chaque fenêtre locale (indiquée en rouge):
+<img src="swin_transformer.PNG" width="500"/>
+
+A chaque couche du modèle, la fenêtre se déplace de 2 patchs à droite et 2 patchs en bas. ainsi, in-fine, chaque patch a une visibilité sur tous les autres patchs. Cela permet d'avoir des patchs beaucoup plus petits et donc de se passer de l'OCR pour reconstruire le texte. 
+Le Swin Transformer construit des cartes de caractéristiques hiérarchiques en fusionnant les patches d'image (représentés en gris) dans des couches plus profondes. Il peut donc servir de base générale pour les tâches de classification d'images et de reconnaissance dense. En revanche, les Transformers de vision précédents produisent des cartes de caractéristiques d'une seule basse résolution et ont une complexité de calcul quadratique par rapport à la taille de l'image d'entrée, en raison du calcul de self-attention globalement:
+<img src="swin_transformer2.PNG" width="500"/>
+
+#### 2.2.1.3. [Generative Pretraining from Pixels](https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V2.pdf)
+trained a sequence Transformer called iGPT to auto-regressively predict pixels without incorporating knowledge of the 2D input structure, which is the first attempt at self-supervised image transformer pre-training. After that, self-supervised pre-training for image Transformer became a hot topic in computer vision. 
+**to complete**
+#### 2.2.1.4. [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/pdf/2104.14294.pdf)
+proposed DINO, which pre-trains the image Transformer using self-distillation with no labels. 
+**to complete**
+#### 2.2.1.5. [An Empirical Study of Training Self-Supervised Vision Transformers](https://arxiv.org/pdf/2104.02057.pdf)
+proposed MoCov3 that is based on Siamese networks for self-supervised learning 
+**to complete**
+#### 2.2.1.6. [BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/pdf/2106.08254.pdf)
+adopted a BERT-style pre-training strategy, which first tokenizes the original image into visual tokens, then randomly masks some image patches and feeds them into the backbone Transformer. Similar to the masked language modeling, they proposed a masked image modeling task as the pre-training objective that achieves SOTA performance.
+**to complete**
+#### 2.2.1.7. [IBOT : IMAGE BERT PRE-TRAINING WITH ONLINE TOKENIZER](https://arxiv.org/pdf/2111.07832.pdf)
+presented a self-supervised framework iBOT that can perform masked prediction with an online tokenizer. The online tokenizer is jointly learnable with the MIM objective and dispenses with a multi-stage pipeline where the tokenizer is pre-trained beforehand.
+**to complete**
+
+### 2.2.2. First approach: Vision Encoder + OCR for information extraction in Documents
+#### 2.2.2.1. LayoutLM : Document Foundation Model
 Les modèles de type [LayoutLM](https://github.com/microsoft/unilm/tree/master/layoutlm) sont des modèles de pointe développés par Microsoft pour la compréhension de documents visuellement riches, intégrant à la fois des éléments textuels et des informations de mise en page.
 
 LayoutLM est une méthode de pré-entraînement multi-modale simple mais efficace pour la compréhension de documents et l'extraction d'informations. Il combine des techniques de traitement du langage naturel (NLP) et de vision par ordinateur (CV) pour modéliser conjointement les interactions entre le texte et les informations de mise en page dans les images de documents numérisés. Cela le rend particulièrement utile pour des tâches telles que la compréhension de formulaires et la compréhension de reçus.
@@ -128,7 +162,7 @@ LayoutLMv3 peut être comparé aux modèles plus anciens de Document AI tels que
 LayoutLMv3 utilise des "patches" linéaires pour l'intégration d'images. Cette approche vise à réduire le "goulot d'étranglement" computationnel associé aux réseaux de neurones convolutionnels (CNN). En d'autres termes, plutôt que de s'appuyer sur des CNN complexes pour traiter les images, LayoutLMv3 utilise une méthode plus simple et moins gourmande en ressources. De plus, cette méthode élimine la nécessité de superviser des détecteurs d'objets régionaux pendant l'entraînement, ce qui simplifie le processus d'apprentissage du modèle.
 En ce qui concerne les objectifs de pré-entraînement pour la modalité image, LayoutLMv3 est conçu pour apprendre à reconstruire des tokens d'image discrets à partir de patches masqués, plutôt que de se concentrer sur les pixels bruts ou les caractéristiques régionales. Cela permet au modèle de capturer les structures de mise en page de haut niveau au lieu de se concentrer sur les détails bruyants. En d'autres termes, plutôt que de se perdre dans les détails minutieux de l'image, LayoutLMv3 se concentre sur la compréhension globale de la disposition et de la structure des éléments dans les documents.
 
-#### DiT : Document Image Transformer
+#### 2.2.2.2. DiT : Document Image Transformer
 [DiT: Self-supervised Pre-training for Document Image Transformer](https://arxiv.org/pdf/2203.02378.pdf) released a Transformer dedicated for Document AI tasks. It is a self-supervised pre-training of Vision Transformers (ViTs) trained on Document images.
 The Transformer works this way : Following ViT, they use the vanilla Transformer architecture as the backbone of DiT. they divide a document image into nonoverlapping patches and obtain a sequence of patch embeddings. After adding the 1d position embedding, these image patches are passed into a stack of Transformer blocks with multi-head attention. Finally, they take the output of the Transformer encoder as the representation of image patches. 
 <img src="dit.PNG" width="500"/>
@@ -141,19 +175,7 @@ In detail:
 - They fine-tune our model on four Document AI benchmarks, including the [RVL-CDIP dataset](https://arxiv.org/pdf/1502.07058.pdf) for document image classification, the [PubLayNet dataset](https://arxiv.org/pdf/1908.07836.pdf) for document layout analysis, the [ICDAR 2019 cTDaR dataset](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8978120) for table detection, and the [FUNSD dataset](https://arxiv.org/pdf/1905.13538.pdf) for text detection. 
 - They evaluate the pre-trained DiT models on four publicly available Document AI benchmarks, including the [RVL-CDIP dataset](https://arxiv.org/pdf/1502.07058.pdf) for document image classification, the [PubLayNet dataset](https://arxiv.org/pdf/1908.07836.pdf) for document layout analysis, the [ICDAR 2019 cTDaR dataset](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8978120) for table detection, as well as the [FUNSD dataset](https://arxiv.org/pdf/1905.13538.pdf) for OCR text detection.
 
-#### Nougat : document reconstruction
-[Nougat](https://github.com/facebookresearch/nougat) est quant à lui un modèle de Document Reconstruction sans OCR. Le modèle se base en effet sur les [Swin Transformers](https://arxiv.org/pdf/2103.14030.pdf), qui est un type spécifique de Visual Transformer, qui lui permet de traiter des patchs de toute petite taille (ressemblant à un pixel) sans augmenter la complexité computationnelle du modèle. En effet, cela est rendu possible grâce à l'approche "Shifted Window" du visual transformer: on découpe l'image (la page du document) en tout petits patchs, et la self-attention n'est calculée qu'entre chaque patchs d'une même window: le modèle possède une complexité de calcul linéaire par rapport à la taille de l'image d'entrée, grâce au calcul de self-attention uniquement au sein de chaque fenêtre locale (indiquée en rouge):
-<img src="swin_transformer.PNG" width="500"/>
-
-A chaque couche du modèle, la fenêtre se déplace de 2 patchs à droite et 2 patchs en bas. ainsi, in-fine, chaque patch a une visibilité sur tous les autres patchs. Cela permet d'avoir des patchs beaucoup plus petits et donc de se passer de l'OCR pour reconstruire le texte. 
-Le Swin Transformer construit des cartes de caractéristiques hiérarchiques en fusionnant les patches d'image (représentés en gris) dans des couches plus profondes. Il peut donc servir de base générale pour les tâches de classification d'images et de reconnaissance dense. En revanche, les Transformers de vision précédents produisent des cartes de caractéristiques d'une seule basse résolution et ont une complexité de calcul quadratique par rapport à la taille de l'image d'entrée, en raison du calcul de self-attention globalement:
-<img src="swin_transformer2.PNG" width="500"/>
-
-Nougat a été entraîné sur un dataset de papiers de recherches arxiv (le papier en format d'origine (latex) a été téléchargé sur arxiv, et le pdf correspondant au papier). Le images ont été enlevées du papier (pdf & latex) et le modèle a appris à reconstruire  le latex à partir du pdf. Ainsi, le modèle que l'on trouve sur https://github.com/facebookresearch/nougat n'est adapté que pour reconstruire des papiers de recherche. Il faut fine-tuner le modèle sur d'autres types de documents pour pouvoir l'utiliser pour reconstruire des ppt, et autre.
-
-D'autres méthodes, sans fine-tuning, permettent d'utiliser Nougat pour reconstruire tout type de documents: c'est le cas de [marker](https://github.com/VikParuchuri/marker) qui applique Nougat, et quand le processing ne fonctionne pas, applique des outils d'OCR tels que tesseract pour reconstruire le document. C'est un "bidouillage" de Nougat.
-
-#### Hi-VT5: QA on Document
+#### 2.2.2.3. Hi-VT5: QA on Document
 [Hierarchical multimodal transformers for Multi-Page DocVQA](https://arxiv.org/pdf/2212.05935.pdf) is a DocVQA model. Existing work on DocVQA only considers single-page documents. However, in real scenarios documents are mostly composed of multiple pages that should be processed altogether. Hi-VT5 extend DocVQA to the multipage scenario.
 
 It is a hierarchical transformer architecture (T5-base) where the encoder summarizes the most relevant information of every page and then, the decoder takes this summarized information to generate the final answer.
@@ -166,7 +188,8 @@ It works this way:
 - The decoder generates the final answer by taking as input the concatenation of all these summary [PAGE] tokens for all pages.
 - The model includes an additional head to predict the index of the page where the answer has been found.
 
-#### DocLLM: A Layout-Aware Generative Language Model for Multimodal Document Understanding
+### 2.2.3. Second Approach: No vision encoder through OCR-only methods
+#### 2.2.3.1. DocLLM: A Layout-Aware Generative Language Model for Multimodal Document Understanding
 [DocLLM: A Layout-Aware Generative Language Model for Multimodal Document Understanding](https://arxiv.org/pdf/2401.00908.pdf) has been released the 31st of December 2023 by JPMorgan. 
 As opposed to all model above, here, they do not use any Vision Encoder. They only treat spatial informations of bounding boxes of the document to incorporate the spatial layout structure information of the document to the transformers. They get these bounding boxes through OCR. As opposed to other methods doing this, involving either concatenating spatial and textual embeddings ([Unifying Vision, Text, and Layout for Universal Document Processing, May 2023](https://arxiv.org/pdf/2212.02623.pdf)) or summing the two ([LayoutLM: Pre-training of Text and Layout for Document Image Understanding](https://arxiv.org/pdf/1912.13318.pdf)), here, they do not treat the spatial information as a distinct modality and compute its inter-dependency with the text modality in a disentangled manner, like what was presented in [Connecting What to Say With Where to Look by Modeling Human Attention Traces](https://arxiv.org/pdf/2105.05964.pdf). What they do is extending the self-attention mechanism of standard transformers to include new attention scores that capture cross-modal relationships. 
 
@@ -193,37 +216,21 @@ During the Fine-tuning phase, the pre-trained model is fine-tuned using a large-
 
 <img src="docllm_archi.PNG" width="500"/>
 
-**to complete**
-
-### 2.2.2. Handling documents as images: how does it work?
-#### ViT: Visual Transformer
-**to complete**
-#### SwinViT: hierarchical Visual Transformer whose representation is computed with shifted windows.
-Les [Swin Transformers](https://arxiv.org/pdf/2103.14030.pdf), qui est un type spécifique de Visual Transformer, qui lui permet de traiter des patchs de toute petite taille (ressemblant à un pixel) sans augmenter la complexité computationnelle du modèle. En effet, cela est rendu possible grâce à l'approche "Shifted Window" du visual transformer: on découpe l'image (la page du document) en tout petits patchs, et la self-attention n'est calculée qu'entre chaque patchs d'une même window: le modèle possède une complexité de calcul linéaire par rapport à la taille de l'image d'entrée, grâce au calcul de self-attention uniquement au sein de chaque fenêtre locale (indiquée en rouge):
+### 2.2.4. Third & most recent approach: without OCR, Vision Encoder only
+#### 2.2.4.1. Nougat : Model for document reconstruction
+[Nougat](https://github.com/facebookresearch/nougat) est quant à lui un modèle de Document Reconstruction sans OCR. Le modèle se base en effet sur les [Swin Transformers](https://arxiv.org/pdf/2103.14030.pdf), qui est un type spécifique de Visual Transformer, qui lui permet de traiter des patchs de toute petite taille (ressemblant à un pixel) sans augmenter la complexité computationnelle du modèle. En effet, cela est rendu possible grâce à l'approche "Shifted Window" du visual transformer: on découpe l'image (la page du document) en tout petits patchs, et la self-attention n'est calculée qu'entre chaque patchs d'une même window: le modèle possède une complexité de calcul linéaire par rapport à la taille de l'image d'entrée, grâce au calcul de self-attention uniquement au sein de chaque fenêtre locale (indiquée en rouge):
 <img src="swin_transformer.PNG" width="500"/>
 
 A chaque couche du modèle, la fenêtre se déplace de 2 patchs à droite et 2 patchs en bas. ainsi, in-fine, chaque patch a une visibilité sur tous les autres patchs. Cela permet d'avoir des patchs beaucoup plus petits et donc de se passer de l'OCR pour reconstruire le texte. 
 Le Swin Transformer construit des cartes de caractéristiques hiérarchiques en fusionnant les patches d'image (représentés en gris) dans des couches plus profondes. Il peut donc servir de base générale pour les tâches de classification d'images et de reconnaissance dense. En revanche, les Transformers de vision précédents produisent des cartes de caractéristiques d'une seule basse résolution et ont une complexité de calcul quadratique par rapport à la taille de l'image d'entrée, en raison du calcul de self-attention globalement:
 <img src="swin_transformer2.PNG" width="500"/>
 
-#### [Generative Pretraining from Pixels](https://cdn.openai.com/papers/Generative_Pretraining_from_Pixels_V2.pdf)
-trained a sequence Transformer called iGPT to auto-regressively predict pixels without incorporating knowledge of the 2D input structure, which is the first attempt at self-supervised image transformer pre-training. After that, self-supervised pre-training for image Transformer became a hot topic in computer vision. 
-**to complete**
-#### [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/pdf/2104.14294.pdf)
-proposed DINO, which pre-trains the image Transformer using self-distillation with no labels. 
-**to complete**
-#### [An Empirical Study of Training Self-Supervised Vision Transformers](https://arxiv.org/pdf/2104.02057.pdf)
-proposed MoCov3 that is based on Siamese networks for self-supervised learning 
-**to complete**
-#### [BEiT: BERT Pre-Training of Image Transformers](https://arxiv.org/pdf/2106.08254.pdf)
-adopted a BERT-style pre-training strategy, which first tokenizes the original image into visual tokens, then randomly masks some image patches and feeds them into the backbone Transformer. Similar to the masked language modeling, they proposed a masked image modeling task as the pre-training objective that achieves SOTA performance.
-**to complete**
-#### [IBOT : IMAGE BERT PRE-TRAINING WITH ONLINE TOKENIZER](https://arxiv.org/pdf/2111.07832.pdf)
-presented a self-supervised framework iBOT that can perform masked prediction with an online tokenizer. The online tokenizer is jointly learnable with the MIM objective and dispenses with a multi-stage pipeline where the tokenizer is pre-trained beforehand.
-**to complete**
+Nougat a été entraîné sur un dataset de papiers de recherches arxiv (le papier en format d'origine (latex) a été téléchargé sur arxiv, et le pdf correspondant au papier). Le images ont été enlevées du papier (pdf & latex) et le modèle a appris à reconstruire  le latex à partir du pdf. Ainsi, le modèle que l'on trouve sur https://github.com/facebookresearch/nougat n'est adapté que pour reconstruire des papiers de recherche. Il faut fine-tuner le modèle sur d'autres types de documents pour pouvoir l'utiliser pour reconstruire des ppt, et autre.
 
-### 2.2.3. Multimodal LLMs
-#### End-To-End-Approaches
+D'autres méthodes, sans fine-tuning, permettent d'utiliser Nougat pour reconstruire tout type de documents: c'est le cas de [marker](https://github.com/VikParuchuri/marker) qui applique Nougat, et quand le processing ne fonctionne pas, applique des outils d'OCR tels que tesseract pour reconstruire le document. C'est un "bidouillage" de Nougat.
+
+#### 2.2.4.2. Multimodal LLMs (MLLMs)
+##### 2.2.4.2.1. End-To-End-Approaches
 In such approaches, there is a unified architecture handling different modalities, **composed of a Visual Encoder and a LLM as a core**. Most of these approaches use a pretrained vision encoder and a pretrained language models. 
 
 The LLM can be of any type. However, the visual encoder is not random: it must be trained with an alignment of the visual and language modalities, because:
@@ -233,44 +240,56 @@ The LLM can be of any type. However, the visual encoder is not random: it must b
 End-to-end approaches MLLMs are constructed like this:
 <img src="projection_matrix.PNG" width="500"/>
 
-##### Visual encoder
+###### 2.2.4.2.1.1. Visual encoder
 Visual encoders in multimodal models are typically **either based on Convolutional Neural Networks (CNNs)**, like the ResNet architecture, **or on Transformer-based architectures** known as Visual Transformers. These models are designed to process and understand visual information, transforming raw image data into structured, feature-rich representations. 
 - CNNs are known for their deep layers of convolution operations. They are adept at extracting hierarchical visual features from images
 - Visual Transformers, inspired by the success of Transformers in NLP, apply the self-attention mechanism to process images. They treat an image as a sequence of patches and learn to focus on different parts of an image, capturing complex relationships and contextual information within the image.
 
 Then, **these visual encoders need to be trainined with a text - image alignment**, as explained below. Here are the **3 ways of aligning the 2 modalities**, and thus training the Visual Transformer:
-###### Visual encoder having a Bi-Encoder Architecture
+
+**I/ Visual encoder having a Bi-Encoder Architecture**
+
 A bi-encoder architecture for visual encoders involves **two separate encoders**: one for processing text and another for processing images. These encoders **operate independently to encode their respective inputs** into a shared embedding space, where the **similarity between text and image representations can be measured**. This is how these visual encoders are trained: by **Constrastive Learning**: In the training set, there are 
 batches of N pairs of similar image, text. The encoders are jointly trained to maximize the cosine similarity of these pairs, while for the batches of N² - N pairs of in correct pairs (image, text), the encoders are jointly trained to minimize the cosine similarity of these pairs.
 - [CLIP](https://arxiv.org/pdf/2103.00020.pdf), for "Contrastive Language-Image Pretraining" was released by OpenAI and is a prime example of a bi-encoder architecture. It uses a Transformer for text and a ResNet (or Vision Transformer) for images. CLIP is trained using a contrastive learning approach, where the model learns to match corresponding text and image pairs among a batch of non-corresponding pairs.
 - [FLORENCE](https://arxiv.org/pdf/2111.11432.pdf), introduced by Microsoft, is another model that employs a bi-encoder architecture. It leverages large-scale pretraining across various data sources to learn a universal visual representation.
 - [ALIGN](https://arxiv.org/pdf/2102.05918.pdf), standing for "A Large-scale Image and Noisy-Text Embedding", is also a model that utilizes a bi-encoder structure with an EfficientNet-based image encoder and a BERT-based text encoder. It's trained on a large dataset of noisy text-image pairs, making it adept at handling real-world, uncurated data.
-###### Visual encoder having an Encoder-Decoder Architecture
+
+**II/ Visual encoder having an Encoder-Decoder Architecture**
+
 An encoder-decoder architecture in visual encoders typically involves an **encoder module to process the image** and a **decoder module to generate corresponding textual output**. This architecture is common in tasks that require the generation of text from images, such as **image captioning**.
 - [SimVLM](https://arxiv.org/pdf/2108.10904.pdf), standing for "Simple Vision Language Model" uses an encoder-decoder architecture where the encoder processes visual inputs and the decoder generates textual descriptions. It employs a 'prefix language modeling' objective for pretraining, allowing it to understand and generate natural language descriptions of images effectively.
 - [VirTex](https://arxiv.org/pdf/2006.06666.pdf), standing for "Vision and Text", is a model that uses a CNN encoder to process images and a Transformer-based decoder to generate textual descriptions. It's trained on a dataset of images and captions, learning to generate accurate and contextually relevant text descriptions for a given image.
-###### Visual encoder having both Architectures: Bi-Encoder + Encoder-Decoder
+
+**III/ Visual encoder having both Architectures: Bi-Encoder + Encoder-Decoder**
+
 Some visual encoders take the advantage of both techniques: they are trained using both contrastive learning and cross-modality prediction. This approach combines the **strengths of contrastive methods** like [CLIP](https://arxiv.org/pdf/2103.00020.pdf) and **generative methods** like [SimVLM](https://arxiv.org/pdf/2108.10904.pdf):
 - [CoCa](https://arxiv.org/pdf/2205.01917.pdf), standing for "Contrastive Loss and Captioning Loss", is a model from Google that uses this type of dual approaches for the visual encoder. The contrastive loss is applied between unimodal image and text embeddings, while the captioning loss is used on the multimodal decoder outputs, which predict text tokens autoregressively.
 
-##### Communication between Visual Encoder's output and the LLM
+###### 2.2.4.2.1.2. Communication between Visual Encoder's output and the LLM
 How, there is a **need to make the output of the visual encoder and the LLM communicate**: and this is not direct! For the LLM decoder to effectively understand and interact with data from the vision encoder, it is necessary for the representations generated by the encoder to be in a **format or context that is comprehensible to the LLM**. This means that the visual data must be transformed into a representation that makes sense in the linguistic domain. There are 2 ways of doing this link between the visual encoder output and the LLM:
-###### Some models here take a frozen visual encoder, as well as a frozen LLM, and use a projection matrix to make the connection between the output of the vision encoder and the LLM
+
+**I/ Some models here take a frozen visual encoder, as well as a frozen LLM, and use a projection matrix to make the connection between the output of the vision encoder and the LLM**
 
 - [Flamingo](https://proceedings.neurips.cc/paper_files/paper/2022/file/960a172bc7fbf0177ccccbb411a7d800-Paper-Conference.pdf) fuses vision and language modalities with **gated cross-attention** showing impressive few-shot capabilities (= projection matrix). 
 - [BLIP-2](https://arxiv.org/pdf/2301.12597.pdf) uses a **Q-Former** to align the visual features from the frozen visual encoder and large language models.
 - [MiniGPT-4](https://arxiv.org/pdf/2304.10592.pdf) uses a **pretrained Q-Former (from BLIP-2)**. Then, they **train a linear layer** on top of this. This linear layer aims at transforming the features outputed from Q-Former into a format that the Vicuna language model can understand and process as if they were linguistic inputs, to make this output interract with the LLM Vicuna. Then, the **linear layer is instruct-tune to adapt the model to visual instructions**.
 
-###### Other models also have a projection matrix to modify the output of the visual encoder, but they then fine-tune the LLM in order to make it understand the visual encoder's output
+**II/ Other models also have a projection matrix to modify the output of the visual encoder, but they then fine-tune the LLM in order to make it understand the visual encoder's output**
+
 Thanks to fine-tuning / instruct-tuning, the models are exposed to tasks or datasets that are both text and visual inputs. The LLM is thus fine-tuned to understand and relate the outputs of the visual encoder to their language understanding. This **fine-tuning helps the model learn how to integrate and interpret visual data alongside textual information**:
 - [LLaVA](https://arxiv.org/pdf/2304.08485.pdf) utilizes a **straightforward linear layer as projection matrix** to connect the visual encoder's output to the language model. The simplicity of a linear projection layer means that it lacks the sophistication to handle complex relations or nuanced translations between visual features and language concepts. To compensate for this, LLaVA undergoes a fine-tuning process. During **fine-tuning, the language model is specifically trained to better understand and interpret these visual tokens**. This training involves exposing the model to tasks or datasets that include both visual and textual data, enabling it to learn how to effectively combine and make sense of these two types of information.
 
-###### Other models also have a projection matrix, but fine-tune in the pretraining stage the visual encoder in order to make its output adapted to the LLM's input expected
+**III/ Other models also have a projection matrix, but fine-tune in the pretraining stage the visual encoder in order to make its output adapted to the LLM's input expected**
+
 - [mPLUG-Owl](https://arxiv.org/pdf/2304.14178.pdf) has a **projection matrix called "visual abstractor", that it trains**. But it also **fine-tunes its Vision Transformer (ViT-L/14) to adapt its output to the LLM**. This ViT is initialized from the CLIP ViT-L/14 model, fine-tuned using using image-caption pairs from several datasets, such as LAION-400M, COYO-700M, Conceptual Captions, and MSCOCO.
 
-#### Systematic-Collaboration-Approaches
+
+##### 2.2.4.2.2. Systematic-Collaboration-Approaches
+
 In such approaches, **LLMs act as the agents in such systems**, and are **prompted to select the appropriate experts and tools** for visual understanding / modality understanding. So these systems employ collaboration with various specialized models to handle tasks beyond the scope of traditional text-based models, particularly in the visual domain. Here are 3 examples of Systematic-Collaboration-Approaches systems:
-##### Systems using a prompt manager between LLM & Visual Foundation Models (VFMs)
+
+###### 2.2.4.2.2.1. Systems using a prompt manager between LLM & Visual Foundation Models (VFMs)
 - [Visual ChatGPT](https://ar5iv.labs.arxiv.org/html/2303.04671) is a system that **integrates Visual Foundation Models (VFMs) with ChatGPT**, enabling it to interact not only through text but also with images : ChatGPT is not modified, nor are VFMs, and so, to allow ChatGPT to interract with VFMs, there is a **Prompt Manager in between**, which bridges the gap between ChatGPT and VFMs by informing ChatGPT about the capabilities of each VFM, and converting visual information into a language format for ChatGPT, and finally managing histories, priorities, and conflicts among different VFMs. So this process involves multiple steps which are guided by the Prompt Manager: 
 <img src="visual_chatgpt.PNG" width="500"/>
 
@@ -283,7 +302,7 @@ In such approaches, **LLMs act as the agents in such systems**, and are **prompt
     - In Task Execution, these models are invoked and executed, and their results are returned to ChatGPT. 
     - In Response Generation, ChatGPT integrates all model predictions and generates user responses.
 
-##### Systems modifying LLM to generate specific action-requests tokens calling VFMs
+###### 2.2.4.2.2.2. Systems modifying LLM to generate specific action-requests tokens calling VFMs
 - [MM-REACT](https://ar5iv.labs.arxiv.org/html/2303.11381) is a system that empowers ChatGPT to process and understand multimodal information through action requests. Indeed, in MM-REACT, **ChatGPT is instructed to say specific watchwords in action request if a vision expert is required** to interpret the visual inputs. The action request is composed of textual prompts that represent the expert name called and file names for visual signals. Regular expression matching is applied to parse the expert’s name and the file path, which are then used to call the vision expert (action execution): 
 
 <img src="mm_react.PNG" width="500"/>

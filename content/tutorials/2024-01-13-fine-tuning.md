@@ -8,9 +8,9 @@ categories: ["tutorials"]
 ---
 
 ---
-Here is a simple tutorial, accessible to everyone (even with 0 knowledge about deep learning & LLMs), on Fine-Tuning Causal Language Models.
+Here is a simple tutorial, accessible to everyone, on Fine-Tuning Causal Language Models.
 
-*Causal LLMs are the typical LLMs you heard about (gpt-type, llama-type, falcon-type, claude-type, etc), as opposed to Masked Language Models of Bert-type and Seq-to-Seq language models of T5-type*.
+*Causal LLMs are the typical LLMs you heard about (gpt-type, llama-type, falcon-type, claude-type, etc), as opposed to Masked Language Models of Bert-type and Seq-to-Seq language models of T5-type. If you want to know more about the different types of LLMs, I recommend you to read this [blog post](https://medium.com/@tom_21755/understanding-causal-llms-masked-llm-s-and-seq2seq-a-guide-to-language-model-training-d4457bbd07fa).*
 
 [TOC]
 
@@ -18,9 +18,9 @@ Here is a simple tutorial, accessible to everyone (even with 0 knowledge about d
 Causal Language Models are trained using 3 steps:
 ![](trainings.jpg)
 
-1. **Pretraining** (Self-Supervised Fine-Tuning) : The pre-training process is the initial and most computationally expensive step of an LLM: Beginning with a randomly-initialized LLM, LLMs are trained, using a Next-Token prediction objective (we will see this later in this post), over a massive corpus of raw text. To get the best results, some balance between the model size and amount of data (row text) are determined ([Chinchilla theory](https://cameronrwolfe.substack.com/p/modern-llms-mt-nlg-chinchilla-gopher#%C2%A7training-compute-optimal-llms)). 
-2. **Supervised Fine-Tuning** (usually, Instruction-Tuning): Supervised Fine-Tuning is the process of refining a pre-trained model on a specific dataset with labeled examples, allowing the model to learn from the annotations and better perform on a particular task.
-3. Alignment (Reinforcement Learning from Human Feedback): Alignment refers to the process of fine-tuning an LLM to better align with the desires of human users. This is done through reinforcement learning from human feedback.
+1. **Pretraining** (Self-Supervised Fine-Tuning) : The pre-training process is the initial and most computationally expensive step of an LLM: Beginning with a randomly-initialized LLM, LLMs are trained, using a Next-Token prediction objective (we will see this later in this post), over a massive corpus of raw text. To get the best results, some balance between the model size and amount of data (row text) are determined ([Chinchilla principle](https://cameronrwolfe.substack.com/p/modern-llms-mt-nlg-chinchilla-gopher#%C2%A7training-compute-optimal-llms)). 
+2. **Supervised Fine-Tuning** (usually, Instruction-Tuning): Supervised Fine-Tuning is the process of refining a pre-trained model on a specific dataset with labeled examples, allowing the model to unlock the knowledge acquired in Pretraining phase and apply it to specific real-world tasks. 
+3. **Alignment-Tuning** (Reinforcement Learning from Human Feedback): Alignment refers to the process of fine-tuning an LLM to better align with the desires of human users. This is done through reinforcement learning from human feedback.
 
 The ["base" models](meta-llama/Llama-2-7b-hf) we can find on Huggingface Hub are the models which went through the first step only (pretraining), while the ["chat" models](meta-llama/Llama-2-7b-chat-hf) we can find are the models which went through the 3 steps.
 
@@ -138,13 +138,13 @@ from transformers import AutoModelForCausalLM AutoTokenizer,Trainer,TrainingArgu
 model = AutoModelForCausalLM.from_pretrained(model_id_on_huggingface) 
 tokenizer = AutoTokenizer.from_pretrained(model_id_on_huggingface)
 training_args = TrainingArguments(
-    per_device_train_batch_size=1,
-    gradient_accumulation_steps=64,
-    num_train_epochs=3,
-    learning_rate=2e-5,
+    per_device_train_batch_size=1, # See previous paragraph about batch size for more understanding
+    gradient_accumulation_steps=64, # See previous paragraph about batch size for more understanding
+    num_train_epochs=3, # See previous paragraph about epoch for more understanding
+    learning_rate=2e-5, # See previous paragraph about learning rate for more understanding
     save_strategy="epoch", # the model is saved at the end of each epoch
     output_dir="fine-tuned_model", # where the model predictions and checkpoints will be written
-    lr_scheduler_type='cosine'
+    lr_scheduler_type='cosine' # See previous paragraph about learning rate for more understanding
     )
 trainer = Trainer(
     model=model,
@@ -158,4 +158,162 @@ trainer.train()
 
 # Supervised Fine-Tuning
 
-TO DO
+This step is very different from the previous one: here, we **start from a base-model which has already been trained on Next-Token Prediction objective on a massive corpus**. We want here to specialize this model for particular tasks or datasets. By adjusting the pre-trained model with additional training on a smaller, task-specific dataset, we aim to **refine its predictions and tailor its outputs to be more relevant and accurate for the desired application**. This step leverages the general language understanding gained from the initial training and directs it towards the specific nuances and features of the target task. In other words, this step allows the model to unlock the knowledge acquired in Pretraining phase and apply it to specific real-world tasks. 
+
+## Instruction-Tuning
+The **paper [Finetuned Language Models Are Zero-Short Learners](https://arxiv.org/pdf/2109.01652.pdf) introduced a simple technique called instruction fine-tuning**, or instruction tuning for short, **involving fine-tuning a model not to solve a specific task, but to make it more amenable to solving NLP tasks in general**. 
+
+Instruction-tuning consists in **fine-tuning the model on a large set of varied instructions that use a simple and intuitive description of the task**, such as "Summarize this article" or "Translate this text in French". 
+
+So you need an instruction dataset for instruction-tuning. In instruction-formatted datasets, a task description (an instruction), an input-output pair, and a few demonstrations are included optionally. Before instruction tuning was introduced, previous studies collected instances from various tasks, such as text summarization, text classification, and translation. These datasets are used as a source for instruction tuning instances by formatting them with [natural language task descriptions](https://arxiv.org/pdf/2205.10782.pdf). Recent work has augmented these labeled datasets with human-written task descriptions, which serve as instructions for LLMs to understand the tasks and their goals. 
+
+## How to implement Supervised Fine-Tuning
+
+Instruction tuning is **less costly** than pre-training as it involves training with a moderate number of instances. As opposed to pretraining:
+- In Instruction-Tuning, the **model is not trained on a Next-Token Prediction objective but taking into account only the response**. This means that the model is **trained to produce an entire sequence (the response) in response to another sequence (the instruction)**. This type of training assists the model in better understanding and responding to specific instructions. 
+- In Instruction-Tuning the model **requires smaller batch sizes and learning rate** since there are **few adjustements to be done on the model using few examples** (see section on Modelisation of Self-Supervised Fine-Tuning to understand what it means). 
+
+Here is a summary of what is done during Instruction-Tuning:
+![](instruction-tuning.png)
+
+Hugging Face has put in place a [dedicated library TRL](https://huggingface.co/docs/trl/index) for alignment of LLMs, including Supervised Fine-Tuning. This training objective is what is implemented by the [TRL SFFTrainer](https://huggingface.co/docs/trl/sft_trainer) in the "completion-only task". 
+
+Here is a detailed explaination on how it works:
+
+- A special token `[/INST]` is utilized to separate the prompt and answer segments
+- The autoregressive objective (next-token prediction) is applied on the whole sequence
+- It "zero-outs" the loss on tokens from the instruction, meaning that it only considers the loss on what comes after `[/INST]` for backpropagation.
+
+Note that each model has used a specific special token to separate the input (instruction) from the output (answer). You can find the prompt template for instruct-tuning in the key `"chat_template"` of the `tokenizer_config.json` of the chat models from Hugging Face. For instance, here is the [tokenizer_config.json](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf/blob/main/tokenizer_config.json) of [Llama2-chat](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf):
+```
+"{% if messages[0]['role'] == 'system' %}{% set loop_messages = messages[1:] %}{% set system_message = messages[0]['content'] %}{% else %}{% set loop_messages = messages %}{% set system_message = false %}{% endif %}{% for message in loop_messages %}{% if (message['role'] == 'user') != (loop.index0 % 2 == 0) %}{{ raise_exception('Conversation roles must alternate user/assistant/user/assistant/...') }}{% endif %}{% if loop.index0 == 0 and system_message != false %}{% set content = '<<SYS>>\\n' + system_message + '\\n<</SYS>>\\n\\n' + message['content'] %}{% else %}{% set content = message['content'] %}{% endif %}{% if message['role'] == 'user' %}{{ bos_token + '[INST] ' + content.strip() + ' [/INST]' }}{% elif message['role'] == 'assistant' %}{{ ' '  + content.strip() + ' ' + eos_token }}{% endif %}{% endfor %}"
+```
+You can see the `[/INST]` separator between instruction & output in the template. 
+
+Here is [the one](https://huggingface.co/mistralai/Mixtral-8x7B-Instruct-v0.1/blob/main/tokenizer_config.json) of [Mixtral-Instruct](mistralai/Mixtral-8x7B-Instruct-v0.1) which is also using the `[/INST]` separator:
+```
+"{{ bos_token }}{% for message in messages %}{% if (message['role'] == 'user') != (loop.index0 % 2 == 0) %}{{ raise_exception('Conversation roles must alternate user/assistant/user/assistant/...') }}{% endif %}{% if message['role'] == 'user' %}{{ '[INST] ' + message['content'] + ' [/INST]' }}{% elif message['role'] == 'assistant' %}{{ message['content'] + eos_token}}{% else %}{{ raise_exception('Only user and assistant roles are supported!') }}{% endif %}{% endfor %}"
+```
+
+Here is how to implement this using the [TRL SFFTrainer](https://huggingface.co/docs/trl/sft_trainer):
+
+You first need to write a function to format your prompt correctly (following the template of your model, as seen previously). Here is our function for Llama2:
+
+```
+def format_instruction(sample):
+    '''
+    In my dataset, each sample is a json with the keys: 'system', 'instruction', 'input' and 'output'. You can adjust it depending on your dataset keys.
+    '''
+    output_texts = []
+    for i in range(len(sample['instruction'])):
+        system_prompt = f"<<SYS>>\n{sample['system'][i]}\n<</SYS>>\n" if sample['system'][i] else ""
+        if sample["origin"][i].startswith("synthetic_") and sample["input"][i]:
+            output_texts.append(f"""[INST] {system_prompt}
+{sample['instruction'][i]} 
+Further context: {sample['input'][i].strip()}
+[/INST]
+
+{sample['output'][i]}
+""")
+        else:
+            output_texts.append(f"""[INST] {system_prompt}
+{sample['instruction'][i]} {sample['input'][i].strip()}
+[/INST]
+
+{sample['output'][i]}
+""")
+    return output_texts
+```
+
+Then, you need to indicate the model the ids of the tokenized separator between the input and the output :
+```
+response_template_with_context = '\n[/INST]\n'
+    response_template_ids = tokenizer.encode(response_template_with_context, add_special_tokens=False)[2:]
+```
+Note that some tokenizers like Llama2 tokenize sequences differently depending whether they have context or not. For example, here is my prompt:
+
+```
+prompt = """### User: Hello\n\n### Assistant: Hi, how can I help you?"""
+```
+If we tokenize it, we get: 
+```
+print_tokens_with_ids(prompt)  # [..., ('▁Hello', 15043), ('<0x0A>', 13), ('<0x0A>', 13), ('##', 2277), ('#', 29937), ('▁Ass', 4007), ('istant', 22137), (':', 29901), ...]
+```
+Although, if we tokenize only `"### Assistant:"`, we get:
+```
+print_tokens_with_ids("### Assistant:")  # [('▁###', 835), ('▁Ass', 4007), ('istant', 22137), (':', 29901)]
+```
+Here, `('▁###', 835), ('▁Ass', 4007), ('istant', 22137), (':', 29901)` is not present in the whole sentence tokenized. We would get the error:
+```
+Could not find response key [835, 4007, 22137, 29901] in token IDs tensor([    1,   835,  ...])
+```
+This is why we need to add little of contexts in the response template for such tokenizers:
+```
+response_template_with_context = "\n### Assistant:"  # We added context here: "\n". This is enough for this tokenizer
+response_template_ids = tokenizer.encode(response_template_with_context, add_special_tokens=False)[2:]  # Now we have it like in the dataset texts: `[2277, 29937, 4007, 22137, 29901]`
+```
+Then, we simply need to pass the data_collator to the SFFTrainer:
+```
+data_collator = DataCollatorForCompletionOnlyLM(response_template_ids, tokenizer=tokenizer)
+```
+For more detail on how this data_collator works, go to the [class code implementation of this function](https://github.com/huggingface/trl/blob/main/trl/trainer/utils.py). Globally, this is used to ensure that all the tokens of the labels are set to an 'ignore_index' when they do not come from the assistant. This ensures that the loss is only calculated on the completion made by the assistant.
+
+So here is a simple code example of instruction-tuning implementation:
+
+```
+from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
+
+model = AutoModelForCausalLM.from_pretrained(model_id_on_huggingfacehub)
+AutoTokenizer.from_pretrained(model_id_on_huggingfacehub)
+from datasets import load_dataset
+
+train_dataset = load_dataset("Open-Orca/SlimOrca") # or any instruction-dataset from Hugging Face
+
+args = TrainingArguments(
+    output_dir="instruct-tuned-model",
+    num_train_epochs=2,
+    per_device_train_batch_size=1,
+    gradient_accumulation_steps=64,
+    save_strategy="epoch",
+    learning_rate=2e-5,
+    lr_scheduler_type="cosine"
+    )
+
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=train_dataset,
+    max_seq_length=max_seq_length,
+    tokenizer=tokenizer,
+    formatting_func=format_instruction,
+    data_collator=DataCollatorForCompletionOnlyLM(response_template_ids, tokenizer=tokenizer),
+    args=args
+)
+
+trainer.train()
+```
+
+### New trend: combination of Self-Supervised Fine-Tuning & Instruct-Tuning
+A recent trend to enhance the effectiveness and stability of the tuning process is to use instruction datasets and apply the pretraining objective on them (meaning Next-Token Prediction as we have seen before), taking the whole loss into account (not only the loss of the output generation). This aims at leveraging the benefits of both pre-training and instruction tuning simultaneously.
+
+You can use the classic [Trainer](https://huggingface.co/docs/transformers/main_classes/trainer) from transformers for this task, or the [TRL SFFTrainer](https://huggingface.co/docs/trl/sft_trainer) without the "completion-only" mode.
+
+Here is a representation of what is means:
+
+![](instruction-tuning-pretraining.png)
+
+This is what is done by default by the [TRL SFFTrainer](https://huggingface.co/docs/trl/sft_trainer) if you do not precise `data_collator=DataCollatorForCompletionOnlyLM`.
+
+### How to preprocess the data for instruct-tuning?
+If you have a custom dataset, a common approach is to have it within a jsonl file, composed of several json lines, each of them composed of keys like what I explained in my `format_instruction` function description:
+if I have a `.jsonl`  dataset like:
+```
+{"instruction": "translate the following sentence in French", "input": "my name is", "output": "je m'appelle"}
+{"instruction": "summarize with few words", "input": "we are doing a simple tutorial today about supervised fine-tuning to help everyone to understand how it works and to be capable of implementing it simply", "output": "today is supervised fine-tuning tutorial"}
+```
+I can load it with:
+```
+train_dataset = load_dataset("json", data_files="mydataset.jsonl", split="train")
+```
+However, another best practice, to ensure the model sequence
+length is properly filled (as we explained before, each model has a default sequence length, being 4096 tokens for llama2 for instance), we can concatenate all the prompts and answers from the training set. Otherwise (if we do not do that), each example of our training set will be padded to reach 4096 tokens, so we will have something like `<s> [INST] Translate "my name is" into French [/INST] je m'appelle </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> </s> [...] </s> </s> </s>`, which will thus be more costly at training (and for no further gain...).
