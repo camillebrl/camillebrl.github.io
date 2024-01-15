@@ -174,7 +174,7 @@ Instruction tuning is **less costly** than pre-training as it involves training 
 - In Instruction-Tuning the model **requires smaller batch sizes and learning rate** since there are **few adjustements to be done on the model using few examples** (see section on Modelisation of Self-Supervised Fine-Tuning to understand what it means). 
 
 Here is a summary of what is done during Instruction-Tuning:
-![](instruction-tuning.png)
+![](instruct-tuning.png)
 
 Hugging Face has put in place a [dedicated library TRL](https://huggingface.co/docs/trl/index) for alignment of LLMs, including Supervised Fine-Tuning. This training objective is what is implemented by the [TRL SFFTrainer](https://huggingface.co/docs/trl/sft_trainer) in the "completion-only task". 
 
@@ -300,7 +300,7 @@ You can use the classic [Trainer](https://huggingface.co/docs/transformers/main_
 
 Here is a representation of what is means:
 
-![](instruction-tuning-pretraining.png)
+![](instruct-tuning-pretraining.png)
 
 This is what is done by default by the [TRL SFFTrainer](https://huggingface.co/docs/trl/sft_trainer) if you do not precise `data_collator=DataCollatorForCompletionOnlyLM`.
 
