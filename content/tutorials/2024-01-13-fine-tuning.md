@@ -84,7 +84,7 @@ Self-Attention is a mechanism which associates tokens with each other. In simple
 
 In Self-Attention, Key and Query vectors are used to compute attention weights (w) for each valid pair of tokens. These attention weights (after softmax is applied) are used to take a weighted average of value vectors, which is the output of self-attention, as shown here:
 
-![](self_attention.png)
+![](self-attention.png)
 
 After the attention mechanism, the output goes through a feed-forward neural network. It usually consists of two linear transformations with a ReLU activation in between.
 
