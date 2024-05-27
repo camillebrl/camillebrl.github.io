@@ -1,0 +1,303 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Modifier pour permettre le défilement */
+    min-height: 200vh; /* Assurer que la page est suffisamment haute pour scroller */
+    position: relative;
+    overflow: auto; /* Permettre le défilement */
+}
+
+body::before {
+    content: "";
+    position: absolute; /* Modifier pour garder le fond fixe */
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: rgb(252, 252, 252);
+    z-index: -2; /* Assurer que le fond est derrière tout le contenu */
+}
+
+body::after {
+    content: "";
+    position: absolute; /* Modifier pour garder le fond fixe */
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-color: black;
+    z-index: -2; /* Assurer que le fond est derrière tout le contenu */
+}
+
+header {
+    position: fixed; /* Garder le header fixe */
+    top: 20px;
+    left: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    z-index: 3;
+}
+
+header h1 {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+    font-size: 25px;
+    margin: 0;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+nav ul li a:hover {
+    color: rgb(231, 54, 54);
+    text-decoration: underline;
+}
+
+.content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    margin-top: 100px; /* Ajouter un margin pour séparer le header */
+}
+
+.content img {
+    border-radius: 50%;
+    width: 300px; /* Adjust the size as needed */
+    height: 300px;
+    object-fit: cover;
+    margin-top: 70px;
+    margin-bottom: 20px; /* Add space between image and text */
+    border: 7px solid rgb(231, 54, 54);
+}
+
+.content h2 {
+    margin: 20px 0;
+    font-size: 30px;
+}
+
+.content p {
+    margin: 20px 0;
+    font-size: 20px;
+    color: white;
+}
+
+.secondtitle {
+    list-style-type: none;
+    font-weight: bold;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+    font-size: 50px;
+}
+
+.secondtitle .right-social {
+    color: rgb(255, 255, 255);
+}
+
+.secondtitle .left-social {
+    color: rgb(0, 0, 0);
+    margin-right: 25px; 
+}
+
+.thirdtitle {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.thirdtitle .right-social {
+    color: rgb(255, 255, 255);
+}
+
+.thirdtitle .left-social {
+    color: rgb(0, 0, 0);
+}
+
+
+.social-links {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 60px;
+    margin-bottom: 120px;
+}
+
+.social-links li {
+    margin: 0 10px;
+}
+
+.social-links li a {
+    color: white;
+    font-size: 1.8em;
+    transition: color 0.3s;
+}
+
+.social-links li a:hover {
+    color: rgb(231, 54, 54);
+}
+
+.social-links .left-social a {
+    color: black; /* Color for left social links */
+    font-size: 1.8em;
+    transition: color 0.3s;
+}
+
+.social-links .right-social a {
+    color: white; /* Color for right social links */
+    font-size: 1.8em;
+    transition: color 0.3s;
+}
+
+#follower {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    pointer-events: none; /* To ensure it doesn't block other elements */
+    transform: translate(-10%, -10%); /* Center the follower on the cursor */
+    z-index: 1;
+}
+
+/* Nouvelle section pour la seconde page */
+.second-page {
+    width: 100%;
+    height: 100vh;
+    background: black; /* Garder le même style de fond */
+    position: relative;
+}
+
+.line-black {
+    border: 0;
+    height: 10px;
+    width: 100%;
+    background: black;
+    margin: 2px 0;
+    z-index: 2;
+}
+
+.line-red {
+    border: 0;
+    height: 10px;
+    width: 100%;
+    background: red;
+    margin: 2px 0;
+    z-index: 2;
+}
+
+.line-white {
+    border: 0;
+    height: 10px;
+    width: 100%;
+    background: white;
+    margin: 2px 0;
+    z-index: 2;
+}
+
+
+.intro-section {
+    color: red;
+    text-align: left !important;
+    font-weight: bold;
+    font-size: 40px;
+    transition: opacity 1.5s ease-out, transform 2.0s ease-out;
+    padding: 20px;
+    margin-top: 60px;
+    margin-bottom: 0px;
+    z-index: 2;
+    list-style-type: none; /* Remove bullets from list */
+}
+
+.intro-section li {
+    text-align: left !important; /* Align list items to the left */
+    width: 100%; /* Assurez-vous que l'élément occupe toute la largeur */
+    display: block; /* Assurez-vous que l'élément est en block */
+}
+
+.cv-section-head {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease-out, transform 2.0s ease-out;
+    background-color: red;
+    padding: 20px;
+    margin: 20px 0;
+    width: 90%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    font-size: 30px;
+}
+
+.cv-section-head.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.cv-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease-out, transform 2.0s ease-out;
+    background-color: white;
+    padding: 20px;
+    margin: 20px 0;
+    width: 80%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.cv-section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-down {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: red;
+    text-shadow: 
+        -1px -1px 0 #000,  
+        1px -1px 0 #000,
+        -1px  1px 0 #000,
+        1px  1px 0 #000;
+    text-decoration: none;
+    z-index: 1000;
+}
+
+.scroll-down:hover {
+    color: darkred;
+}
+
+.scroll-down.hidden {
+    display: none;
+}

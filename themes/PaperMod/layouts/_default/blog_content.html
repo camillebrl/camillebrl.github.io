@@ -1,0 +1,625 @@
+{{ define "main" }}
+    {{ partial "breadcrumbs.html" . }}
+
+    <h1 style="margin-bottom: 30px;">{{ .Title }}</h1> <!-- Add margin-bottom for space below the title -->
+
+    {{ $urlSegments := split .RelPermalink "/" }}
+    
+    {{ if eq (len $urlSegments) 2 }}
+        <!-- Affichage pour la page principale de 'blog content' -->
+        <style>
+            h2 {
+                margin-bottom: 30px; /* Adjust this value as needed */
+            }
+            .custom-text {
+                margin-bottom: 30px;
+                margin-top: 20px; /* Espace au-dessus du texte */
+                font-size: 16px; /* Taille de la police */
+                color: #333; /* Couleur du texte */
+                text-align: center; /* Centré le texte */
+            }
+            .theme-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center; /* Centrer les éléments */
+                gap: 40px; /* Plus d'espace entre les éléments */
+                padding: 0 20px; /* Un peu d'espace sur les côtés */
+            }
+            .theme-item {
+                flex: 0 0 calc(33.333% - 40px); /* 3 items per row, adjust as needed */
+                border: 2px solid red;
+                padding: 20px; /* Rendre les rectangles plus grands */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                text-align: center; /* Centrer le texte dans les rectangles */
+                margin-bottom: 20px; /* Add space below each rectangle */
+                position: relative; /* Pour positionner le bouton */
+            }
+            .theme-item img {
+                width: 70%; /* Ajustez si nécessaire */
+                height: auto; /* Ajustez si nécessaire */
+                object-fit: contain;
+                display: block;
+                margin: 0 auto 10px;
+            }
+            .theme-item a {
+                font-size: 15px; /* Augmenter la taille de la police */
+                color: #333;
+                text-decoration: none;
+                display: block; /* makes the entire area clickable */
+                margin-bottom: 30px;
+                margin-top: 20px; /* Espace entre le titre et la description */
+            }
+            .theme-item button {
+                position: absolute;
+                bottom: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 5px 5px;
+                font-size: 16px;
+                background-color: black;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .theme-item button:hover {
+                background-color: red;
+            }
+
+            /* Styles pour la barre de recherche */
+            .search-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 900px;
+                position: relative;
+            }
+
+            .search-input {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 18px;
+                border: 2px solid #ddd;
+                border-radius: 25px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                outline: none;
+                transition: border-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-input:focus {
+                border-color: #aaa;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-results {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .search-result {
+                padding: 10px 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 10px;
+                background-color: #fff;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-result:hover {
+                background-color: #f0f0f0;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-result a {
+                text-decoration: none;
+                color: #333;
+                font-size: 18px;
+            }
+
+            .search-result p {
+                margin: 5px 0 0;
+                color: #666;
+                font-size: 14px;
+            }
+
+        </style>
+
+        <div class="custom-text" style="margin-bottom: 50px;">{{ .Content }}</div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" style="margin-bottom: 50px;" placeholder="Search for posts...">
+            </div>
+        </div>
+        <div id="search-results" class="search-results"></div>
+        
+        <!-- <h2 style="margin-bottom: 70px;">Themes: </h2> -->
+        <div class="theme-list">
+            {{ if .Sections }}
+                {{ range .Sections }}
+                    {{ $segments := split .RelPermalink "/" }}
+                    {{ $lastSegment := index $segments (sub (len $segments) 2) }}
+                    {{ $imagePath := printf "/blog_content/%s/%s.png" $lastSegment $lastSegment }}
+                    <div class="theme-item">
+                        <img src="{{ $imagePath }}" alt="{{ .Title }}">
+                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                        <p>{{ .Description }}</p>
+                        <button onclick="location.href='{{ .RelPermalink }}'">Explore</button>
+                    </div>
+                {{ end }}
+            {{ else }}
+                <p>No sections available.</p>
+            {{ end }}
+        </div>
+    {{ else if eq (len $urlSegments) 3 }}
+        <!-- Affichage pour les pages de thème -->
+        <style>
+            .theme-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center; /* Centrer les éléments */
+                gap: 40px; /* Plus d'espace entre les éléments */
+                padding: 0 20px; /* Un peu d'espace sur les côtés */
+            }
+            .theme-item {
+                flex: 0 0 calc(33.333% - 40px); /* 3 items per row, adjust as needed */
+                border: 2px solid red;
+                padding: 20px; /* Rendre les rectangles plus grands */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                text-align: center; /* Centrer le texte dans les rectangles */
+                margin-bottom: 20px; /* Add space below each rectangle */
+                position: relative; /* Pour positionner le bouton */
+            }
+            .theme-item img {
+                width: 70%; /* Ajustez si nécessaire */
+                height: auto; /* Ajustez si nécessaire */
+                object-fit: contain;
+                display: block;
+                margin: 0 auto 10px;
+            }
+            .theme-item a {
+                font-size: 15px; /* Augmenter la taille de la police */
+                color: #333;
+                text-decoration: none;
+                display: block; /* makes the entire area clickable */
+                margin-bottom: 30px;
+                margin-top: 20px; /* Espace entre le titre et la description */
+            }
+            .theme-item button {
+                position: absolute;
+                bottom: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 5px 5px;
+                font-size: 16px;
+                background-color: black;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .theme-item button:hover {
+                background-color: red;
+            }
+
+            /* Styles pour la barre de recherche */
+            .search-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 900px;
+                position: relative;
+            }
+
+            .search-input {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 18px;
+                border: 2px solid #ddd;
+                border-radius: 25px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                outline: none;
+                transition: border-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-input:focus {
+                border-color: #aaa;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-results {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .search-result {
+                padding: 10px 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 10px;
+                background-color: #fff;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-result:hover {
+                background-color: #f0f0f0;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-result a {
+                text-decoration: none;
+                color: #333;
+                font-size: 18px;
+            }
+
+            .search-result p {
+                margin: 5px 0 0;
+                color: #666;
+                font-size: 14px;
+            }
+
+        </style>
+
+        <div class="custom-text" style="margin-bottom: 50px;">{{ .Content }}</div>
+        
+        <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" style="margin-bottom: 50px;" placeholder="Search for posts...">
+                </div>
+            </div>
+        <div id="search-results" class="search-results"></div>
+        
+        <!-- <h2 style="margin-bottom: 70px;">Themes: </h2> -->
+        <div class="theme-list">
+            {{ if .Sections }}
+                {{ range .Sections }}
+                    {{ $segments := split .RelPermalink "/" }}
+                    {{ $lastSegment := index $segments (sub (len $segments) 2) }}
+                    {{ $imagePath := printf "/blog_content/%s/%s.png" $lastSegment $lastSegment }}
+                    <div class="theme-item">
+                        <img src="{{ $imagePath }}" alt="{{ .Title }}">
+                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                        <p>{{ .Description }}</p>
+                        <button onclick="location.href='{{ .RelPermalink }}'">Explore</button>
+                    </div>
+                {{ end }}
+            {{ else }}
+                <p>No sections available.</p>
+            {{ end }}
+        </div>
+    
+    {{ else if eq (len $urlSegments) 4 }}
+    <!-- Affichage pour les sous-thèmes -->
+    <style>
+        .theme-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center; /* Centrer les éléments */
+                gap: 40px; /* Plus d'espace entre les éléments */
+                padding: 0 20px; /* Un peu d'espace sur les côtés */
+            }
+            .theme-item {
+                flex: 0 0 calc(33.333% - 40px); /* 3 items per row, adjust as needed */
+                padding: 20px; /* Rendre les rectangles plus grands */
+                border: 2px solid black; /* Ajouter un contour */
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                text-align: center; /* Centrer le texte dans les rectangles */
+                margin-bottom: 20px; /* Add space below each rectangle */
+                position: relative; /* Pour positionner le bouton */
+                transition: background-color 0.3s, color 0.3s;
+                cursor: pointer;
+            }
+            .theme-item:hover {
+                background-color: red;
+                color: white;
+            }
+            .theme-item a {
+                font-size: 20px; /* Augmenter la taille de la police */
+                color: #333;
+                text-decoration: none;
+                display: block; /* makes the entire area clickable */
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .theme-item:hover a {
+                color: white;
+            }
+
+        /* Styles pour la barre de recherche */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #aaa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-results {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .search-result {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            background-color: #fff;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-result:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-result a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .search-result p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        </style>
+
+        <div class="custom-text" style="margin-bottom: 50px;">{{ .Content }}</div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="search-input" class="search-input" style="margin-bottom: 50px;" placeholder="Search for posts...">
+            </div>
+        </div>
+        <div id="search-results" class="search-results"></div>
+
+        <div class="theme-list">
+            {{ range .Pages }}
+                <div class="theme-item" onclick="location.href='{{ .Permalink }}'">
+                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </div>
+            {{ end }}
+        </div>
+    
+    
+    
+    {{ else }}
+        <!-- Affichage pour les posts -->
+        {{ if .Pages }}
+            <style>
+            .theme-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center; /* Centrer les éléments */
+                gap: 40px; /* Plus d'espace entre les éléments */
+                padding: 0 20px; /* Un peu d'espace sur les côtés */
+            }
+            .theme-item {
+                flex: 0 0 calc(33.333% - 40px); /* 3 items per row, adjust as needed */
+                border: 2px solid red;
+                padding: 20px; /* Rendre les rectangles plus grands */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                text-align: center; /* Centrer le texte dans les rectangles */
+                margin-bottom: 20px; /* Add space below each rectangle */
+                position: relative; /* Pour positionner le bouton */
+            }
+            .theme-item img {
+                width: 70%; /* Ajustez si nécessaire */
+                height: auto; /* Ajustez si nécessaire */
+                object-fit: contain;
+                display: block;
+                margin: 0 auto 10px;
+            }
+
+            .theme-item a {
+                font-size: 15px; /* Augmenter la taille de la police */
+                color: #333;
+                text-decoration: none;
+                display: block; /* makes the entire area clickable */
+                margin-bottom: 30px;
+                margin-top: 20px; /* Espace entre le titre et la description */
+            }
+            .theme-item button {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: black;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .theme-item button:hover {
+                background-color: red;
+            }
+
+            /* Styles pour la barre de recherche */
+            .search-container {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 900px;
+                position: relative;
+            }
+
+            .search-input {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 18px;
+                border: 2px solid #ddd;
+                border-radius: 25px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                outline: none;
+                transition: border-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-input:focus {
+                border-color: #aaa;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-results {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+            }
+
+            .search-result {
+                padding: 10px 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                margin-bottom: 10px;
+                background-color: #fff;
+                transition: background-color 0.3s, box-shadow 0.3s;
+            }
+
+            .search-result:hover {
+                background-color: #f0f0f0;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-result a {
+                text-decoration: none;
+                color: #333;
+                font-size: 18px;
+            }
+
+            .search-result p {
+                margin: 5px 0 0;
+                color: #666;
+                font-size: 14px;
+            }
+            
+            </style>
+
+            <div class="custom-text" style="margin-bottom: 50px;">{{ .Content }}</div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" class="search-input" style="margin-bottom: 50px;" placeholder="Search for posts...">
+                </div>
+            </div>
+            <div id="search-results" class="search-results"></div>
+
+            {{ range .Pages }}
+                <article class="post-entry">
+                    <header class="entry-header">
+                        <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+                    </header>
+                    <div class="entry-content">
+                        <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+                    </div>
+                    <footer class="entry-footer">
+                        {{ partial "post_meta.html" . }}
+                    </footer>
+                    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+                </article>
+            {{ end }}
+        {{ else }}
+            <p>No pages available.</p>
+        {{ end }}
+    {{ end }}
+<!-- Ajout de Lunr.js et du script de recherche -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById("search-input");
+    const searchResults = document.getElementById("search-results");
+
+    fetch("/index.json")
+      .then(response => response.json())
+      .then(data => {
+        const idx = lunr(function() {
+          this.ref("permalink");
+          this.field("title");
+          this.field("content");
+
+          data.forEach(function(doc) {
+            this.add(doc);
+          }, this);
+        });
+
+        searchInput.addEventListener("input", function() {
+          const query = searchInput.value.toLowerCase();
+          const currentURL = window.location.pathname;
+
+          if (query.length > 2) {
+            const results = idx.search(query).map(result => {
+              return data.find(page => page.permalink === result.ref);
+            }).filter(page => page.permalink.includes(currentURL));
+
+            searchResults.innerHTML = results.map(result => `
+              <div>
+                <a href="${result.permalink}"><h3>${result.title}</h3></a>
+                <p>${result.summary}</p>
+              </div>
+            `).join('');
+          } else {
+            searchResults.innerHTML = '';
+          }
+        });
+      });
+  });
+</script>
+{{ end }}

@@ -1,0 +1,33 @@
+<!-- layouts/_default/baseof.html -->
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    {{ partial "head.html" . }}
+    <link rel="stylesheet" href="{{ "css/mainstyle.css" | relURL }}">
+</head>
+<body class="
+{{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) -}}
+{{- print "list" -}}
+{{- end -}}
+{{- if eq site.Params.defaultTheme `dark` -}}
+{{- print " dark" }}
+{{- end -}}
+" id="top">
+    {{- partial "header.html" . }}
+    <main class="main">
+        {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+<script>
+    window.hypothesisConfig = function () {
+        return {
+            "showHighlights": true,
+            "openSidebar": false,
+            "theme": "clean",
+            "group": "2d9D7Ywa" // Remplacez par l'ID de votre groupe Hypothesis
+        };
+    };
+</script>
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>
