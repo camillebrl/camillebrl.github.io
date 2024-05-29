@@ -1,0 +1,79 @@
+{{ $base := "static/papers/text_rich" }}
+{{ $files := readDir $base }}
+{{ $items := slice }}
+
+{{ range $files }}
+  {{ $folder := .Name }}
+  {{ $prezPath := printf "%s/%s/prez.json" $base $folder }}
+  {{ $outputPath := printf "%s/%s/output.md" $base $folder }}
+
+  {{ if fileExists $prezPath }}
+    {{ $prezContent := readFile $prezPath | transform.Unmarshal }}
+    {{ if fileExists $outputPath }}
+      {{ $outputContent := readFile $outputPath }}
+      {{ $items = $items | append (dict "date" $prezContent.date "prezContent" $prezContent "outputContent" $outputContent) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $sortedItems := sort $items "date" "desc" }}
+
+{{ range $sortedItems }}
+  {{ $prezContent := .prezContent }}
+  {{ $outputContent := .outputContent }}
+
+  <details class="custom-details">
+    <summary style="font-size: 1.5em; cursor: pointer; font-weight: bold;">
+      <span>{{ $prezContent.title }}</span>
+      <span style="font-size: 0.6em; display: flex; align-items: center;">
+        <svg style="width: 1em; height: 1em; margin-right: 0.5em;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 4h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2zm2 4h6m-6 4h6"/>
+        </svg>
+        {{ $prezContent.date }}
+      </span>
+      <span style="font-size: 0.6em; font-weight: normal; display: flex; align-items: center; margin-top: 5px;">
+        <svg style="width: 1em; height: 1em; margin-right: 0.5em;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a8 8 0 00-16 0v2h5m6-10a4 4 0 100-8 4 4 0 000 8zM12 14a4 4 0 00-4 4v2h8v-2a4 4 0 00-4-4z"/>
+        </svg>
+        {{ $prezContent.authors }}
+      </span>
+    </summary>
+    <div class="details-banner" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
+      {{ $prezContent.abstract }}
+      <details style="margin-top: 10px;">
+        <summary style="cursor: pointer; font-size: 1.1em; font-weight: bold; padding: 5px;">
+          Show Paper Content
+        </summary>
+        <div class="details-content" style="border: 1px solid #ccc; padding: 10px; margin-top: 5px;">
+          {{ $outputContent | markdownify }}
+        </div>
+      </details>
+    </div>
+  </details>
+{{ end }}
+
+<style>
+  .details-banner {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+
+  .details-content {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    margin-top: 10px;
+  }
+
+  .custom-details {
+    margin-bottom: 30px; /* Increase spacing between details blocks */
+    border: 2px solid #ff4b2b;
+    box-shadow: 0 4px 6px #ff416c;
+    border-radius: 8px;
+    padding: 10px; /* Optional: add padding inside the border */
+  }
+</style>

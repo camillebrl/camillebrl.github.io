@@ -1,0 +1,9 @@
+/* Ensuring embedded images within figure tags are 95% width */
+figure embed {
+    width: 95%;
+  }
+  
+/* Ensuring embedded images within div elements with class names that start with "figure" are 95% width */
+div[class^="figure"] embed {
+width: 95%;
+}

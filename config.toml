@@ -13,6 +13,26 @@ enableEmoji = true
 pygmentsUseClasses = true
 disableFastRender = true
 
+[frontmatter]
+lastmod = ["lastmod", ":git", "date"]
+
+[security]
+  enableInlineShortcodes = true
+
+  [security.exec]
+    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^pandoc$', '^postcss$']
+    osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
+
+  [security.funcs]
+    getenv = ['^HUGO_']
+
+  [security.http]
+    methods = ['(?i)GET|POST']
+    urls = ['.*']
+
+[markup]
+	defaultMarkdownHandler = "pandoc"
+
 [outputs]
   home = ["HTML", "JSON"]
 
@@ -83,4 +103,3 @@ disableFastRender = true
 
   [params.homeInfoParams]
     title = "Here is the page where I put my personal researches / paper reviews. Feel free to correct me if you see some mistakes on it!"
-  

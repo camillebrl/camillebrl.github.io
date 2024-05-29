@@ -1,8 +1,9 @@
 {{- $headers := findRE "<h[1-6].*?>(.|\n])+?</h[1-6]>" .Content -}}
 {{- $has_headers := ge (len $headers) 1 -}}
-{{- if $has_headers -}}
+{{- $show_toc := and $has_headers (not (.Param "toc" | default true | not)) -}}
+{{- if $show_toc -}}
 <div class="toc">
-    <details {{if (.Param "TocOpen") }} open{{ end }}>
+    <details>
         <summary accesskey="c" title="(Alt + C)">
             <span class="details">{{- i18n "toc" | default "Table of Contents" }}</span>
         </summary>

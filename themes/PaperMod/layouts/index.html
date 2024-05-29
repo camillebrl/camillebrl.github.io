@@ -47,6 +47,35 @@
         .scroll-down.hidden {
             display: none;
         }
+    
+        /* Bouton "Blog Content" */
+        .arrow-box {
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .arrow-box::before,
+        .arrow-box::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: solid red;
+            width: 0;
+            height: 0;
+        }
+
+        .arrow-box::before {
+            left: 0;
+            border-width: 10px 10px 10px 0;
+            border-right-color: red;
+        }
+
+        .arrow-box::after {
+            right: 0;
+            border-width: 10px 0 10px 10px;
+            border-left-color: red;
+        }
     </style>
 
 </head>
@@ -55,7 +84,7 @@
         <h1>{{ .Site.Title }}</h1>
         <nav>
             <ul>
-                <li><a href="/blog_content/">Blog Content</a></li>
+                <li><a href="/blog_content/" class="arrow-box">Blog Content</a></li>
             </ul>
         </nav>
     </header>
