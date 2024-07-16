@@ -1,7 +1,7 @@
 ---
-title: "visually_rich_document_understanding"
+title: "Image encoding"
 date: 2023-11-17 18:32:17+00:00
-themes: ["sota"]
+themes: ["literature_review"]
 subthemes: ["vision_models"]
 tags: ["CNN", "ViT", "Computer Vision", "VLMs"]
 ---
