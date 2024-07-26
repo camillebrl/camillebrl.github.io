@@ -31,3 +31,9 @@ An autoencoder is a function that maps data back to itself via low-dimensional r
 ## A good representation of an image makes a good prediction from the representation
 Another main goal of image representation (encoder) is to get a representation that allows to make good predictions. A prediction can be about imputation (predicting / filing missing pixels), about the future, the past, cause and effects, etc. Most representation-learning methods in vision are about learning compressed encodings of the image that are also predictive.
 
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+<span class="citations">{{ .Inner }}</span>
+
+<style>
+    .citations {
+        padding: 0 1px;
+        border-radius: 4px;
+        display: inline;
+        line-height: 1.5;
+        font-style: italic; /* Texte en italique */
+    }
+    .citations::before {
+        content: "";
+        display: block;
+        margin-top: 50px; /* Espace avant */
+    }
+    .citations a {
+        color: inherit; /* Utilise la couleur du texte environnant pour les liens */
+        text-decoration: underline; /* Sous-ligne les liens */
+    }
+</style>
