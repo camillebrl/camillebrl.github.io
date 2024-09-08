@@ -1,6 +1,5 @@
 ---
 title: "The limits and future of generative models"
-date: 2024-07-01
 themes: ["reflexions"]
 subthemes: ["generative_models"]
 tags: ["autoregressive", "energy-based", "GenAI", "EBM"]

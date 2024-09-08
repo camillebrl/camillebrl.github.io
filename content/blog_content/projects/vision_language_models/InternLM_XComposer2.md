@@ -1,23 +1,136 @@
 ---
-title: "Focus on the model InternLM_XComposer2"
-date: 2024-07-05
+title: "Focus on the model InternLM_XComposer2 & 4KHD"
 themes: ["projects"]
 tags: ["VLM", "InternLM", "PLoRA"]
-maths: true
 ---
 
-InternLM-XComposer2
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test of the model</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; }
+        #result { margin-top: 20px; white-space: pre-wrap; }
+        .highlight-button {
+            border: 1px solid black;
+            background-color: red;
+            color: black;
+            width: auto;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-top: 30px;
+        }
+        .highlight-button:hover {
+            background-color: #ff6666; /* Rouge plus clair pour la surbrillance */
+            color: black;
+        }
+        hr.black {
+            background-color: black;
+        }
+        hr.red {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <hr class="black">
+    <hr class="red">
+    <hr class="black">
+    <h1 style="text-decoration: underline;">Test of the model</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <textarea id="questionInput" rows="3" placeholder="Enter your question here" style="border: 1px solid black;"></textarea>
+    <label id="cropLabel" for="maxCropsSelect">In how many crops (maximum) do you want to cut the image to do high-resolution analysis? (the more details on the image, the bigger):</label>
+        <select id="maxCropsSelect">
+            <option value="">Select</option>
+    </select>
+    <button onclick="submitQuestion()" class="highlight-button">Run</button>
+    <div id="result"></div>
 
+    <script>
+        const select = document.getElementById('maxCropsSelect');
+        for (let i = 1; i <= 40; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            select.appendChild(option);
+        }
 
-Firstly, the model tackles the visual input through its image encoding process. The encode_img function utilizes a CLIP (Contrastive Language-Image Pre-training) Vision Tower to transform the input image into a high-dimensional representation. This process begins with resizing the image to 490x490 pixels and normalizing its values. The CLIP Vision Tower then divides the image into 14x14 patches, processes these through multiple layers of self-attention and feedforward networks, and ultimately produces a 1024-dimensional vector that encapsulates the image's salient features.
+        async function submitQuestion() {
+            const imageFile = document.getElementById('imageInput').files[0];
+            const question = document.getElementById('questionInput').value;
+            const maxCrops = document.getElementById('maxCropsSelect').value;
+            const resultDiv = document.getElementById('result');
 
-However, this 1024-dimensional representation isn't directly compatible with the language model's expected input. To bridge this gap, the model employs a projection mechanism, which includes the innovative PLoRA (Programmable Low-Rank Adaptation) technique. This projection expands the image representation from 1024 to 4096 dimensions, aligning it with the language model's input space. The PLoRA approach allows for efficient fine-tuning and adaptation of this projection, enhancing the model's flexibility in handling visual information. The Partial-LoRA (PLoRA) approach introduces additional weight matrices (WA and WB) specifically for visual tokens. These matrices serve a crucial purpose in adapting the output of the visual encoder to be compatible with the input requirements of the language model (LLM).
+            if (!imageFile || !question) {
+                resultDiv.textContent = "Please upload an image, enter a question, and select the max number of crops.";
+                return;
+            }
 
-Next, the model processes the textual input using its encode_text function. This function leverages the core InternLM2Model, which embeds each token of the input text into a 4096-dimensional vector, incorporating positional information through rotary embeddings. The embedded text then passes through 32 layers of transformer blocks, each refining and contextualizing the representation. This process results in a sequence of 4096-dimensional vectors that capture the deep semantic and contextual nuances of the input text.
+            resultDiv.textContent = "Processing...";
 
-With both visual and textual inputs now represented in the same 4096-dimensional space, the model concatenates these embeddings. This concatenation creates a unified representation that incorporates both the visual and textual information, allowing the model to process both modalities simultaneously.
+            try {
+                // Convert image to base64
+                const base64Image = await convertToBase64(imageFile);
 
-Finally, this combined representation is fed into the InternLM language model for the generation phase. The generate function uses this multimodal input to produce text in an autoregressive manner. It processes the input through its 32 transformer layers, predicting one token at a time. Each prediction involves projecting the 4096-dimensional hidden state to logits over a vocabulary of 92,544 tokens, from which the next token is selected. This process continues until the desired output length is reached or a stop condition is met.
+                // Send request to your API
+                const response = await axios.post('YOUR_API_ENDPOINT', {
+                    image: base64Image,
+                    question: question,
+                    maxCrops: parseInt(maxCrops)
+                });
+
+                resultDiv.textContent = response.data.answer;
+            } catch (error) {
+                resultDiv.textContent = "An error occurred: " + error.message;
+            }
+        }
+
+        function convertToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+            });
+        }
+    </script>
+</body>
+</html>
+
+<html>
+<head>
+    <style>
+        hr.black {
+            background-color: black;
+        }
+        hr.red {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <hr class="black">
+    <hr class="red">
+    <hr class="black">
+    <h1 style="text-decoration: underline;">Explainations</h1>
+</body>
+</html>
+
+**[InternLM-XComposer2](https://arxiv.org/pdf/2401.16420)** model tackles the visual input through its image encoding process. The **`encode_img`** function utilizes a {{< yellow_colored >}}CLIP{{< /yellow_colored >}} (Contrastive Language-Image Pre-training) Vision Tower to transform the input image into a high-dimensional representation. This process begins with {{< yellow_colored >}}resizing the image to 490x490 pixels{{< /yellow_colored >}} and normalizing its values. The CLIP Vision Tower then divides the image into 14x14 patches, processes these through multiple layers of self-attention and feedforward networks, and ultimately produces a 1024-dimensional vector that encapsulates the image's salient features.
+
+However, this 1024-dimensional representation isn't directly compatible with the language model's expected input. To bridge this gap, the model employs a {{< yellow_colored >}}projection mechanism, which includes the innovative PLoRA (Programmable Low-Rank Adaptation) technique{{< /yellow_colored >}}. This projection {{< yellow_colored >}}expands the image representation from 1024 to 4096 dimensions{{< /yellow_colored >}}, aligning it with the language model's input space. The PLoRA approach allows for efficient fine-tuning and adaptation of this projection, enhancing the model's flexibility in handling visual information. The Partial-LoRA (PLoRA) approach {{< yellow_colored >}}introduces additional weight matrices (WA and WB) specifically for visual tokens{{< /yellow_colored >}}. These matrices serve a crucial purpose in {{< yellow_colored >}}adapting the output of the visual encoder to be compatible with the input requirements of the language model (LLM){{< /yellow_colored >}}.
+
+Next, the model processes the textual input using its **`encode_text`** function. This function leverages the core **`InternLM2Model`** , which {{< yellow_colored >}}embeds each token of the input text into a 4096-dimensional vector{{< /yellow_colored >}}, incorporating positional information through rotary embeddings. The embedded text then passes through 32 layers of transformer blocks, each refining and contextualizing the representation. This process results in a sequence of 4096-dimensional vectors that capture the deep semantic and contextual nuances of the input text.
+
+With both visual and textual inputs now represented in the same 4096-dimensional space, the model {{< yellow_colored >}}concatenates these embeddings{{< /yellow_colored >}}. This concatenation creates a unified representation that incorporates both the visual and textual information, allowing the model to process both modalities simultaneously.
+
+Finally, this combined representation is {{< yellow_colored >}}fed into the InternLM language model for the generation phase{{< /yellow_colored >}}.
 
 
 
@@ -134,8 +247,11 @@ def model_gen(model, text, images, need_bos=True, padding=False):
 
 ```
 
-InternLM-XComposer2_4KHD
 
+
+
+**[InternLM-XComposer2_4KHD](https://arxiv.org/pdf/2404.06512)** model begins by creating an {{< yellow_colored >}}overall view, resizing the entire image to a fixed size of 336 x 336 pixels{{< /yellow_colored >}}, providing a global understanding. Simultaneously, it employs a {{< yellow_colored >}}dynamic image partitioning strategy{{< /yellow_colored >}}; A {{< yellow_colored >}}scale factor is calculated to determine how many 336x336 pixel sub-images can fit within the image while maintaining its aspect ratio{{< /yellow_colored >}}. The image is then resized according to this factor: the {{< yellow_colored >}}new width becomes scale * 336, and the height is adjusted to maintain the original aspect ratio{{< /yellow_colored >}}. Features extracted from these crops are then reassembled into an extended feature map and flattened to obtain the final local features. The model {{< yellow_colored >}}merges the global and local views, inserting a special 'separator' token between them for distinction{{< /yellow_colored >}}. To preserve the 2D structure of the image, a learnable newline token is added at the end of each row of features before flattening.
+This approach allows the model to maintain both a comprehensive global understanding and high-resolution local details, while preserving spatial structure information. As a result, the model can effectively process very high-resolution images while retaining an understanding of their overall structure, enabling it to handle resolutions up to 4K HD.
 
 
 ```
