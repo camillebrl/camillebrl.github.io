@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Computer Vision on Camille&#39;s Blog</title>
+    <link>https://camillebrl.github.io/tags/computer-vision/</link>
+    <description>Recent content in Computer Vision on Camille&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 17 Nov 2023 18:32:17 +0000</lastBuildDate><atom:link href="https://camillebrl.github.io/tags/computer-vision/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Image encoding</title>
+      <link>https://camillebrl.github.io/blog_content/literature_review/computer_vision/image_encoding/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/blog_content/literature_review/computer_vision/image_encoding/</guid>
+      <description>How to represent a visual input, ie how to encode an image? An image can be represented either in the spatial domain or in the frequency domain ## Spatial-domain image representation TODO ## Frequency-domain image representation TODO
+The representation of an image can be either pyramids or filter ##### to review TODO
+Goal is the come up with the function with the best representation possible of the image Depending on the representation chosen, it make some operations easy and others hard.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>vision_models | Camille&#39;s Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="canonical" href="https://camillebrl.github.io/subthemes/vision_models/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a63220647808d27ae21ce718b00611b2b8b74cdf9e1d5016e7617494e86148d5.css" integrity="sha256-pjIgZHgI0nriHOcYsAYRsri3TN&#43;eHVAW52F0lOhhSNU=" rel="preload stylesheet" as="style">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+<script src="/index.json"></script>
+<link rel="icon" href="https://camillebrl.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://camillebrl.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://camillebrl.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://camillebrl.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://camillebrl.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://camillebrl.github.io/subthemes/vision_models/index.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="vision_models" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://camillebrl.github.io/subthemes/vision_models/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="vision_models"/>
+<meta name="twitter:description" content=""/>
+
+    <link rel="stylesheet" href="/css/mainstyle.css">
+</head>
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://camillebrl.github.io/" accesskey="h" title="Camille&#39;s Blog (Alt + H)">Camille&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://camillebrl.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://camillebrl.github.io/blog_content/" title="Blog Content">
+                    <span>Blog Content</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://camillebrl.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+    <main class="main">
+         
+<header class="page-header"><div class="breadcrumbs"><a href="https://camillebrl.github.io/">Camille&#39;s Blog</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/subthemes/">Subthemes</a>&nbsp;»&nbsp;<span>vision_models</span>
+
+</div>
+  <h1>
+    vision_models
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Image generation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Diffusion models  .bigger { font-size: 1.5em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.5; } .bigger::before { content: &#34;\A&#34;; white-space: pre; }  Diffusion models are a class of models used in supervised learning to generate images from noise. The fundamental idea is to gradually corrupt a clean image by adding noise, and then train a model to reverse this process by progressively denoising the image....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-07-01 00:00:00 +0000 UTC'>July 1, 2024</span>&nbsp;·&nbsp;2 min</footer>
+  <a class="entry-link" aria-label="post link to Image generation" href="https://camillebrl.github.io/blog_content/literature_review/computer_vision/image_generation/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Image encoding
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>How to represent a visual input, ie how to encode an image? An image can be represented either in the spatial domain or in the frequency domain ## Spatial-domain image representation TODO ## Frequency-domain image representation TODO
+The representation of an image can be either pyramids or filter ##### to review TODO
+Goal is the come up with the function with the best representation possible of the image Depending on the representation chosen, it make some operations easy and others hard....</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-17 18:32:17 +0000 +0000'>November 17, 2023</span>&nbsp;·&nbsp;2 min</footer>
+  <a class="entry-link" aria-label="post link to Image encoding" href="https://camillebrl.github.io/blog_content/literature_review/computer_vision/image_encoding/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://camillebrl.github.io/">Camille&#39;s Blog</a></span>
+    <div id="footer-info">
+        <span id="current-date"></span> - <span id="current-visitors"></span> viewers currently on the blog
+    </div>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+    
+    function displayDate() {
+        const today = new Date();
+        const dateString = today.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+        document.getElementById('current-date').innerText = dateString;
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', displayDate);
+
+    
+    function displayVisitors() {
+        
+        fetch('https://api.example.com/current-visitors')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('current-visitors').innerText = data.visitors;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des visiteurs:', error);
+                document.getElementById('current-visitors').innerText = 'N/A';
+            });
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', displayVisitors);
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+
+<script>
+    window.hypothesisConfig = function () {
+        return {
+            "showHighlights": true,
+            "openSidebar": false,
+            "theme": "clean",
+            "group": "2d9D7Ywa" 
+        };
+    };
+</script>
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

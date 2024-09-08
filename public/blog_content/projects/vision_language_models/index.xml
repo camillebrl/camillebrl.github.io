@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Vision-Language Models on Camille&#39;s Blog</title>
+    <link>https://camillebrl.github.io/blog_content/projects/vision_language_models/</link>
+    <description>Recent content in Vision-Language Models on Camille&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://camillebrl.github.io/blog_content/projects/vision_language_models/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Focus on the model InternLM_XComposer2 &amp; 4KHD</title>
+      <link>https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/</guid>
+      <description>Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.</description>
+    </item>
+    
+  </channel>
+</rss>

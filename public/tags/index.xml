@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Camille&#39;s Blog</title>
+    <link>https://camillebrl.github.io/tags/</link>
+    <description>Recent content in Tags on Camille&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://camillebrl.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>diffusion</title>
+      <link>https://camillebrl.github.io/tags/diffusion/</link>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/diffusion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GAN</title>
+      <link>https://camillebrl.github.io/tags/gan/</link>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/gan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>generation</title>
+      <link>https://camillebrl.github.io/tags/generation/</link>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/generation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ViT</title>
+      <link>https://camillebrl.github.io/tags/vit/</link>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/vit/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>autoregressive</title>
+      <link>https://camillebrl.github.io/tags/autoregressive/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/autoregressive/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CNN</title>
+      <link>https://camillebrl.github.io/tags/cnn/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/cnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computer Vision</title>
+      <link>https://camillebrl.github.io/tags/computer-vision/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/computer-vision/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fine-tuning</title>
+      <link>https://camillebrl.github.io/tags/fine-tuning/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/fine-tuning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ICL</title>
+      <link>https://camillebrl.github.io/tags/icl/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/icl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>in-context-learning</title>
+      <link>https://camillebrl.github.io/tags/in-context-learning/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/in-context-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>inference</title>
+      <link>https://camillebrl.github.io/tags/inference/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/inference/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MLLMs</title>
+      <link>https://camillebrl.github.io/tags/mllms/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/mllms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PEFT</title>
+      <link>https://camillebrl.github.io/tags/peft/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/peft/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>RAG</title>
+      <link>https://camillebrl.github.io/tags/rag/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/rag/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VLMs</title>
+      <link>https://camillebrl.github.io/tags/vlms/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/vlms/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Backpropagation</title>
+      <link>https://camillebrl.github.io/tags/backpropagation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/backpropagation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Doc AI</title>
+      <link>https://camillebrl.github.io/tags/doc-ai/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/doc-ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Document Conversion</title>
+      <link>https://camillebrl.github.io/tags/document-conversion/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/document-conversion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>EBM</title>
+      <link>https://camillebrl.github.io/tags/ebm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/ebm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>energy-based</title>
+      <link>https://camillebrl.github.io/tags/energy-based/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/energy-based/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>GenAI</title>
+      <link>https://camillebrl.github.io/tags/genai/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/genai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gradient Descent</title>
+      <link>https://camillebrl.github.io/tags/gradient-descent/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/gradient-descent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>InternLM</title>
+      <link>https://camillebrl.github.io/tags/internlm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/internlm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Latex</title>
+      <link>https://camillebrl.github.io/tags/latex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/latex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Markdown</title>
+      <link>https://camillebrl.github.io/tags/markdown/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/markdown/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Multipages</title>
+      <link>https://camillebrl.github.io/tags/multipages/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/multipages/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PLoRA</title>
+      <link>https://camillebrl.github.io/tags/plora/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/plora/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VLM</title>
+      <link>https://camillebrl.github.io/tags/vlm/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/tags/vlm/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

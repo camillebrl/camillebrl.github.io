@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GAN on Camille&#39;s Blog</title>
+    <link>https://camillebrl.github.io/tags/gan/</link>
+    <description>Recent content in GAN on Camille&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://camillebrl.github.io/tags/gan/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Image generation</title>
+      <link>https://camillebrl.github.io/blog_content/literature_review/computer_vision/image_generation/</link>
+      <pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/blog_content/literature_review/computer_vision/image_generation/</guid>
+      <description>Diffusion models  .bigger { font-size: 1.5em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.5; } .bigger::before { content: &#34;\A&#34;; white-space: pre; }  Diffusion models are a class of models used in supervised learning to generate images from noise. The fundamental idea is to gradually corrupt a clean image by adding noise, and then train a model to reverse this process by progressively denoising the image.</description>
+    </item>
+    
+  </channel>
+</rss>

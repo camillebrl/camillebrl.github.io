@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ICL on Camille&#39;s Blog</title>
+    <link>https://camillebrl.github.io/tags/icl/</link>
+    <description>Recent content in ICL on Camille&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 17 Nov 2023 18:32:17 +0000</lastBuildDate><atom:link href="https://camillebrl.github.io/tags/icl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Critics of In-Context Learning</title>
+      <link>https://camillebrl.github.io/blog_content/reflexions/generative_models/in_context_learning/</link>
+      <pubDate>Fri, 17 Nov 2023 18:32:17 +0000</pubDate>
+      
+      <guid>https://camillebrl.github.io/blog_content/reflexions/generative_models/in_context_learning/</guid>
+      <description>https://arxiv.org/pdf/2405.19162</description>
+    </item>
+    
+  </channel>
+</rss>

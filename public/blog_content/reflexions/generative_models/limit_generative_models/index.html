@@ -1,0 +1,1322 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>The limits and future of generative models | Camille&#39;s Blog</title>
+<meta name="keywords" content="autoregressive, energy-based, GenAI, EBM">
+<meta name="description" content="A generative model is a model which is designed to generate new data samples from learned data  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . So a first step in generative modeling is to model the data distribution  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.">
+<meta name="author" content="">
+<link rel="canonical" href="https://camillebrl.github.io/blog_content/reflexions/generative_models/limit_generative_models/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a63220647808d27ae21ce718b00611b2b8b74cdf9e1d5016e7617494e86148d5.css" integrity="sha256-pjIgZHgI0nriHOcYsAYRsri3TN&#43;eHVAW52F0lOhhSNU=" rel="preload stylesheet" as="style">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
+<script src="/index.json"></script>
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://camillebrl.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://camillebrl.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://camillebrl.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://camillebrl.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://camillebrl.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="The limits and future of generative models" />
+<meta property="og:description" content="A generative model is a model which is designed to generate new data samples from learned data  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . So a first step in generative modeling is to model the data distribution  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://camillebrl.github.io/blog_content/reflexions/generative_models/limit_generative_models/" /><meta property="article:section" content="blog_content" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The limits and future of generative models"/>
+<meta name="twitter:description" content="A generative model is a model which is designed to generate new data samples from learned data  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . So a first step in generative modeling is to model the data distribution  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Blog Content",
+      "item": "https://camillebrl.github.io/blog_content/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Reflexions",
+      "item": "https://camillebrl.github.io/blog_content/reflexions/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Generative Models",
+      "item": "https://camillebrl.github.io/blog_content/reflexions/generative_models/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  4 ,
+      "name": "The limits and future of generative models",
+      "item": "https://camillebrl.github.io/blog_content/reflexions/generative_models/limit_generative_models/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The limits and future of generative models",
+  "name": "The limits and future of generative models",
+  "description": "A generative model is a model which is designed to generate new data samples from learned data  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . So a first step in generative modeling is to model the data distribution  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.",
+  "keywords": [
+    "autoregressive", "energy-based", "GenAI", "EBM"
+  ],
+  "articleBody": "A generative model is a model which is designed to generate new data samples from learned data  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . So a first step in generative modeling is to model the data distribution  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  (train a model that learns the data distribution) and a second step is to generate new data that fit that distribution  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  .\nIntroduction  .bigger { font-size: 1.5em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.5; } .bigger::before { content: \"\\A\"; white-space: pre; }  Most of the current generative models we currently use (for image, text, video, sound, and any other data type generation) are not flexible in the way they model the data distribution : they assume that the function to be learned is normalized (probability which sums to 1),   .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  which might be a false assumption over some data distribution.\nWe are not talking here about the architecture of the generative models (transformers, cnn, etc), but the way those architectures are parametrized during training  .red_colored { background-color: rgba(255, 59, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 82, 59, 0.6); display: inline; line-height: 1.5; }  (ie the way the weights are modified in the backpropagation process of the training process). Indeed, in current generative models (which are density models), when the some weights are modified in the backpropagation process (like pushing up the density over certain datapoints as presented in the figure in green  .low_green_colored { background-color: rgba(48, 209, 128, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(53, 95, 55, 0.6); display: inline; line-height: 1.5; }  ), we are forced to sacrifice the density over other regions  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  (pushing down the density over other datapoints as presented in the figure in red  .low_red_colored { background-color: rgba(207, 101, 101, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(121, 73, 66, 0.6); display: inline; line-height: 1.5; }  ), because the function is supposed to be normalized (probability which sums to 1)  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  :\nFitting a max likelihood density model to data, from Antonio Torralba et al.’s book, p475\nTherefore, other methods have emerged that are more “data-driven”, which do not require full model specification from the start but focus solely on the data  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  (with few to no assumptions about the function to be learned to represent the data).\nOne of these methods for generative modeling is the Energy-Based modeling  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . Energy-Based models flexibly model probability distributions  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  and have risen in popularity recently thanks to the impressive results obtained in image generation by parameterizing the distribution with Convolutional Neural Networks (CNN).\nModel the data distribution: first step of generative modeling  .bigger { font-size: 1.5em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.5; } .bigger::before { content: \"\\A\"; white-space: pre; }  Learning statistical models of observational data has always been one of the primary goals in machine learning and more generally in statistics.\nDensity models  .bigger2 { font-size: 1.2em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.2; }  Density models are models that learn the probability density function (PDF) $ p_θ $ of the data, assuming that the data follows a probability density function.  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  Why using density functions to describe the data? Because density functions provide a mathematically rigorous way to describe the distribution of continuous random variables.\nDensity functions are normalized, meaning the total probability over all possible outcomes is 1: Density functions give high values to regions where there is lot of observed data, and low values to regions where there is few or no observed data, since it is a probability (sum of all values equal to 1).  .red_colored { background-color: rgba(255, 59, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 82, 59, 0.6); display: inline; line-height: 1.5; }  This ensures that the probabilities are meaningful and consistent.\nEnergy-Based Models  .bigger2 { font-size: 1.2em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.2; }  Energy-Based Models emerged to tackle the assumption that the function to be learned is normalizable (because it is not always the case)  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . Energy-Based Models exploit probability distributions only defined though unnormalized scores.  .red_colored { background-color: rgba(255, 59, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 82, 59, 0.6); display: inline; line-height: 1.5; }  The approach is still to find $ p’_θ $ which we think is a good approximation of the real data distribution. Since $ p'_θ $ is unnormalized, $ p_θ(x) = p'_θ(x) / Z_θ $, so it is easy to go back to a normalized density function  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  (we just need to multiply by $ Z_θ $). This is why energy functions can do most of what probability densities can do (mathematically speaking), except that they do not give normalized probabilities.\nIn Energy-Based Models, $ p'_θ(x) = e^{-E_θ(x)}$, and $ E_θ $ is what we call the energy function  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . $ E_θ(x)  0 $ associates a scalar measure of incompatibility to each data point.\nThe $ E_θ(x)  0 $ distribution comes from statistical physics  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  : Considering physical systems containing multiple particles, with a specific temperature, each particle has an energy associated with itself (kinetic energy, which is related to the movement of the particle, and potential energy, which is related to the interactions between the particles or with external fields).\nThe Boltzmann-Gibbs probability distribution describes the likelihood of a system being in a particular state based on the total energy of that state (of all particules) and the temperature of the system  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . In this context, the state $ x $ of a system refers to a specific configuration of the positions of all particles within the system. For example, if we have $ n $ particles, then $ x $ is a vector $ [x_1, x_2, …, x_n] $, where each $ x_i $ represents the position of the $ i $-th particle.\nThe energy $ E(x) $ of this state is a function of the positions of all particles.\nThe Boltzmann-Gibbs distribution $ p(x) $, providing the probability that the system is in a specific configuration $ x $, is given by the formula: \\( p(x) = \\frac{\\exp \\left\\{ -\\frac{1}{T} E(x) \\right\\}}{Z} \\)   .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  where $ T$ is the temperature of the system, and \\( Z = \\int_{X^2} \\exp \\left\\{ -\\frac{1}{T} E(x) \\right\\} dx \\) is a normalizing constant that makes the distribution sum to one.  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  The probability $ p(x) $ describes the relative frequency at which the system is found in the state $ x $  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . If we suppose that x is a one-dimensional state: If we take a low temperature ( $ T = 1.6 $ ), we get:\nNote that the normalized density is $ p(x) $. We see that states with lower energy $ E(x) $ are more probable, especially at low temperatures. Conversely, higher energy states are less probable.\nEnergy values reacts on the opposite of the density points: in probability density, there is a high value where there are lot of data and a low value where there is few data. It is actually the opposite for energy values: Lower energy values correspond to higher probability (more likely) data points, while higher energy values correspond to lower probability (less likely) data points  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  .\n$ E_θ $ is actually part of the normalized density formula (it is part of the exponential form of the probability density function): \\( p_\\theta = e^{-\\frac{E_\\theta}{Z(\\theta)}} \\) where $ Z(θ) $ is the normalizing constant: \\( Z(\\theta) = \\int_x e^{-E_\\theta(x)} \\, dx \\)   .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  .\nComparison of the loss and gradient formula  .bigger2 { font-size: 1.2em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.2; }  The Kullback-Leibler (KL) loss : maximum likelihood estimation, i.e., minimizing the expected negative log-likelihood of the data use the Kullback-Leibler (KL) divergence as loss function  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  (to measure the distance between $ p_θ $ and $ p_{data} $): \\( \\arg \\min_{p_\\theta} \\mathbb{E}_{x \\sim p_{\\text{data}}} \\left[ -\\log \\frac{p_\\theta(x)}{p_{\\text{data}}(x)} \\right] = \\arg \\max_{p_\\theta} \\mathbb{E}_{x \\sim p_{\\text{data}}}[\\log p_\\theta(x)] - \\mathbb{E}_{x \\sim p_{\\text{data}}}[\\log p_{\\text{data}}(x)] \\) \\( = \\arg \\max_{p_\\theta} \\mathbb{E}_{x \\sim p_{\\text{data}}}[\\log p_\\theta(x)] \\) (since the second term has no dependence on $ p_θ $), which is almost equal to \\( \\frac{1}{N} \\sum_{i=1}^N \\log(p_\\theta(x_i)) \\), which is the maximum likelihood formula.   .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  Therefore, it boils down to a form of maximum likelihood learning: the process of fitting the model to the data involves maximizing the likelihood of the observed data under the model (adjusting the parameters of the model so that it assigns the highest possible probability to the training data).\nLet us see what happens when we try to learn the parameters of a model with maximum likelihood estimation, i.e., minimizing the expected negative log-likelihood of the data.\n1) For an Density Model:\n\\[ \\mathcal{L}_{\\text{NLL}} = -\\mathbb{E}_{p_{\\text{data}}} [\\log p_\\theta(x)] \\] For a probability density function \\( p_\\theta(x) \\): \\[ \\mathcal{L}_{\\text{NLL}} = -\\mathbb{E}_{p_{\\text{data}}} [\\log p_\\theta(x)] \\] Computing the gradient gives: \\[ \\nabla_\\theta \\mathcal{L}_{\\text{NLL}} = \\mathbb{E}_{p_{\\text{data}}} [\\nabla_\\theta \\log p_\\theta(x)] \\]   .formula { padding: 0 1px; border-radius: 4px; display: inline; line-height: 1.5; }  It comes down to pushing up the density over certain datapoints as presented in the figure in green  .low_green_colored { background-color: rgba(48, 209, 128, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(53, 95, 55, 0.6); display: inline; line-height: 1.5; }  ), we are forced to sacrifice the density over other regions  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  and pushing down the density over other datapoints as presented in the figure in red  .low_red_colored { background-color: rgba(207, 101, 101, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(121, 73, 66, 0.6); display: inline; line-height: 1.5; }  :\nFitting a max likelihood density model to data, from Antonio Torralba et al.’s book, p475\n2) For an Energy-Based Model:\nFor an Energy-Based Model (EBM), the probability density is often expressed in terms of an energy function $ E_(x) $:\n\\[ p_\\theta(x) = \\frac{e^{-E_\\theta(x)}}{Z_\\theta} \\] where \\( Z_\\theta \\) is the partition function: \\[ Z_\\theta = \\int e^{-E_\\theta(x')} dx' \\] Thus, the negative log-likelihood becomes: \\[ \\mathcal{L}_{\\text{NLL}} = -\\mathbb{E}_{p_{\\text{data}}} [\\log p_\\theta(x)] = -\\mathbb{E}_{p_{\\text{data}}} \\left[ \\log \\left( \\frac{e^{-E_\\theta(x)}}{Z_\\theta} \\right) \\right] \\] Simplifying this, we get: \\[ \\mathcal{L}_{\\text{NLL}} = \\mathbb{E}_{p_{\\text{data}}} [E_\\theta(x)] + \\log Z_\\theta \\] Computing the gradient of this function: \\[ \\nabla_\\theta \\mathcal{L}_{\\text{NLL}} = \\mathbb{E}_{p_{\\text{data}}} [\\nabla_\\theta E_\\theta(x)] + \\nabla_\\theta \\log Z_\\theta \\] The second term can be rewritten as: \\[ \\nabla_\\theta \\log Z_\\theta = \\frac{\\nabla_\\theta Z_\\theta}{Z_\\theta} = \\frac{\\nabla_\\theta \\int e^{-E_\\theta(x)} dx}{Z_\\theta} = \\frac{\\int \\nabla_\\theta e^{-E_\\theta(x)} dx}{Z_\\theta} = \\frac{\\int e^{-E_\\theta(x)} \\nabla_\\theta (-E_\\theta(x)) dx}{Z_\\theta} = -\\int \\frac{e^{-E_\\theta(x)}}{Z_\\theta} \\nabla_\\theta E_\\theta(x) dx \\] Thus, \\[ \\nabla_\\theta \\log Z_\\theta = -\\mathbb{E}_{p_\\theta} [\\nabla_\\theta E_\\theta(x)] \\] Therefore, we can write the learning gradient as: \\[ \\nabla_\\theta \\mathcal{L}_{\\text{NLL}} = \\mathbb{E}_{p_{\\text{data}}} [\\nabla_\\theta E_\\theta(x)] - \\mathbb{E}_{p_\\theta} [\\nabla_\\theta E_\\theta(x)] \\]   .formula { padding: 0 1px; border-radius: 4px; display: inline; line-height: 1.5; }  We can separate the loss into two phases of learning called positive and negative  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . The positive phase consists of minimizing the energy of points drawn from $ p_{data} $  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  and is straightforward to compute assuming that $ E_θ(x) $ is differentiable (like a CNN). This has the effect of making the data points more likely (i.e., push down on their energy). However, this alone would lead to a flat energy landscape (i.e., 0 everywhere).  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  To counteract this, the negative phase pushes up on the energy of points drawn from the model distribution $ p_θ $  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  : the energy of the points that are unlikely in $ p_{data} $ will only get pushed up while those that are likely are going to get balanced out by the positive phase and will stay relatively low. It is the balancing of these two forces that shapes the energy landscape:\nFitting a max likelihood energy model to data, from Antonio Torralba et al.’s book, p476\nStep2 of generative modeling: generate new data that fit the original data distribution  .bigger { font-size: 1.5em; padding: 0 1px; font-weight: bold; border-radius: 4px; display: inline-block; line-height: 1.5; } .bigger::before { content: \"\\A\"; white-space: pre; }  Once we have a model that correctly models the data distribution, we can generate new ”imagined” data points by starting a sampling chain at a random point (i.e. random noise for images) and let it drop to a low-energy point (i.e. an image most alike training data) or to high probability points  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  .\nGenerative models operate in a “one-to-many  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  ” fashion, meaning that a single input can lead to multiple possible outputs. For example, if you input the same sentence into a text generation model, it could generate several different responses. So there is no single correct or predetermined answer for a given input. This introduces uncertainty that needs to be handled.  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  Thus, the generator must be stochastic  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  , meaning that it should incorporate elements of randomness. Thus, for the same input, a stochastic generator can produce different outputs each time it is executed. So we do not only need to build a generator that fit the original data distribution, but we also need to build a stochastic generator. How to do so?\n The Diffusion models way: A common method to make a stochastic generator is by using stochastic inputs  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  . This means that while the function itself is deterministic (producing the same output for the same input), it can produce varied results if the input is random. In other words, the generator would be $ generator(z, y) = x $ with $ z $ a randomized vector. In the case of image generation, if we give the generator as input “dog”, it will generate an image of a dog, and this latent vector $ z $ will specify exactly which dog to generate  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  (breed, size, color, background, …). $ z $ is called a \"vector of latent variables\" because the variables are not directly observed in the training data (it is also called \"noise\").  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  The function can output a different image $ x $ for each different setting of $ z $. Usually, we draw $ z $ from a simple distribution of Gaussian noise, that is, $ z∼N(0,1) $. $ G: Z, Y → X $\n The Transformers way: Transformers use the temperature parameter  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  or other sampling-based techniques  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  to manage ambiguity in text generation. The next token prediction in Autoregressive Transformers models is inherently a deterministic function; the same probability is assigned to the next tokens. During inference, greedy decoding (choosing the token with the highest probability at each step) keeps no randomness, whereas using sampling-based techniques like top-k sampling or nucleus (top-p) sampling, tokens are chosen randomly according to their probabilities, introducing randomness  .colored { background-color: rgba(255, 235, 59, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 235, 59, 0.6); display: inline; line-height: 1.5; }  into the generation process. The Temperature parameter scaling can also introduce stochasticity by altering the model’s probability distribution over the next token.\n  I have based my writings on my comprehension of   .citations { padding: 0 1px; border-radius: 4px; display: inline; line-height: 1.5; font-style: italic; } .citations::before { content: \"\"; display: block; margin-top: 50px; } .citations a { color: inherit; text-decoration: underline; }  Foundations of Computer Vision book from Antonio Torralba et al., Léo Gagnon et al’s paper and Andy Jones’s post\n",
+  "wordCount" : "3491",
+  "inLanguage": "en",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://camillebrl.github.io/blog_content/reflexions/generative_models/limit_generative_models/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Camille's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://camillebrl.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+    <link rel="stylesheet" href="/css/mainstyle.css">
+</head>
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://camillebrl.github.io/" accesskey="h" title="Camille&#39;s Blog (Alt + H)">Camille&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://camillebrl.github.io/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://camillebrl.github.io/blog_content/" title="Blog Content">
+                    <span>Blog Content</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://camillebrl.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+    <main class="main">
+        
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://camillebrl.github.io/">Camille&#39;s Blog</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/blog_content/">Blog Content</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/blog_content/reflexions/">Reflexions</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/blog_content/reflexions/generative_models/">Generative Models</a>&nbsp;»&nbsp;<span>The limits and future of generative models</span>
+
+</div>
+    <h1 class="post-title">
+      The limits and future of generative models
+      <link rel="stylesheet" href="/css/posts.css">
+    </h1>
+    <div class="post-meta">17 min
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>A generative model is a model which is designed to
+<span class="colored">generate new data samples from learned data</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. So a first step in generative modeling is to
+<span class="colored">model the data distribution</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ (train a model that learns the data
+distribution) and a second step is to <span class="colored">generate new data that fit that distribution</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+.</p>
+<span class="bigger">Introduction</span>
+
+<style>
+    .bigger {
+        font-size: 1.5em; 
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1.5;
+    }
+
+    .bigger::before {
+        content: "\A";
+        white-space: pre;
+    }
+</style>
+<p>Most of the current generative models we currently use (for image,
+text, video, sound, and any other data type generation) are
+<span class="colored">not flexible in the way they model the data distribution : they assume that the function to be learned is normalized (probability which sums to 1), </span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ which might be a false assumption over some
+data distribution.</p>
+<p><span class="red_colored">We are not talking here about the architecture of the generative models (transformers, cnn, etc), but the way those architectures are parametrized during training</span>
+
+<style>
+    .red_colored {
+        background-color: rgba(255, 59, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 82, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ (ie the way the weights are modified in the
+backpropagation process of the training process). Indeed, in current
+generative models (which are density models), when the some weights are
+modified in the backpropagation process (like
+<span class="low_green_colored">pushing up the density over certain datapoints as presented in the figure in green</span>
+
+<style>
+    .low_green_colored {
+        background-color: rgba(48, 209, 128, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(53, 95, 55, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+), we are <span class="colored">forced to sacrifice the density over other regions</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+
+(<span class="low_red_colored">pushing down the density over other datapoints as presented in the figure in red</span>
+
+<style>
+    .low_red_colored {
+        background-color: rgba(207, 101, 101, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(121, 73, 66, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+), because the <span class="colored">function is supposed to be normalized (probability which sums to 1)</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+:</p>
+<p><img
+src="/reflexions/generative_models/end_autoregressive_models/density_models.png" />
+<em>Fitting a max likelihood density model to data, from <a
+href="https://mitpress.mit.edu/9780262048972/foundations-of-computer-vision/">Antonio
+Torralba et al.’s book</a>, p475</em></p>
+<p>Therefore, other methods have emerged that are more “data-driven”,
+which do <span class="colored">not require full model specification from the start but focus solely on the data</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ (with few to no assumptions about
+the function to be learned to represent the data).</p>
+<p>One of these methods for generative modeling is the
+<span class="colored">Energy-Based modeling</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. Energy-Based models
+<span class="colored">flexibly model probability distributions</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ and have risen in popularity recently thanks
+to the impressive results obtained in image generation by parameterizing
+the distribution with Convolutional Neural Networks (CNN).</p>
+<span class="bigger">Model the data distribution: first step of generative modeling</span>
+
+<style>
+    .bigger {
+        font-size: 1.5em; 
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1.5;
+    }
+
+    .bigger::before {
+        content: "\A";
+        white-space: pre;
+    }
+</style>
+<p>Learning statistical models of observational data has always been one
+of the primary goals in machine learning and more generally in
+statistics.</p>
+<span class="bigger2">Density models</span>
+
+<style>
+    .bigger2 {
+        font-size: 1.2em; 
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1.2;
+    }
+
+</style>
+<p>Density models are models that <span class="colored">learn the probability density function (PDF) $ p_θ $ of the data, assuming that the data follows a probability density function.</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ Why using
+density functions to describe the data? Because density functions
+provide a mathematically rigorous way to describe the distribution of
+continuous random variables.</p>
+<p>Density functions are <span class="red_colored">normalized, meaning the total probability over all possible outcomes is 1: Density functions give high values to regions where there is lot of observed data, and low values to regions where there is few or no observed data, since it is a probability (sum of all values equal to 1).</span>
+
+<style>
+    .red_colored {
+        background-color: rgba(255, 59, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 82, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ This ensures that
+the probabilities are meaningful and consistent.</p>
+<span class="bigger2">Energy-Based Models</span>
+
+<style>
+    .bigger2 {
+        font-size: 1.2em; 
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1.2;
+    }
+
+</style>
+<p>Energy-Based Models emerged to <span class="colored">tackle the assumption that the function to be learned is normalizable (because it is not always the case)</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+.
+<span class="red_colored">Energy-Based Models exploit probability distributions only defined though unnormalized scores.</span>
+
+<style>
+    .red_colored {
+        background-color: rgba(255, 59, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 82, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+</p>
+<p>The approach is still to find $ p’_θ $ which we think is a good
+approximation of the real data distribution. Since
+<span class="colored">$ p'_θ $ is unnormalized, $ p_θ(x) = p'_θ(x) / Z_θ $, so it is easy to go back to a normalized density function</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ (we just need to multiply by $ Z_θ $). This
+is why energy functions can do most of what probability densities can do
+(mathematically speaking), except that they do not give normalized
+probabilities.</p>
+<p>In Energy-Based Models, <span class="colored">$ p'_θ(x) = e^{-E_θ(x)}$, and $ E_θ $ is what we call the energy function</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. $ E_θ(x) &gt; 0 $
+associates a scalar measure of incompatibility to each data point.</p>
+<p>The $ E_θ(x) &gt; 0 $ distribution <span class="colored">comes from statistical physics</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+:
+Considering physical systems containing multiple particles, with a
+specific temperature, each particle has an energy associated with itself
+(kinetic energy, which is related to the movement of the particle, and
+potential energy, which is related to the interactions between the
+particles or with external fields).</p>
+<p>The <span class="colored">Boltzmann-Gibbs probability distribution describes the likelihood of a system being in a particular state based on the total energy of that state (of all particules) and the temperature of the system</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. In this context, the state $ x $ of a
+system refers to a specific configuration of the positions of all
+particles within the system. For example, if we have $ n $ particles,
+then $ x $ is a vector $ [x_1, x_2, …, x_n] $, where each $ x_i $
+represents the position of the $ i $-th particle.</p>
+<p><img
+src="/reflexions/generative_models/end_autoregressive_models/particles.gif" /></p>
+<p>The energy $ E(x) $ of this state is a function of the positions of
+all particles.</p>
+<p>The Boltzmann-Gibbs distribution $ p(x) $, providing the probability
+that the system is in a specific configuration $ x $, is given by the
+formula: <span class="colored"> \( p(x) = \frac{\exp \left\{ -\frac{1}{T} E(x) \right\}}{Z} \) </span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ where $ T$ is the temperature of the
+system, and <span class="colored"> \( Z = \int_{X^2} \exp \left\{ -\frac{1}{T} E(x) \right\} dx \) is a normalizing constant that makes the distribution sum to one.</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+</p>
+<p>The <span class="colored">probability $ p(x) $ describes the relative frequency at which the system is found in the state $ x $</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. If we suppose that x is a
+one-dimensional state: <img
+src="/reflexions/generative_models/end_autoregressive_models/gibbs.gif" /></p>
+<p>If we take a low temperature ( $ T = 1.6 $ ), we get:</p>
+<p><img
+src="/reflexions/generative_models/end_autoregressive_models/emb_gibbs_distribution.png" /></p>
+<p>Note that the normalized density is $ p(x) $. We see that states with
+lower energy $ E(x) $ are more probable, especially at low temperatures.
+Conversely, higher energy states are less probable.</p>
+<p>Energy values reacts on the opposite of the density points: in
+probability density, there is a high value where there are lot of data
+and a low value where there is few data. It is actually the opposite for
+energy values: <span class="colored">Lower energy values correspond to higher probability (more likely) data points, while higher energy values correspond to lower probability (less likely) data points</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+.</p>
+<p>$ E_θ $ is actually part of the normalized density formula (it is
+<span class="colored">part of the exponential form of the probability density function): \( p_\theta = e^{-\frac{E_\theta}{Z(\theta)}} \) where $ Z(θ) $ is the normalizing constant: \( Z(\theta) = \int_x e^{-E_\theta(x)} \, dx \) </span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+.</p>
+<span class="bigger2">Comparison of the loss and gradient formula</span>
+
+<style>
+    .bigger2 {
+        font-size: 1.2em; 
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1.2;
+    }
+
+</style>
+<p><strong>The Kullback-Leibler (KL) loss : maximum likelihood
+estimation, i.e., minimizing the expected negative log-likelihood of the
+data</strong> <span class="colored">use the Kullback-Leibler (KL) divergence as loss function</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ (to measure the distance
+between $ p_θ $ and $ p_{data} $): <span class="colored"> \( \arg \min_{p_\theta} \mathbb{E}_{x \sim p_{\text{data}}} \left[ -\log \frac{p_\theta(x)}{p_{\text{data}}(x)} \right] = \arg \max_{p_\theta} \mathbb{E}_{x \sim p_{\text{data}}}[\log p_\theta(x)] - \mathbb{E}_{x \sim p_{\text{data}}}[\log p_{\text{data}}(x)] \) \( = \arg \max_{p_\theta} \mathbb{E}_{x \sim p_{\text{data}}}[\log p_\theta(x)] \) (since the second term has no dependence on $ p_θ $), which is almost equal to \( \frac{1}{N} \sum_{i=1}^N \log(p_\theta(x_i)) \), which is the maximum likelihood formula. </span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ Therefore,
+it boils down to a form of maximum likelihood learning: the process of
+fitting the model to the data involves maximizing the likelihood of the
+observed data under the model (adjusting the parameters of the model so
+that it assigns the highest possible probability to the training
+data).</p>
+<p>Let us see what happens when we try to learn the parameters of a
+model with maximum likelihood estimation, i.e., minimizing the expected
+negative log-likelihood of the data.</p>
+<p><strong>1) For an Density Model:</strong></p>
+<span class="formula">
+\[ 
+\mathcal{L}_{\text{NLL}} = -\mathbb{E}_{p_{\text{data}}} [\log p_\theta(x)] 
+\]
+
+For a probability density function \( p_\theta(x) \):
+
+\[ 
+\mathcal{L}_{\text{NLL}} = -\mathbb{E}_{p_{\text{data}}} [\log p_\theta(x)] 
+\]
+
+Computing the gradient gives:
+
+\[ 
+\nabla_\theta \mathcal{L}_{\text{NLL}} = \mathbb{E}_{p_{\text{data}}} [\nabla_\theta \log p_\theta(x)] 
+\]
+</span>
+
+<style>
+    .formula {
+        padding: 0 1px;
+        border-radius: 4px;
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+
+<p>It comes down to <span class="low_green_colored">pushing up the density over certain datapoints as presented in the figure in green</span>
+
+<style>
+    .low_green_colored {
+        background-color: rgba(48, 209, 128, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(53, 95, 55, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+), we are
+<span class="colored">forced to sacrifice the density over other regions</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ and <span class="low_red_colored">pushing down the density over other datapoints as presented in the figure in red</span>
+
+<style>
+    .low_red_colored {
+        background-color: rgba(207, 101, 101, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(121, 73, 66, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+:</p>
+<p><img
+src="/reflexions/generative_models/end_autoregressive_models/density_models.png" />
+<em>Fitting a max likelihood density model to data, from <a
+href="https://mitpress.mit.edu/9780262048972/foundations-of-computer-vision/">Antonio
+Torralba et al.’s book</a>, p475</em></p>
+<p><strong>2) For an Energy-Based Model:</strong></p>
+<p>For an Energy-Based Model (EBM), the probability density is often
+expressed in terms of an energy function $ E_(x) $:</p>
+<span class="formula">
+\[ 
+p_\theta(x) = \frac{e^{-E_\theta(x)}}{Z_\theta} 
+\]
+
+where \( Z_\theta \) is the partition function:
+
+\[ 
+Z_\theta = \int e^{-E_\theta(x')} dx' 
+\]
+
+Thus, the negative log-likelihood becomes:
+
+\[ 
+\mathcal{L}_{\text{NLL}} = -\mathbb{E}_{p_{\text{data}}} [\log p_\theta(x)] = -\mathbb{E}_{p_{\text{data}}} \left[ \log \left( \frac{e^{-E_\theta(x)}}{Z_\theta} \right) \right] 
+\]
+
+Simplifying this, we get:
+
+\[ 
+\mathcal{L}_{\text{NLL}} = \mathbb{E}_{p_{\text{data}}} [E_\theta(x)] + \log Z_\theta 
+\]
+
+Computing the gradient of this function:
+
+\[ 
+\nabla_\theta \mathcal{L}_{\text{NLL}} = \mathbb{E}_{p_{\text{data}}} [\nabla_\theta E_\theta(x)] + \nabla_\theta \log Z_\theta 
+\]
+
+The second term can be rewritten as:
+
+\[ 
+\nabla_\theta \log Z_\theta = \frac{\nabla_\theta Z_\theta}{Z_\theta} = \frac{\nabla_\theta \int e^{-E_\theta(x)} dx}{Z_\theta} = \frac{\int \nabla_\theta e^{-E_\theta(x)} dx}{Z_\theta} = \frac{\int e^{-E_\theta(x)} \nabla_\theta (-E_\theta(x)) dx}{Z_\theta} = -\int \frac{e^{-E_\theta(x)}}{Z_\theta} \nabla_\theta E_\theta(x) dx 
+\]
+
+Thus, 
+
+\[ 
+\nabla_\theta \log Z_\theta = -\mathbb{E}_{p_\theta} [\nabla_\theta E_\theta(x)] 
+\]
+
+Therefore, we can write the learning gradient as:
+
+\[ 
+\nabla_\theta \mathcal{L}_{\text{NLL}} = \mathbb{E}_{p_{\text{data}}} [\nabla_\theta E_\theta(x)] - \mathbb{E}_{p_\theta} [\nabla_\theta E_\theta(x)] 
+\]
+
+</span>
+
+<style>
+    .formula {
+        padding: 0 1px;
+        border-radius: 4px;
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+
+<p>We can <span class="colored">separate the loss into two phases of learning called positive and negative</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. The <span class="colored">positive phase consists of minimizing the energy of points drawn from $ p_{data} $</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ and
+is straightforward to compute assuming that $ E_θ(x) $ is differentiable
+(like a CNN). This has the effect of making the data points more likely
+(i.e., push down on their energy). However, <span class="colored">this alone would lead to a flat energy landscape (i.e., 0 everywhere).</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+
+To counteract this, the <span class="colored">negative phase pushes up on the energy of points drawn from the model distribution $ p_θ $</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ : the energy of the
+points that are unlikely in $ p_{data} $ will only get pushed up while
+those that are likely are going to get balanced out by the positive
+phase and will stay relatively low. It is the balancing of these two
+forces that shapes the energy landscape:</p>
+<p><img
+src="/reflexions/generative_models/end_autoregressive_models/ebm.png" />
+<em>Fitting a max likelihood energy model to data, from <a
+href="https://mitpress.mit.edu/9780262048972/foundations-of-computer-vision/">Antonio
+Torralba et al.’s book</a>, p476</em></p>
+<span class="bigger">Step2 of generative modeling: generate new data that fit the original data distribution</span>
+
+<style>
+    .bigger {
+        font-size: 1.5em; 
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        display: inline-block;
+        line-height: 1.5;
+    }
+
+    .bigger::before {
+        content: "\A";
+        white-space: pre;
+    }
+</style>
+<p>Once we have a model that correctly models the data distribution, we
+can <span class="colored">generate new ”imagined” data points by starting a sampling chain at a random point (i.e. random noise for images) and let it drop to a low-energy point (i.e. an image most alike training data) or to high probability points</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+.</p>
+<p>Generative models operate in a “<span class="colored">one-to-many</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+” fashion,
+meaning that a single input can lead to multiple possible outputs. For
+example, if you input the same sentence into a text generation model, it
+could generate several different responses. So there is no single
+correct or predetermined answer for a given input. This introduces
+<span class="colored">uncertainty that needs to be handled.</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ Thus, the <span class="colored">generator must be stochastic</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+, meaning
+that it should incorporate elements of randomness. Thus, for the same
+input, a stochastic generator can produce different outputs each time it
+is executed. So we do not only need to build a generator that fit the
+original data distribution, but we also need to build a stochastic
+generator. How to do so?</p>
+<ul>
+<li><p><strong>The Diffusion models way:</strong> A common method to
+make a stochastic generator is by <span class="colored">using stochastic inputs</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+. This means
+that while the function itself is deterministic (producing the same
+output for the same input), it can produce varied results if the input
+is random. In other words, the generator would be $ generator(z, y) = x
+$ with $ z $ a randomized vector. In the case of image generation, if we
+give the generator as input “dog”, it will generate an image of a dog,
+and this <span class="colored">latent vector $ z $ will specify exactly which dog to generate</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ (breed, size, color, background, …).
+$ z $ is called a <span class="colored">"vector of latent variables" because the variables are not directly observed in the training data (it is also called "noise").</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ The function can output a
+different image $ x $ for each different setting of $ z $. Usually, we
+draw $ z $ from a simple distribution of Gaussian noise, that is, $
+z∼N(0,1) $. $ G: Z, Y → X $</p></li>
+<li><p><strong>The Transformers way:</strong> Transformers use the
+<span class="colored">temperature parameter</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ or other <span class="colored">sampling-based techniques</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ to manage
+ambiguity in text generation. The next token prediction in
+Autoregressive Transformers models is inherently a deterministic
+function; the same probability is assigned to the next tokens. During
+inference, greedy decoding (choosing the token with the highest
+probability at each step) keeps no randomness, whereas using
+<span class="colored">sampling-based techniques like top-k sampling or nucleus (top-p) sampling, tokens are chosen randomly according to their probabilities, introducing randomness</span>
+
+<style>
+    .colored {
+        background-color: rgba(255, 235, 59, 0.6);  
+        padding: 0 1px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);  
+        display: inline;
+        line-height: 1.5;
+    }
+</style>
+ into the generation process. The Temperature
+parameter scaling can also introduce stochasticity by altering the
+model’s probability distribution over the next token.</p></li>
+</ul>
+<p><span class="citations">I have based my writings on my comprehension of </span>
+
+<style>
+    .citations {
+        padding: 0 1px;
+        border-radius: 4px;
+        display: inline;
+        line-height: 1.5;
+        font-style: italic;  
+    }
+    .citations::before {
+        content: "";
+        display: block;
+        margin-top: 50px;  
+    }
+    .citations a {
+        color: inherit;  
+        text-decoration: underline;  
+    }
+</style>
+ <em><a
+href="https://mitpress.mit.edu/9780262048972/foundations-of-computer-vision/">Foundations
+of Computer Vision book from Antonio Torralba et al.</a>, <a
+href="https://arxiv.org/pdf/2202.12176">Léo Gagnon et al’s paper</a> and
+<a href="https://andrewcharlesjones.github.io/journal/ebms.html">Andy
+Jones’s post</a></em></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://camillebrl.github.io/tags/autoregressive/">autoregressive</a></li>
+      <li><a href="https://camillebrl.github.io/tags/energy-based/">energy-based</a></li>
+      <li><a href="https://camillebrl.github.io/tags/genai/">GenAI</a></li>
+      <li><a href="https://camillebrl.github.io/tags/ebm/">EBM</a></li>
+    </ul>
+  </footer>
+
+  <div id="comments" style="margin-top: 50px;">
+    
+    <script src="https://giscus.app/client.js"
+        data-repo="camillebrl/blog_comments"
+        data-repo-id="R_kgDOMBZDUw"
+        data-category="Ideas"
+        data-category-id="DIC_kwDOMBZDU84CfpcJ"
+        data-mapping="url"
+        data-strict="0"
+        data-reactions-enabled="0"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="fr"
+        crossorigin="anonymous"
+        async>
+    </script>
+</div>
+
+</article>
+
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"
+    integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"
+    integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"
+    integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            });"></script>
+
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  options: {
+    ignoreHtmlClass: 'tex2jax_ignore',
+    processHtmlClass: 'tex2jax_process'
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js"></script>
+
+
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://camillebrl.github.io/">Camille&#39;s Blog</a></span>
+    <div id="footer-info">
+        <span id="current-date"></span> - <span id="current-visitors"></span> viewers currently on the blog
+    </div>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+    
+    function displayDate() {
+        const today = new Date();
+        const dateString = today.toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+        document.getElementById('current-date').innerText = dateString;
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', displayDate);
+
+    
+    function displayVisitors() {
+        
+        fetch('https://api.example.com/current-visitors')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('current-visitors').innerText = data.visitors;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des visiteurs:', error);
+                document.getElementById('current-visitors').innerText = 'N/A';
+            });
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', displayVisitors);
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+
+<script>
+    window.hypothesisConfig = function () {
+        return {
+            "showHighlights": true,
+            "openSidebar": false,
+            "theme": "clean",
+            "group": "2d9D7Ywa" 
+        };
+    };
+</script>
+<script src="https://hypothes.is/embed.js" async></script>
+</body>
+</html>

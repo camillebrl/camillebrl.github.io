@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Reflexions on Camille&#39;s Blog</title>
+    <link>https://camillebrl.github.io/blog_content/reflexions/</link>
+    <description>Recent content in Reflexions on Camille&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 17 Nov 2023 18:32:17 +0000</lastBuildDate><atom:link href="https://camillebrl.github.io/blog_content/reflexions/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>
