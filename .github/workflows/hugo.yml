@@ -24,7 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
 
       - name: Install Hugo CLI
@@ -45,22 +44,36 @@ jobs:
       - name: Display Hugo version
         run: hugo version
 
-      - name: List content directory
-        run: ls -R content
+      - name: List theme files
+        run: |
+          echo "Theme files:"
+          ls -R themes/PaperMod || echo "PaperMod theme not found in themes directory"
+
+      - name: Display content of a theme file
+        run: |
+          if [ -f themes/PaperMod/layouts/_default/single.html ]; then
+            echo "Content of themes/PaperMod/layouts/_default/single.html:"
+            cat themes/PaperMod/layouts/_default/single.html
+          else
+            echo "themes/PaperMod/layouts/_default/single.html not found"
+          fi
 
       - name: Build with Hugo
         env:
           HUGO_ENVIRONMENT: production
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
         run: |
-          hugo \
-            --minify \
-            --theme=PaperMod \
-            --baseURL "${{ steps.pages.outputs.base_url }}/" \
-            --verbose
+          hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --verbose
 
       - name: List generated files
         run: ls -R public
+
+      - name: Debug Output
+        run: |
+          echo "Content of index.html:"
+          cat public/index.html
+          echo "Content of a post:"
+          cat public/posts/first-post/index.html || echo "First post not found"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
