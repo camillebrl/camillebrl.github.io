@@ -1,373 +1,134 @@
-
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html><html lang=en-us>
 <head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Focus on the model InternLM_XComposer2 &amp; 4KHD | Camille&#39;s Blog</title>
-<meta name="keywords" content="VLM, InternLM, PLoRA">
-<meta name="description" content="Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.">
-<meta name="author" content="">
-<link rel="canonical" href="https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.a63220647808d27ae21ce718b00611b2b8b74cdf9e1d5016e7617494e86148d5.css" integrity="sha256-pjIgZHgI0nriHOcYsAYRsri3TN&#43;eHVAW52F0lOhhSNU=" rel="preload stylesheet" as="style">
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js"></script>
-<script src="/index.json"></script>
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://camillebrl.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://camillebrl.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://camillebrl.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://camillebrl.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://camillebrl.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<script src=https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-mml-chtml.js></script>
+<meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name=robots content="index, follow">
+<title>Focus on the model InternLM_XComposer2 & 4KHD | Camille's Blog</title>
+<meta name=keywords content="VLM,InternLM,PLoRA">
+<meta name=description content="Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.">
+<meta name=author content>
+<link rel=canonical href=https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/>
+<link crossorigin=anonymous href=/assets/css/stylesheet.a63220647808d27ae21ce718b00611b2b8b74cdf9e1d5016e7617494e86148d5.css integrity="sha256-pjIgZHgI0nriHOcYsAYRsri3TN+eHVAW52F0lOhhSNU=" rel="preload stylesheet" as=style>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js></script>
+<script src=/index.json></script>
+<script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://camillebrl.github.io/favicon.ico>
+<link rel=icon type=image/png sizes=16x16 href=https://camillebrl.github.io/favicon-16x16.png>
+<link rel=icon type=image/png sizes=32x32 href=https://camillebrl.github.io/favicon-32x32.png>
+<link rel=apple-touch-icon href=https://camillebrl.github.io/apple-touch-icon.png>
+<link rel=mask-icon href=https://camillebrl.github.io/safari-pinned-tab.svg>
+<meta name=theme-color content="#2e2e33">
+<meta name=msapplication-TileColor content="#2e2e33">
 <noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="Focus on the model InternLM_XComposer2 &amp; 4KHD" />
-<meta property="og:description" content="Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/" /><meta property="article:section" content="blog_content" />
-
-
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Focus on the model InternLM_XComposer2 &amp; 4KHD"/>
-<meta name="twitter:description" content="Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Blog Content",
-      "item": "https://camillebrl.github.io/blog_content/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Projects",
-      "item": "https://camillebrl.github.io/blog_content/projects/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "Vision-Language Models",
-      "item": "https://camillebrl.github.io/blog_content/projects/vision_language_models/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  4 ,
-      "name": "Focus on the model InternLM_XComposer2 \u0026 4KHD",
-      "item": "https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Focus on the model InternLM_XComposer2 \u0026 4KHD",
-  "name": "Focus on the model InternLM_XComposer2 \u0026 4KHD",
-  "description": "Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.",
-  "keywords": [
-    "VLM", "InternLM", "PLoRA"
-  ],
-  "articleBody": "  Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.black { background-color: black; } hr.red { background-color: red; }    Test of the model   In how many crops (maximum) do you want to cut the image to do high-resolution analysis? (the more details on the image, the bigger): Select  Run   const select = document.getElementById('maxCropsSelect'); for (let i = 1; i { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () = resolve(reader.result.split(',')[1]); reader.onerror = error = reject(error); }); }       hr.black { background-color: black; } hr.red { background-color: red; }    Explainations    InternLM-XComposer2 model tackles the visual input through its image encoding process. The encode_img function utilizes a CLIP  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  (Contrastive Language-Image Pre-training) Vision Tower to transform the input image into a high-dimensional representation. This process begins with resizing the image to 490x490 pixels  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  and normalizing its values. The CLIP Vision Tower then divides the image into 14x14 patches, processes these through multiple layers of self-attention and feedforward networks, and ultimately produces a 1024-dimensional vector that encapsulates the image’s salient features.\nHowever, this 1024-dimensional representation isn’t directly compatible with the language model’s expected input. To bridge this gap, the model employs a projection mechanism, which includes the innovative PLoRA (Programmable Low-Rank Adaptation) technique  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . This projection expands the image representation from 1024 to 4096 dimensions  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  , aligning it with the language model’s input space. The PLoRA approach allows for efficient fine-tuning and adaptation of this projection, enhancing the model’s flexibility in handling visual information. The Partial-LoRA (PLoRA) approach introduces additional weight matrices (WA and WB) specifically for visual tokens  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . These matrices serve a crucial purpose in adapting the output of the visual encoder to be compatible with the input requirements of the language model (LLM)  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  .\nNext, the model processes the textual input using its encode_text function. This function leverages the core InternLM2Model , which embeds each token of the input text into a 4096-dimensional vector  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  , incorporating positional information through rotary embeddings. The embedded text then passes through 32 layers of transformer blocks, each refining and contextualizing the representation. This process results in a sequence of 4096-dimensional vectors that capture the deep semantic and contextual nuances of the input text.\nWith both visual and textual inputs now represented in the same 4096-dimensional space, the model concatenates these embeddings  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . This concatenation creates a unified representation that incorporates both the visual and textual information, allowing the model to process both modalities simultaneously.\nFinally, this combined representation is fed into the InternLM language model for the generation phase  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  .\n!pip install transformers==4.33.2 accelerate==0.20.3 typing_extensions==4.12.2 numpy bitsandbytes einops # Important to get those transformers \u0026 accelerate versions: otherwise, there is a problem in model.generate method. Indeed, https://github.com/huggingface/transformers/blob/main/src/transformers/generation/utils.py file has been modified in more recent versions (in the _expand_inputs_for_generation method mainly) which generates dimensions incompatibilities between tensors. !pip install --upgrade --force-reinstall openai # Otherwise I had dependency problems with typing_extensions (one method did not exist) ckpt_path = 'internlm/internlm-xcomposer2-vl-7b' tokenizer = AutoTokenizer.from_pretrained(ckpt_path, trust_remote_code=True) model = AutoModelForCausalLM.from_pretrained(ckpt_path, trust_remote_code=True, torch_dtype=torch.bfloat16, cache_dir=\"./\").eval().cuda() model.tokenizer = tokenizer im_path = \"{your_image}.PNG\" text = '[UNUSED_TOKEN_146]user\\nAnswer the question using a single word or phrase.{your_question}[UNUSED_TOKEN_145]\\n[UNUSED_TOKEN_146]assistant\\n' with torch.cuda.amp.autocast(): model_answer = model_gen(model, text, im_path) def model_gen(model, text, images, need_bos=True, padding=False): \"\"\" Generates text based on a combination of text and image inputs. Parameters: - model: The multimodal model used for processing and generation. - text: Input text string. - images: List of input images or a single image. - need_bos: Boolean indicating whether to add a beginning-of-sequence token. - padding: Function for image padding (if required). Returns: - output_text: Generated text based on the multimodal input. \"\"\" # Initialize variables pt1 = 0 # Pointer to the current position in the text embeds = [] # List to store all embeddings (text and image) im_mask = [] # List to store the mask differentiating text from image images = [images] # Ensure images is always a list, even if only one image is provided images_loc = [0] # Location where image(s) should be inserted in the text for i, pts in enumerate(images_loc + [len(text)]): # Subtext Extraction # Purpose: Process the input text in segments, alternating with image processing # Importance: Maintains original order and context of text and images in the multimodal input subtext = text[pt1:pts] # Text Processing if need_bos or len(subtext)  0: # Convert text to embeddings text_embeds = model.encode_text(subtext, add_special_tokens=need_bos) embeds.append(text_embeds) # Create mask for text (zeros) # Purpose: Differentiates between text and image inputs in combined embedding sequence # Explanation: 0s in mask correspond to text tokens im_mask.append(torch.zeros(text_embeds.shape[:2]).cuda()) need_bos = False # Image Processing if i  InternLM-XComposer2_4KHD model begins by creating an overall view, resizing the entire image to a fixed size of 336 x 336 pixels  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  , providing a global understanding. Simultaneously, it employs a dynamic image partitioning strategy  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  ; A scale factor is calculated to determine how many 336x336 pixel sub-images can fit within the image while maintaining its aspect ratio  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . The image is then resized according to this factor: the new width becomes scale * 336, and the height is adjusted to maintain the original aspect ratio  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . Features extracted from these crops are then reassembled into an extended feature map and flattened to obtain the final local features. The model merges the global and local views, inserting a special 'separator' token between them for distinction  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . To preserve the 2D structure of the image, a learnable newline token is added at the end of each row of features before flattening. This approach allows the model to maintain both a comprehensive global understanding and high-resolution local details, while preserving spatial structure information. As a result, the model can effectively process very high-resolution images while retaining an understanding of their overall structure, enabling it to handle resolutions up to 4K HD.\n !pip install transformers==4.33.2 accelerate==0.20.3 typing_extensions==4.12.2 numpy flash_attn bitsandbytes einops # Important to get those transformers \u0026 accelerate versions: otherwise, there is a problem in model.generate method. Indeed, https://github.com/huggingface/transformers/blob/main/src/transformers/generation/utils.py file has been modified in more recent versions (in the _expand_inputs_for_generation method mainly) which generates dimensions incompatibilities between tensors. !pip install --upgrade --force-reinstall openai # Otherwise I had dependency problems with typing_extensions (one method did not exist) import torch from PIL import Image from torchvision import transforms import numpy as np import os import sys import json import argparse from tqdm import tqdm from transformers import AutoModelForCausalLM, AutoTokenizer ckpt_path = 'internlm/internlm-xcomposer2-4khd-7b' tokenizer = AutoTokenizer.from_pretrained(ckpt_path, trust_remote_code=True) model = AutoModelForCausalLM.from_pretrained(ckpt_path, trust_remote_code=True, torch_dtype=torch.bfloat16, cache_dir=\"./\").eval().cuda() model.tokenizer = tokenizer samples = json.load(open('data/chartqa/ChartQA Dataset/test/test_human.json')) def padding_336(b): width, height = b.size tar = int(np.ceil(height / 336) * 336) top_padding = int((tar - height) / 2) bottom_padding = tar - height - top_padding left_padding = 0 right_padding = 0 b = transforms.functional.pad( b, [left_padding, top_padding, right_padding, bottom_padding], fill=[255, 255, 255]) return b def HD_transform(img, hd_num=25): \"\"\" The HD_transform function is designed to prepare images for high-definition processing by the model. Its main purpose is to resize and pad the image in a way that allows it to be effectively divided into a grid of 336x336 pixel sub-images. Here's how it works: Image Orientation: It first checks if the image is portrait (height  width). If so, it transposes the image to landscape orientation for consistent processing. Scale Calculation: The function calculates a scale factor that determines how many 336x336 sub-images can fit within the image while maintaining its aspect ratio. It does this by incrementing a 'scale' variable until the product of 'scale' and the ceiling of (scale / aspect ratio) exceeds the specified 'hd_num' (default 25). Resizing: The image is then resized based on this scale factor. The new width is scale * 336, and the new height is calculated to maintain the original aspect ratio. Padding: After resizing, the image is padded to ensure its height is a multiple of 336. This is done by the padding_336 function, which adds white space to the top and bottom of the image as needed. Final Adjustment: If the image was transposed initially, it's transposed back to its original orientation. The result is an image that can be evenly divided into a grid of 336x336 sub-images, with the total number of sub-images not exceeding 'hd_num'. \"\"\" width, height = img.size trans = False if width  ",
-  "wordCount" : "2664",
-  "inLanguage": "en",
-  "datePublished": "0001-01-01T00:00:00Z",
-  "dateModified": "0001-01-01T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Camille's Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://camillebrl.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-    <link rel="stylesheet" href="/css/mainstyle.css">
+<style>#theme-toggle,.top-link{display:none}</style>
+<style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style>
+</noscript><meta property="og:title" content="Focus on the model InternLM_XComposer2 & 4KHD">
+<meta property="og:description" content="Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/"><meta property="article:section" content="blog_content">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Focus on the model InternLM_XComposer2 & 4KHD">
+<meta name=twitter:description content="Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.">
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Blog Content","item":"https://camillebrl.github.io/blog_content/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://camillebrl.github.io/blog_content/projects/"},{"@type":"ListItem","position":3,"name":"Vision-Language Models","item":"https://camillebrl.github.io/blog_content/projects/vision_language_models/"},{"@type":"ListItem","position":4,"name":"Focus on the model InternLM_XComposer2 \u0026 4KHD","item":"https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/"}]}</script>
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Focus on the model InternLM_XComposer2 \u0026 4KHD","name":"Focus on the model InternLM_XComposer2 \u0026 4KHD","description":"Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.","keywords":["VLM","InternLM","PLoRA"],"articleBody":"  Test of the model     body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; } input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; } #result { margin-top: 20px; white-space: pre-wrap; } .highlight-button { border: 1px solid black; background-color: red; color: black; width: auto; padding: 10px 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, color 0.3s; margin-top: 30px; } .highlight-button:hover { background-color: #ff6666; /* Rouge plus clair pour la surbrillance */ color: black; } hr.black { background-color: black; } hr.red { background-color: red; }    Test of the model   In how many crops (maximum) do you want to cut the image to do high-resolution analysis? (the more details on the image, the bigger): Select  Run   const select = document.getElementById('maxCropsSelect'); for (let i = 1; i { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = () = resolve(reader.result.split(',')[1]); reader.onerror = error = reject(error); }); }       hr.black { background-color: black; } hr.red { background-color: red; }    Explainations    InternLM-XComposer2 model tackles the visual input through its image encoding process. The encode_img function utilizes a CLIP  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  (Contrastive Language-Image Pre-training) Vision Tower to transform the input image into a high-dimensional representation. This process begins with resizing the image to 490x490 pixels  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  and normalizing its values. The CLIP Vision Tower then divides the image into 14x14 patches, processes these through multiple layers of self-attention and feedforward networks, and ultimately produces a 1024-dimensional vector that encapsulates the image’s salient features.\nHowever, this 1024-dimensional representation isn’t directly compatible with the language model’s expected input. To bridge this gap, the model employs a projection mechanism, which includes the innovative PLoRA (Programmable Low-Rank Adaptation) technique  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . This projection expands the image representation from 1024 to 4096 dimensions  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  , aligning it with the language model’s input space. The PLoRA approach allows for efficient fine-tuning and adaptation of this projection, enhancing the model’s flexibility in handling visual information. The Partial-LoRA (PLoRA) approach introduces additional weight matrices (WA and WB) specifically for visual tokens  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . These matrices serve a crucial purpose in adapting the output of the visual encoder to be compatible with the input requirements of the language model (LLM)  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  .\nNext, the model processes the textual input using its encode_text function. This function leverages the core InternLM2Model , which embeds each token of the input text into a 4096-dimensional vector  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  , incorporating positional information through rotary embeddings. The embedded text then passes through 32 layers of transformer blocks, each refining and contextualizing the representation. This process results in a sequence of 4096-dimensional vectors that capture the deep semantic and contextual nuances of the input text.\nWith both visual and textual inputs now represented in the same 4096-dimensional space, the model concatenates these embeddings  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . This concatenation creates a unified representation that incorporates both the visual and textual information, allowing the model to process both modalities simultaneously.\nFinally, this combined representation is fed into the InternLM language model for the generation phase  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  .\n!pip install transformers==4.33.2 accelerate==0.20.3 typing_extensions==4.12.2 numpy bitsandbytes einops # Important to get those transformers \u0026 accelerate versions: otherwise, there is a problem in model.generate method. Indeed, https://github.com/huggingface/transformers/blob/main/src/transformers/generation/utils.py file has been modified in more recent versions (in the _expand_inputs_for_generation method mainly) which generates dimensions incompatibilities between tensors. !pip install --upgrade --force-reinstall openai # Otherwise I had dependency problems with typing_extensions (one method did not exist) ckpt_path = 'internlm/internlm-xcomposer2-vl-7b' tokenizer = AutoTokenizer.from_pretrained(ckpt_path, trust_remote_code=True) model = AutoModelForCausalLM.from_pretrained(ckpt_path, trust_remote_code=True, torch_dtype=torch.bfloat16, cache_dir=\"./\").eval().cuda() model.tokenizer = tokenizer im_path = \"{your_image}.PNG\" text = '[UNUSED_TOKEN_146]user\\nAnswer the question using a single word or phrase.{your_question}[UNUSED_TOKEN_145]\\n[UNUSED_TOKEN_146]assistant\\n' with torch.cuda.amp.autocast(): model_answer = model_gen(model, text, im_path) def model_gen(model, text, images, need_bos=True, padding=False): \"\"\" Generates text based on a combination of text and image inputs. Parameters: - model: The multimodal model used for processing and generation. - text: Input text string. - images: List of input images or a single image. - need_bos: Boolean indicating whether to add a beginning-of-sequence token. - padding: Function for image padding (if required). Returns: - output_text: Generated text based on the multimodal input. \"\"\" # Initialize variables pt1 = 0 # Pointer to the current position in the text embeds = [] # List to store all embeddings (text and image) im_mask = [] # List to store the mask differentiating text from image images = [images] # Ensure images is always a list, even if only one image is provided images_loc = [0] # Location where image(s) should be inserted in the text for i, pts in enumerate(images_loc + [len(text)]): # Subtext Extraction # Purpose: Process the input text in segments, alternating with image processing # Importance: Maintains original order and context of text and images in the multimodal input subtext = text[pt1:pts] # Text Processing if need_bos or len(subtext)  0: # Convert text to embeddings text_embeds = model.encode_text(subtext, add_special_tokens=need_bos) embeds.append(text_embeds) # Create mask for text (zeros) # Purpose: Differentiates between text and image inputs in combined embedding sequence # Explanation: 0s in mask correspond to text tokens im_mask.append(torch.zeros(text_embeds.shape[:2]).cuda()) need_bos = False # Image Processing if i  InternLM-XComposer2_4KHD model begins by creating an overall view, resizing the entire image to a fixed size of 336 x 336 pixels  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  , providing a global understanding. Simultaneously, it employs a dynamic image partitioning strategy  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  ; A scale factor is calculated to determine how many 336x336 pixel sub-images can fit within the image while maintaining its aspect ratio  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . The image is then resized according to this factor: the new width becomes scale * 336, and the height is adjusted to maintain the original aspect ratio  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . Features extracted from these crops are then reassembled into an extended feature map and flattened to obtain the final local features. The model merges the global and local views, inserting a special 'separator' token between them for distinction  .yellow_colored { background-color: rgba(255, 236, 68, 0.6); padding: 0 1px; font-weight: bold; border-radius: 4px; box-shadow: 0 0 8px rgba(255, 236, 68, 0.6); display: inline; line-height: 1.5; }  . To preserve the 2D structure of the image, a learnable newline token is added at the end of each row of features before flattening. This approach allows the model to maintain both a comprehensive global understanding and high-resolution local details, while preserving spatial structure information. As a result, the model can effectively process very high-resolution images while retaining an understanding of their overall structure, enabling it to handle resolutions up to 4K HD.\n !pip install transformers==4.33.2 accelerate==0.20.3 typing_extensions==4.12.2 numpy flash_attn bitsandbytes einops # Important to get those transformers \u0026 accelerate versions: otherwise, there is a problem in model.generate method. Indeed, https://github.com/huggingface/transformers/blob/main/src/transformers/generation/utils.py file has been modified in more recent versions (in the _expand_inputs_for_generation method mainly) which generates dimensions incompatibilities between tensors. !pip install --upgrade --force-reinstall openai # Otherwise I had dependency problems with typing_extensions (one method did not exist) import torch from PIL import Image from torchvision import transforms import numpy as np import os import sys import json import argparse from tqdm import tqdm from transformers import AutoModelForCausalLM, AutoTokenizer ckpt_path = 'internlm/internlm-xcomposer2-4khd-7b' tokenizer = AutoTokenizer.from_pretrained(ckpt_path, trust_remote_code=True) model = AutoModelForCausalLM.from_pretrained(ckpt_path, trust_remote_code=True, torch_dtype=torch.bfloat16, cache_dir=\"./\").eval().cuda() model.tokenizer = tokenizer samples = json.load(open('data/chartqa/ChartQA Dataset/test/test_human.json')) def padding_336(b): width, height = b.size tar = int(np.ceil(height / 336) * 336) top_padding = int((tar - height) / 2) bottom_padding = tar - height - top_padding left_padding = 0 right_padding = 0 b = transforms.functional.pad( b, [left_padding, top_padding, right_padding, bottom_padding], fill=[255, 255, 255]) return b def HD_transform(img, hd_num=25): \"\"\" The HD_transform function is designed to prepare images for high-definition processing by the model. Its main purpose is to resize and pad the image in a way that allows it to be effectively divided into a grid of 336x336 pixel sub-images. Here's how it works: Image Orientation: It first checks if the image is portrait (height  width). If so, it transposes the image to landscape orientation for consistent processing. Scale Calculation: The function calculates a scale factor that determines how many 336x336 sub-images can fit within the image while maintaining its aspect ratio. It does this by incrementing a 'scale' variable until the product of 'scale' and the ceiling of (scale / aspect ratio) exceeds the specified 'hd_num' (default 25). Resizing: The image is then resized based on this scale factor. The new width is scale * 336, and the new height is calculated to maintain the original aspect ratio. Padding: After resizing, the image is padded to ensure its height is a multiple of 336. This is done by the padding_336 function, which adds white space to the top and bottom of the image as needed. Final Adjustment: If the image was transposed initially, it's transposed back to its original orientation. The result is an image that can be evenly divided into a grid of 336x336 sub-images, with the total number of sub-images not exceeding 'hd_num'. \"\"\" width, height = img.size trans = False if width  ","wordCount":"2664","inLanguage":"en","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://camillebrl.github.io/blog_content/projects/vision_language_models/internlm_xcomposer2/"},"publisher":{"@type":"Organization","name":"Camille's Blog","logo":{"@type":"ImageObject","url":"https://camillebrl.github.io/favicon.ico"}}}</script>
+<link rel=stylesheet href=/css/mainstyle.css>
 </head>
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://camillebrl.github.io/" accesskey="h" title="Camille&#39;s Blog (Alt + H)">Camille&#39;s Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://camillebrl.github.io/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://camillebrl.github.io/blog_content/" title="Blog Content">
-                    <span>Blog Content</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://camillebrl.github.io/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+<body id=top>
+<script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add('dark'):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove('dark'):window.matchMedia('(prefers-color-scheme: dark)').matches&&document.body.classList.add('dark')</script>
+<header class=header>
+<nav class=nav>
+<div class=logo>
+<a href=https://camillebrl.github.io/ accesskey=h title="Camille's Blog (Alt + H)">Camille's Blog</a>
+<div class=logo-switches>
+<button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+</div>
+</div>
+<ul id=menu>
+<li>
+<a href=https://camillebrl.github.io/archives/ title=Archives>
+<span>Archives</span>
+</a>
+</li>
+<li>
+<a href=https://camillebrl.github.io/blog_content/ title="Blog Content">
+<span>Blog Content</span>
+</a>
+</li>
+<li>
+<a href=https://camillebrl.github.io/tags/ title=Tags>
+<span>Tags</span>
+</a>
+</li>
+</ul>
+</nav>
 </header>
-    <main class="main">
-        
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://camillebrl.github.io/">Camille&#39;s Blog</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/blog_content/">Blog Content</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/blog_content/projects/">Projects</a>&nbsp;»&nbsp;<a href="https://camillebrl.github.io/blog_content/projects/vision_language_models/">Vision-Language Models</a>&nbsp;»&nbsp;<span>Focus on the model InternLM_XComposer2 &amp; 4KHD</span>
-
+<main class=main>
+<article class=post-single>
+<header class=post-header>
+<div class=breadcrumbs><a href=https://camillebrl.github.io/>Camille's Blog</a>&nbsp;»&nbsp;<a href=https://camillebrl.github.io/blog_content/>Blog Content</a>&nbsp;»&nbsp;<a href=https://camillebrl.github.io/blog_content/projects/>Projects</a>&nbsp;»&nbsp;<a href=https://camillebrl.github.io/blog_content/projects/vision_language_models/>Vision-Language Models</a>&nbsp;»&nbsp;<span>Focus on the model InternLM_XComposer2 & 4KHD</span>
 </div>
-    <h1 class="post-title">
-      Focus on the model InternLM_XComposer2 &amp; 4KHD
-      <link rel="stylesheet" href="/css/posts.css">
-    </h1>
-    <div class="post-meta">13 min
-
+<h1 class=post-title>
+Focus on the model InternLM_XComposer2 & 4KHD
+<link rel=stylesheet href=/css/posts.css>
+</h1>
+<div class=post-meta>13 min
 </div>
-  </header> 
-
-  <div class="post-content"><html lang="en">
+</header>
+<div class=post-content><html lang=en>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
 <title>
 Test of the model
 </title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js"></script>
-<style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; }
-        #result { margin-top: 20px; white-space: pre-wrap; }
-        .highlight-button {
-            border: 1px solid black;
-            background-color: red;
-            color: black;
-            width: auto;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-            margin-top: 30px;
-        }
-        .highlight-button:hover {
-            background-color: #ff6666; /* Rouge plus clair pour la surbrillance */
-            color: black;
-        }
-        hr.black {
-            background-color: black;
-        }
-        hr.red {
-            background-color: red;
-        }
-    </style>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/marked/2.0.3/marked.min.js></script>
+<style>body{font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px}input,textarea,button{width:100%;margin-bottom:10px;padding:10px}#result{margin-top:20px;white-space:pre-wrap}.highlight-button{border:1px solid #000;background-color:red;color:#000;width:auto;padding:10px 20px;border-radius:5px;cursor:pointer;transition:background-color .3s,color .3s;margin-top:30px}.highlight-button:hover{background-color:#f66;color:#000}hr.black{background-color:#000}hr.red{background-color:red}</style>
 </head>
 <body>
-<hr class="black">
-<hr class="red">
-<hr class="black">
-<h1 style="text-decoration: underline;">
+<hr class=black>
+<hr class=red>
+<hr class=black>
+<h1 style=text-decoration:underline>
 Test of the model
 </h1>
-<input type="file" id="imageInput" accept="image/*">
-<textarea id="questionInput" rows="3" placeholder="Enter your question here" style="border: 1px solid black;"></textarea>
-<label id="cropLabel" for="maxCropsSelect">In how many crops (maximum)
+<input type=file id=imageInput accept=image/*>
+<textarea id=questionInput rows=3 placeholder="Enter your question here" style="border:1px solid #000"></textarea>
+<label id=cropLabel for=maxCropsSelect>In how many crops (maximum)
 do you want to cut the image to do high-resolution analysis? (the more
-details on the image, the bigger):</label> <select id="maxCropsSelect">
-<option value="">Select</option> </select>
-<button onclick="submitQuestion()" class="highlight-button">Run</button>
-<div id="result">
-
+details on the image, the bigger):</label> <select id=maxCropsSelect><option value>Select</option></select>
+<button onclick=submitQuestion() class=highlight-button>Run</button>
+<div id=result>
 </div>
-<script>
-        const select = document.getElementById('maxCropsSelect');
-        for (let i = 1; i <= 40; i++) {
-            const option = document.createElement('option');
-            option.value = i;
-            option.textContent = i;
-            select.appendChild(option);
-        }
-
-        async function submitQuestion() {
-            const imageFile = document.getElementById('imageInput').files[0];
-            const question = document.getElementById('questionInput').value;
-            const maxCrops = document.getElementById('maxCropsSelect').value;
-            const resultDiv = document.getElementById('result');
-
-            if (!imageFile || !question) {
-                resultDiv.textContent = "Please upload an image, enter a question, and select the max number of crops.";
-                return;
-            }
-
-            resultDiv.textContent = "Processing...";
-
-            try {
-                // Convert image to base64
-                const base64Image = await convertToBase64(imageFile);
-
-                // Send request to your API
-                const response = await axios.post('YOUR_API_ENDPOINT', {
-                    image: base64Image,
-                    question: question,
-                    maxCrops: parseInt(maxCrops)
-                });
-
-                resultDiv.textContent = response.data.answer;
-            } catch (error) {
-                resultDiv.textContent = "An error occurred: " + error.message;
-            }
-        }
-
-        function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = error => reject(error);
-            });
-        }
-    </script>
+<script>const select=document.getElementById('maxCropsSelect');for(let a=1;a<=40;a++){const b=document.createElement('option');b.value=a,b.textContent=a,select.appendChild(b)}async function submitQuestion(){const b=document.getElementById('imageInput').files[0],c=document.getElementById('questionInput').value,d=document.getElementById('maxCropsSelect').value,a=document.getElementById('result');if(!b||!c){a.textContent="Please upload an image, enter a question, and select the max number of crops.";return}a.textContent="Processing...";try{const e=await convertToBase64(b),f=await axios.post('YOUR_API_ENDPOINT',{image:e,question:c,maxCrops:parseInt(d)});a.textContent=f.data.answer}catch(b){a.textContent="An error occurred: "+b.message}}function convertToBase64(a){return new Promise((c,d)=>{const b=new FileReader;b.readAsDataURL(a),b.onload=()=>c(b.result.split(',')[1]),b.onerror=a=>d(a)})}</script>
 </body>
 </html>
 <html>
 <head>
-<style>
-        hr.black {
-            background-color: black;
-        }
-        hr.red {
-            background-color: red;
-        }
-    </style>
+<style>hr.black{background-color:#000}hr.red{background-color:red}</style>
 </head>
 <body>
-<hr class="black">
-<hr class="red">
-<hr class="black">
-<h1 style="text-decoration: underline;">
+<hr class=black>
+<hr class=red>
+<hr class=black>
+<h1 style=text-decoration:underline>
 Explainations
 </h1>
 </body>
 </html>
-<p><strong><a
-href="https://arxiv.org/pdf/2401.16420">InternLM-XComposer2</a></strong>
+<p><strong><a href=https://arxiv.org/pdf/2401.16420>InternLM-XComposer2</a></strong>
 model tackles the visual input through its image encoding process. The
 <strong><code>encode_img</code></strong> function utilizes a
-<span class="yellow_colored">CLIP</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
- (Contrastive Language-Image Pre-training)
+<span class=yellow_colored>CLIP</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
+(Contrastive Language-Image Pre-training)
 Vision Tower to transform the input image into a high-dimensional
-representation. This process begins with <span class="yellow_colored">resizing the image to 490x490 pixels</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
- and
+representation. This process begins with <span class=yellow_colored>resizing the image to 490x490 pixels</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
+and
 normalizing its values. The CLIP Vision Tower then divides the image
 into 14x14 patches, processes these through multiple layers of
 self-attention and feedforward networks, and ultimately produces a
@@ -375,81 +136,26 @@ self-attention and feedforward networks, and ultimately produces a
 features.</p>
 <p>However, this 1024-dimensional representation isn’t directly
 compatible with the language model’s expected input. To bridge this gap,
-the model employs a <span class="yellow_colored">projection mechanism, which includes the innovative PLoRA (Programmable Low-Rank Adaptation) technique</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+the model employs a <span class=yellow_colored>projection mechanism, which includes the innovative PLoRA (Programmable Low-Rank Adaptation) technique</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 . This projection
-<span class="yellow_colored">expands the image representation from 1024 to 4096 dimensions</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<span class=yellow_colored>expands the image representation from 1024 to 4096 dimensions</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 , aligning it with the language model’s input
 space. The PLoRA approach allows for efficient fine-tuning and
 adaptation of this projection, enhancing the model’s flexibility in
 handling visual information. The Partial-LoRA (PLoRA) approach
-<span class="yellow_colored">introduces additional weight matrices (WA and WB) specifically for visual tokens</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<span class=yellow_colored>introduces additional weight matrices (WA and WB) specifically for visual tokens</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 . These matrices serve a crucial purpose in
-<span class="yellow_colored">adapting the output of the visual encoder to be compatible with the input requirements of the language model (LLM)</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<span class=yellow_colored>adapting the output of the visual encoder to be compatible with the input requirements of the language model (LLM)</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 .</p>
 <p>Next, the model processes the textual input using its
 <strong><code>encode_text</code></strong> function. This function
 leverages the core <strong><code>InternLM2Model</code></strong> , which
-<span class="yellow_colored">embeds each token of the input text into a 4096-dimensional vector</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<span class=yellow_colored>embeds each token of the input text into a 4096-dimensional vector</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 , incorporating positional information through
 rotary embeddings. The embedded text then passes through 32 layers of
 transformer blocks, each refining and contextualizing the
@@ -457,37 +163,15 @@ representation. This process results in a sequence of 4096-dimensional
 vectors that capture the deep semantic and contextual nuances of the
 input text.</p>
 <p>With both visual and textual inputs now represented in the same
-4096-dimensional space, the model <span class="yellow_colored">concatenates these embeddings</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+4096-dimensional space, the model <span class=yellow_colored>concatenates these embeddings</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 . This
 concatenation creates a unified representation that incorporates both
 the visual and textual information, allowing the model to process both
 modalities simultaneously.</p>
 <p>Finally, this combined representation is
-<span class="yellow_colored">fed into the InternLM language model for the generation phase</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<span class=yellow_colored>fed into the InternLM language model for the generation phase</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 .</p>
 <pre><code>!pip install transformers==4.33.2 accelerate==0.20.3 typing_extensions==4.12.2 numpy bitsandbytes einops # Important to get those transformers &amp; accelerate versions: otherwise, there is a problem in model.generate method. Indeed, https://github.com/huggingface/transformers/blob/main/src/transformers/generation/utils.py file has been modified in more recent versions (in the _expand_inputs_for_generation method mainly) which generates dimensions incompatibilities between tensors.
 !pip install --upgrade --force-reinstall openai # Otherwise I had dependency problems with typing_extensions (one method did not exist)
@@ -599,79 +283,23 @@ def model_gen(model, text, images, need_bos=True, padding=False):
 
     return output_text
 </code></pre>
-<p><strong><a
-href="https://arxiv.org/pdf/2404.06512">InternLM-XComposer2_4KHD</a></strong>
-model begins by creating an <span class="yellow_colored">overall view, resizing the entire image to a fixed size of 336 x 336 pixels</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<p><strong><a href=https://arxiv.org/pdf/2404.06512>InternLM-XComposer2_4KHD</a></strong>
+model begins by creating an <span class=yellow_colored>overall view, resizing the entire image to a fixed size of 336 x 336 pixels</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 , providing a
 global understanding. Simultaneously, it employs a
-<span class="yellow_colored">dynamic image partitioning strategy</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
-; A <span class="yellow_colored">scale factor is calculated to determine how many 336x336 pixel sub-images can fit within the image while maintaining its aspect ratio</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+<span class=yellow_colored>dynamic image partitioning strategy</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
+; A <span class=yellow_colored>scale factor is calculated to determine how many 336x336 pixel sub-images can fit within the image while maintaining its aspect ratio</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 . The image is
-then resized according to this factor: the <span class="yellow_colored">new width becomes scale * 336, and the height is adjusted to maintain the original aspect ratio</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+then resized according to this factor: the <span class=yellow_colored>new width becomes scale * 336, and the height is adjusted to maintain the original aspect ratio</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 .
 Features extracted from these crops are then reassembled into an
 extended feature map and flattened to obtain the final local features.
-The model <span class="yellow_colored">merges the global and local views, inserting a special 'separator' token between them for distinction</span>
-
-<style>
-    .yellow_colored {
-        background-color: rgba(255, 236, 68, 0.6);  
-        padding: 0 1px;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: 0 0 8px rgba(255, 236, 68, 0.6);  
-        display: inline;
-        line-height: 1.5;
-    }
-</style>
+The model <span class=yellow_colored>merges the global and local views, inserting a special 'separator' token between them for distinction</span>
+<style>.yellow_colored{background-color:rgba(255,236,68,.6);padding:0 1px;font-weight:700;border-radius:4px;box-shadow:0 0 8px rgba(255,236,68,.6);display:inline;line-height:1.5}</style>
 . To preserve the 2D structure of
 the image, a learnable newline token is added at the end of each row of
 features before flattening. This approach allows the model to maintain
@@ -862,148 +490,31 @@ for i, response in enumerate(responses):
     print(f&quot;Response: {response}&quot;)
     print(&quot;---&quot;)
 </code></pre>
-
-
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://camillebrl.github.io/tags/vlm/">VLM</a></li>
-      <li><a href="https://camillebrl.github.io/tags/internlm/">InternLM</a></li>
-      <li><a href="https://camillebrl.github.io/tags/plora/">PLoRA</a></li>
-    </ul>
-  </footer>
-
-  <div id="comments" style="margin-top: 50px;">
-    
-    <script src="https://giscus.app/client.js"
-        data-repo="camillebrl/blog_comments"
-        data-repo-id="R_kgDOMBZDUw"
-        data-category="Ideas"
-        data-category-id="DIC_kwDOMBZDU84CfpcJ"
-        data-mapping="url"
-        data-strict="0"
-        data-reactions-enabled="0"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="preferred_color_scheme"
-        data-lang="fr"
-        crossorigin="anonymous"
-        async>
-    </script>
 </div>
-
-</article>
-
-
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2024 <a href="https://camillebrl.github.io/">Camille&#39;s Blog</a></span>
-    <div id="footer-info">
-        <span id="current-date"></span> - <span id="current-visitors"></span> viewers currently on the blog
-    </div>
+<footer class=post-footer>
+<ul class=post-tags>
+<li><a href=https://camillebrl.github.io/tags/vlm/>VLM</a></li>
+<li><a href=https://camillebrl.github.io/tags/internlm/>InternLM</a></li>
+<li><a href=https://camillebrl.github.io/tags/plora/>PLoRA</a></li>
+</ul>
 </footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
+<div id=comments style=margin-top:50px>
+<script src=https://giscus.app/client.js data-repo=camillebrl/blog_comments data-repo-id=R_kgDOMBZDUw data-category=Ideas data-category-id=DIC_kwDOMBZDU84CfpcJ data-mapping=url data-strict=0 data-reactions-enabled=0 data-emit-metadata=0 data-input-position=top data-theme=preferred_color_scheme data-lang=fr crossorigin=anonymous async></script>
+</div>
+</article>
+</main>
+<footer class=footer>
+<span>&copy; 2024 <a href=https://camillebrl.github.io/>Camille's Blog</a></span>
+<div id=footer-info>
+<span id=current-date></span> - <span id=current-visitors></span> viewers currently on the blog
+</div>
+</footer>
+<a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg>
 </a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-    
-    function displayDate() {
-        const today = new Date();
-        const dateString = today.toLocaleDateString('en-US', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-        });
-        document.getElementById('current-date').innerText = dateString;
-    }
-
-    
-    document.addEventListener('DOMContentLoaded', displayDate);
-
-    
-    function displayVisitors() {
-        
-        fetch('https://api.example.com/current-visitors')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('current-visitors').innerText = data.visitors;
-            })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des visiteurs:', error);
-                document.getElementById('current-visitors').innerText = 'N/A';
-            });
-    }
-
-    
-    document.addEventListener('DOMContentLoaded', displayVisitors);
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-
-<script>
-    window.hypothesisConfig = function () {
-        return {
-            "showHighlights": true,
-            "openSidebar": false,
-            "theme": "clean",
-            "group": "2d9D7Ywa" 
-        };
-    };
-</script>
-<script src="https://hypothes.is/embed.js" async></script>
+<script>let menu=document.getElementById('menu');menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener("click",function(b){b.preventDefault();var a=this.getAttribute("href").substr(1);window.matchMedia('(prefers-reduced-motion: reduce)').matches?document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(a)}']`).scrollIntoView({behavior:"smooth"}),a==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${a}`)})});function displayDate(){const a=new Date,b=a.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});document.getElementById('current-date').innerText=b}document.addEventListener('DOMContentLoaded',displayDate);function displayVisitors(){fetch('https://api.example.com/current-visitors').then(a=>a.json()).then(a=>{document.getElementById('current-visitors').innerText=a.visitors}).catch(a=>{console.error('Erreur lors de la récupération des visiteurs:',a),document.getElementById('current-visitors').innerText='N/A'})}document.addEventListener('DOMContentLoaded',displayVisitors)</script>
+<script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script>
+<script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove('dark'),localStorage.setItem("pref-theme",'light')):(document.body.classList.add('dark'),localStorage.setItem("pref-theme",'dark'))})</script>
+<script>window.hypothesisConfig=function(){return{showHighlights:!0,openSidebar:!1,theme:"clean",group:"2d9D7Ywa"}}</script>
+<script src=https://hypothes.is/embed.js async></script>
 </body>
 </html>

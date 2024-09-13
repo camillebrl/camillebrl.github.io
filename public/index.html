@@ -1,334 +1,213 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html><html lang=en>
 <head>
-	<meta name="generator" content="Hugo 0.92.2" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camille&#39;s Blog</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/devicon/2.14.0/devicon.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-    <style>
-        #typed-output {
-            font-size: 20px;
-            margin-top: 50px;
-            margin-bottom: 50px;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 20px;
-            color: black;
-            background-color: white;
-            padding: 5px;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .scroll-down {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2rem;
-            color: red;
-            text-shadow: 
-                -1px -1px 0 #000,  
-                1px -1px 0 #000,
-                -1px  1px 0 #000,
-                1px  1px 0 #000;
-            text-decoration: none;
-            z-index: 1000;
-        }
-
-        .scroll-down:hover {
-            color: darkred;
-        }
-
-        .scroll-down.hidden {
-            display: none;
-        }
-    
-         
-        .arrow-box {
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .arrow-box::before,
-        .arrow-box::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            border: solid red;
-            width: 0;
-            height: 0;
-        }
-
-        .arrow-box::before {
-            left: 0;
-            border-width: 10px 10px 10px 0;
-            border-right-color: red;
-        }
-
-        .arrow-box::after {
-            right: 0;
-            border-width: 10px 0 10px 10px;
-            border-left-color: red;
-        }
-    </style>
-
+<meta name=generator content="Hugo 0.92.2">
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Camille's Blog</title>
+<link rel=stylesheet href=/css/style.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/devicon/2.14.0/devicon.min.css>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel=stylesheet>
+<script src=https://cdn.jsdelivr.net/npm/typed.js@2.0.12></script>
+<style>#typed-output{font-size:20px;margin-top:50px;margin-bottom:50px;font-weight:700;text-align:center;margin-top:20px;color:#000;background-color:#fff;padding:5px;border-radius:5px;display:inline-block}.scroll-down{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);font-size:2rem;color:red;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000;text-decoration:none;z-index:1000}.scroll-down:hover{color:darkred}.scroll-down.hidden{display:none}.arrow-box{position:relative;padding:0 20px}.arrow-box::before,.arrow-box::after{content:'';position:absolute;top:50%;transform:translateY(-50%);border:solid red;width:0;height:0}.arrow-box::before{left:0;border-width:10px 10px 10px 0;border-right-color:red}.arrow-box::after{right:0;border-width:10px 0 10px 10px;border-left-color:red}</style>
 </head>
 <body>
-    <header>
-        <h1>Camille&#39;s Blog</h1>
-        <nav>
-            <ul>
-                <li><a href="/blog_content/" class="arrow-box">Blog Content</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="content">
-        <img src="photo.jpg" alt="Profile Picture">
-        <ul class="secondtitle">
-            <li class="left-social">Camille</li>
-            <li class="right-social">Barboule</li>
-        </ul>
-        
-        <div id="typed-output"></div>
-        <ul class="social-links">
-            <li class="left-social"><a href="https://github.com/camillebrl"><i class="fab fa-github"></i></a></li>
-            <li class="left-social"><a href="https://twitter.com/BarbouleCamille"><i class="fab fa-twitter"></i></a></li>
-            <li class="right-social"><a href="https://www.linkedin.com/in/camille-barboule-353829147/"><i class="fab fa-linkedin"></i></a></li>
-            <li class="right-social"><a href="mailto:camille.barboule@gmail.com"><i class="fas fa-envelope"></i></a></li>
-        </ul>
-    </div>
-    
-    <ul class="line-black"></ul>
-    <ul class="line-red"></ul>
-    <ul class="line-white"></ul>
-
-    <div class="cv-section-head">
-        <h2>Education</h2>
-    </div>
-
-    
-    <div class="cv-section">
-        <h2>IMT ATLANTIQUE, Engineering Diploma</h2>
-        <p><i class="fas fa-calendar-alt"></i> 2020-2022</p>
-        <p><i class="fas fa-map-marker-alt"></i> Brest, France</p>
-        <p><i class="fas fa-search"></i> Relevant Courseworks:
-            <ul>
-                <li>Optimized Deep Learning (<a href="https://github.com/camillebrl/ai-optim">MicroNet challenge</a> : regularization, pruning and quantization techniques to reduce the floating point number and number of parameters)</li>
-                <li>Machine Learning (unsupervised (clustering, PCA/EFA) & supervised (Regression: prediction of the number of insults on a Youtube Video – Classification: image classification with ResNet))</li>
-                <li>Advanced Big Data (Cassandra, Hadoop, Spark, Kafka, Storm)</li>
-                <li>Object Oriented Programming (<a href="https://github.com/camillebrl/Transcripen">Transcripen project</a> for speech-to-text analysis)</li>
-                <li>Advanced Mathematics</li>
-                <li>Network (OSI model, DNS, QoS)</ul></p>
-    </div>
-    <div class="cv-section">
-        <h2>OTTO-FRIEDRICH-UNIVERSITÄT BAMBERG, Erasmus Program</h2>
-        <p><i class="fas fa-calendar-alt"></i> April-July 2019</p>
-        <p><i class="fas fa-map-marker-alt"></i> Bamberg, Germany</p>
-        <p><i class="fas fa-search"></i> Relevant Courseworks:
-            <ul>
-                <li>International Finance</li>
-                <li>European and International Economics</li>
-                <li>Economics of Inequality</li>
-            </ul></p>
-    </div>
-    <div class="cv-section">
-        <h2>UNIVERSITY OF CAMBRIDGE, Exchange Program</h2>
-        <p><i class="fas fa-calendar-alt"></i> September-December 2018</p>
-        <p><i class="fas fa-map-marker-alt"></i> Cambridge, UK</p>
-        <p><i class="fas fa-search"></i> Relevant Courseworks:
-            <ul>
-                <li>Corporate Finance</li>
-                <li>Entrepreneurial Finance</li>
-                <li>Economics</li>
-            </ul></p>
-    </div>
-    <div class="cv-section">
-        <h2>GRENOBLE ECOLE DE MANAGEMENT, Grande Ecole Diploma</h2>
-        <p><i class="fas fa-calendar-alt"></i> 2017-2021</p>
-        <p><i class="fas fa-map-marker-alt"></i> Grenoble, France</p>
-        <p><i class="fas fa-search"></i> Relevant Courseworks:
-            <ul>
-                <li>Corporate Finance</li>
-                <li>Thesis on “Improving Stock Return prediction’s traditional Algorithm of Fama & French thanks to recurrent neural networks”</li>
-                <li>Economics</li>
-                <li>Law</li>
-                <li>HRM</li>
-                <li>Management</li>
-            </ul></p>
-    </div>
-    <div class="cv-section">
-        <h2>Pierre De Fermat, Classe Préparatoire aux Grandes Ecoles (ECS)</h2>
-        <p><i class="fas fa-calendar-alt"></i> 2015-2017</p>
-        <p><i class="fas fa-map-marker-alt"></i> Toulouse, France</p>
-        <p><i class="fas fa-search"></i> Relevant Courseworks:
-            <ul>
-                <li>Maths</li>
-                <li>Geopolitics</li>
-            </ul></p>
-    </div>
-
-    <div class="cv-section-head">
-        <h2>Experience</h2>
-    </div>
-
-    <div class="cv-section">
-        <h2>ORANGE, Machine Learning Engineer</h2>
-        <p><i class="fas fa-calendar-alt"></i> 2022-now</p>
-        <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
-        <p><i class="fas fa-search"></i> NLP Machine Learning Engineer within a Research Project about LLM adaptation to the telecommunication industry which aims at getting a "small" (7b-parameters) model performing as well as big LLMs on telecom use-cases:</p>
-            <ul>
-                <li>Explored best practices about fine-tuning for domain adaptation of LLMs : on the data, preprocessing, continual pretraining (self-supervised fine-tuning on raw domain texts), instruction-tuning (on telco instructions (QA, MCQs, Summarization)), fine-tuning process itself (packing vs non-packing, loss computed on all tokens (auto-regressive way) vs on output tokens only, ...), parameter-efficient fine-tuning methods (lora vs qlora vs prefix-tuning vs full fine-tuning) </li>
-                <li>Implemented a pipeline for domain-adaptation of LLM (from data collection, preprocessing, to fine-tuning, to results evaluation) </li>
-                <li>Created an internal blog about LLM to help collaborators fine-tuning / using LLMs at inference</li>
-                <li>Trained models on a SLURM internal cluster using several parallelization methods</li>
-                <li>Wrote a research paper on our findings about domain-adaptation</li>
-            </ul>
-            <p><i class="fas fa-search"></i> Development of an internal tool for data ingestion and processing</p>
-                <li>Development and deployment of a crawler using scrapy to retrieve PDFs from difference telco websites (3GPP, 5GAA, ETSI, ...) and internal sources</li>
-                <li>Implementation and comparison of different PDF processing methods to retrieve texts and tables (Tesseract, Nougat, PDFMiner, ...)</li>
-    </div>
-    <div class="cv-section">
-        <h2>DELPHA.IO, Machine Learning Engineer</h2>
-        <p><i class="fas fa-calendar-alt"></i> 2021-2022</p>
-        <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
-        <p><i class="fas fa-search"></i> Developed and deployed AI models for data cleaning of Salesforce's customer databases</p>
-            <ul>
-                <li>Developed an algorithm to perform large-scale string comparison via an optimisation of sparse matrix multiplication (vectorization of names + cosine similarity computation) to compare clients names from Salesforce environments databases in order to detect duplicates client names into their database as well as linking client names from the database which have a specific relationship (parent/subsidiary relationship, same group, …)</li>
-                <li>Deployment of algorithms developed on AWS: use of Appflows to get/send back the data (storage in S3), AWS EMR to make an initialisation process running, AWS lambda for batch processes, API endpoints construction for Salesforce, creation of AWS stacks on CloudFormation </li>
-                <li>Product owner: worked on an Agile way (SCRUM) to define each task / the timeline / the difficulties on both projects described above</li>
-            </ul>
-    </div>
-    <div class="cv-section">
-        <h2>ING BANK, Leveraged Finance intern</h2>
-        <p><i class="fas fa-calendar-alt"></i> January-June 2020</p>
-        <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
-        <p><i class="fas fa-search"></i> Prospected Private Equity funds: Analyzing the LBO-market news by realizing daily Press Reviews for the team, gathered information of potential LBO targets within a mapping indicating which funds is interested in which potential LBO target, realized ‘one-pagers’ for potential interesting companies which are sold/expected to be sold to give funds LBO ideas</p>
-        <p><i class="fas fa-search"></i> Pitched funds on potential LBOs with business and market descriptions, financial analysis (P&L, Cashflow Statement, Budget, deleveraging profile, current trading and exit considerations analyses), potential upsides proposals, key investors’ concerns and key credit considerations</p>
-        <p><i class="fas fa-search"></i> Built LBO models by challenging the Business Plan given by the management/sponsor by analyzing the assumptions taken</p>
-        <p><i class="fas fa-search"></i> Took part in the Credit Modification process for ‘Prêts Garantis par l’Etat’ (PGE) and waivers (change of covenants’ rules in critical situations) assignations during the Covid-19 crisis</p>
-    </div>
-    <div class="cv-section">
-        <h2>BNP PARIBAS, Leveraged Finance intern</h2>
-        <p><i class="fas fa-calendar-alt"></i> July-December 2019</p>
-        <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
-        <p><i class="fas fa-search"></i> Pitched funds on potential LBOs (new LBO transaction, refinancing, extension, restructuring)</p>
-        <p><i class="fas fa-search"></i> Analyzed LBO targets (comps, industry research, identified risks and mitigants, analyzed financials) and built LBO models</p>
-        <p><i class="fas fa-search"></i> Took part in the Syndication process: Lender Presentations and Rating Presentations</p>
-    </div>
-    <div class="cv-section">
-        <h2>AQUA ASSET MANAGEMENT, Front Office Intern in Private Equity and Asset Management</h2>
-        <p><i class="fas fa-calendar-alt"></i> December 2018-March 2019</p>
-        <p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
-        <p><i class="fas fa-search"></i> Conducted industry research to find investment opportunities in German countries aligning the fund’s investment strategy through Factset and prepared business/financial presentations of potential targets (teasers) for my managers</p>
-    </div>
-    <div class="cv-section">
-        <h2>FIDSUD AUDIT, Financial auditor intern</h2>
-        <p><i class="fas fa-calendar-alt"></i> May-July 2018</p>
-        <p><i class="fas fa-map-marker-alt"></i> Toulouse, France</p>
-        <p><i class="fas fa-search"></i> Assisted in auditing 16 firms by identifying missing information, ambiguities in reports and resolved them accordingly</p>
-    </div>
-
-    <div class="cv-section-head">
-        <h2>Skills</h2>
-    </div>
-    
-    <div class="cv-section">
-        <h2>Languages</h2>
-        <p><span class="flag-icon flag-icon-fr"></span> Native <span class="flag-icon flag-icon-gb"></span> C2 <span class="flag-icon flag-icon-de"></span> B2</p>
-    </div>
-
-    <div class="cv-section">
-        <h2>Programming</h2>
-        <p><i class="devicon-python-plain colored"></i> Advanced <i class="devicon-java-plain colored"></i> Intermediate <i class="devicon-cplusplus-plain colored"></i> Basis</p>
-    </div>
-
-    <div class="cv-section">
-        <h2>AI Libraries</h2>
-        <p>Pytorch: Advanced, Tensorflow: Intermediate, Keras: Basis</p>
-        <p>Transformers: Advanced, Langchain: Intermediate</p>
-    </div>
-
-    <div class="cv-section">
-        <h2>Dev Skills</h2>
-        <p><i class="devicon-github-plain colored"></i> Advanced <i class="devicon-docker-plain colored"></i> Intermediate <i class="devicon-linux-plain colored"></i> Advanced </p>
-    </div>
-
-    <div class="cv-section">
-        <h2>Big Data tools / languages</h2>
-        <p><i class="devicon-mongodb-plain colored"></i> Basis, <i class="devicon-mysql-plain colored"></i> Intermediate</p>
-    </div>
-
-    <div class="cv-section">
-        <h2>Cloud Skills</h2>
-        <p>AWS: Intermediate, GCP: Basis </p>
-    </div>
-
-    <div class="cv-section-head">
-        <h2>Others</h2>
-    </div>
-    
-    <div class="cv-section">
-        <h2>HACKATLANTIQUE, CTF attendent</h2>
-        <p><i class="fas fa-calendar-alt"></i> March 2022</p>
-        <p><i class="fas fa-map-marker-alt"></i> Rennes, France</p>
-        <p><i class="fas fa-search"></i> Attended the hacking championship organized by my school (specific piece of text to find hidden on the server / behind webpages, …)</p>
-    </div>
-
-    <div class="cv-section">
-        <h2>COMU, Dancer</h2>
-        <p><i class="fas fa-calendar-alt"></i> 2017-2018</p>
-        <p><i class="fas fa-map-marker-alt"></i> Grenoble, France</p>
-        <p><i class="fas fa-search"></i> Dancer at a Musical from Grenoble Ecole de Management (Cosa-Nostra)</p>
-    </div>
-    <a href="#" class="scroll-down">
-        <i class="fas fa-chevron-down"></i>
-    </a>
-    <div id="follower"></div>
-    <script src="/js/script.js"></script>
-    <script src="/js/scroll-animation.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          var typed = new Typed("#typed-output", {
-            strings: [
-              'Machine Learning Engineer',
-              'Machine Learning Researcher',
-              'Mother'
-            ],
-            typeSpeed: 50, 
-            backSpeed: 40, 
-            loop: true, 
-            showCursor: true, 
-            cursorChar: '|', 
-          });
-        });
-
-        document.querySelector('.scroll-down').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollBy({
-                top: 150, 
-                left: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        window.addEventListener('scroll', function() {
-            var scrollPosition = window.scrollY + window.innerHeight;
-            var documentHeight = document.documentElement.scrollHeight;
-            var scrollDownButton = document.querySelector('.scroll-down');
-
-            if (scrollPosition >= documentHeight - 100) { 
-                scrollDownButton.classList.add('hidden');
-            } else {
-                scrollDownButton.classList.remove('hidden');
-            }
-        });
-    </script>
+<header>
+<h1>Camille's Blog</h1>
+<nav>
+<ul>
+<li><a href=/blog_content/ class=arrow-box>Blog Content</a></li>
+</ul>
+</nav>
+</header>
+<div class=content>
+<img src=photo.jpg alt="Profile Picture">
+<ul class=secondtitle>
+<li class=left-social>Camille</li>
+<li class=right-social>Barboule</li>
+</ul>
+<div id=typed-output></div>
+<ul class=social-links>
+<li class=left-social><a href=https://github.com/camillebrl><i class="fab fa-github"></i></a></li>
+<li class=left-social><a href=https://twitter.com/BarbouleCamille><i class="fab fa-twitter"></i></a></li>
+<li class=right-social><a href=https://www.linkedin.com/in/camille-barboule-353829147/><i class="fab fa-linkedin"></i></a></li>
+<li class=right-social><a href=mailto:camille.barboule@gmail.com><i class="fas fa-envelope"></i></a></li>
+</ul>
+</div>
+<ul class=line-black></ul>
+<ul class=line-red></ul>
+<ul class=line-white></ul>
+<div class=cv-section-head>
+<h2>Education</h2>
+</div>
+<div class=cv-section>
+<h2>IMT ATLANTIQUE, Engineering Diploma</h2>
+<p><i class="fas fa-calendar-alt"></i> 2020-2022</p>
+<p><i class="fas fa-map-marker-alt"></i> Brest, France</p>
+<p><i class="fas fa-search"></i> Relevant Courseworks:
+<ul>
+<li>Optimized Deep Learning (<a href=https://github.com/camillebrl/ai-optim>MicroNet challenge</a> : regularization, pruning and quantization techniques to reduce the floating point number and number of parameters)</li>
+<li>Machine Learning (unsupervised (clustering, PCA/EFA) & supervised (Regression: prediction of the number of insults on a Youtube Video – Classification: image classification with ResNet))</li>
+<li>Advanced Big Data (Cassandra, Hadoop, Spark, Kafka, Storm)</li>
+<li>Object Oriented Programming (<a href=https://github.com/camillebrl/Transcripen>Transcripen project</a> for speech-to-text analysis)</li>
+<li>Advanced Mathematics</li>
+<li>Network (OSI model, DNS, QoS)</ul></p>
+</div>
+<div class=cv-section>
+<h2>OTTO-FRIEDRICH-UNIVERSITÄT BAMBERG, Erasmus Program</h2>
+<p><i class="fas fa-calendar-alt"></i> April-July 2019</p>
+<p><i class="fas fa-map-marker-alt"></i> Bamberg, Germany</p>
+<p><i class="fas fa-search"></i> Relevant Courseworks:
+<ul>
+<li>International Finance</li>
+<li>European and International Economics</li>
+<li>Economics of Inequality</li>
+</ul></p>
+</div>
+<div class=cv-section>
+<h2>UNIVERSITY OF CAMBRIDGE, Exchange Program</h2>
+<p><i class="fas fa-calendar-alt"></i> September-December 2018</p>
+<p><i class="fas fa-map-marker-alt"></i> Cambridge, UK</p>
+<p><i class="fas fa-search"></i> Relevant Courseworks:
+<ul>
+<li>Corporate Finance</li>
+<li>Entrepreneurial Finance</li>
+<li>Economics</li>
+</ul></p>
+</div>
+<div class=cv-section>
+<h2>GRENOBLE ECOLE DE MANAGEMENT, Grande Ecole Diploma</h2>
+<p><i class="fas fa-calendar-alt"></i> 2017-2021</p>
+<p><i class="fas fa-map-marker-alt"></i> Grenoble, France</p>
+<p><i class="fas fa-search"></i> Relevant Courseworks:
+<ul>
+<li>Corporate Finance</li>
+<li>Thesis on “Improving Stock Return prediction’s traditional Algorithm of Fama & French thanks to recurrent neural networks”</li>
+<li>Economics</li>
+<li>Law</li>
+<li>HRM</li>
+<li>Management</li>
+</ul></p>
+</div>
+<div class=cv-section>
+<h2>Pierre De Fermat, Classe Préparatoire aux Grandes Ecoles (ECS)</h2>
+<p><i class="fas fa-calendar-alt"></i> 2015-2017</p>
+<p><i class="fas fa-map-marker-alt"></i> Toulouse, France</p>
+<p><i class="fas fa-search"></i> Relevant Courseworks:
+<ul>
+<li>Maths</li>
+<li>Geopolitics</li>
+</ul></p>
+</div>
+<div class=cv-section-head>
+<h2>Experience</h2>
+</div>
+<div class=cv-section>
+<h2>ORANGE, Machine Learning Engineer</h2>
+<p><i class="fas fa-calendar-alt"></i> 2022-now</p>
+<p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+<p><i class="fas fa-search"></i> NLP Machine Learning Engineer within a Research Project about LLM adaptation to the telecommunication industry which aims at getting a "small" (7b-parameters) model performing as well as big LLMs on telecom use-cases:</p>
+<ul>
+<li>Explored best practices about fine-tuning for domain adaptation of LLMs : on the data, preprocessing, continual pretraining (self-supervised fine-tuning on raw domain texts), instruction-tuning (on telco instructions (QA, MCQs, Summarization)), fine-tuning process itself (packing vs non-packing, loss computed on all tokens (auto-regressive way) vs on output tokens only, ...), parameter-efficient fine-tuning methods (lora vs qlora vs prefix-tuning vs full fine-tuning) </li>
+<li>Implemented a pipeline for domain-adaptation of LLM (from data collection, preprocessing, to fine-tuning, to results evaluation) </li>
+<li>Created an internal blog about LLM to help collaborators fine-tuning / using LLMs at inference</li>
+<li>Trained models on a SLURM internal cluster using several parallelization methods</li>
+<li>Wrote a research paper on our findings about domain-adaptation</li>
+</ul>
+<p><i class="fas fa-search"></i> Development of an internal tool for data ingestion and processing</p>
+<li>Development and deployment of a crawler using scrapy to retrieve PDFs from difference telco websites (3GPP, 5GAA, ETSI, ...) and internal sources</li>
+<li>Implementation and comparison of different PDF processing methods to retrieve texts and tables (Tesseract, Nougat, PDFMiner, ...)</li>
+</div>
+<div class=cv-section>
+<h2>DELPHA.IO, Machine Learning Engineer</h2>
+<p><i class="fas fa-calendar-alt"></i> 2021-2022</p>
+<p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+<p><i class="fas fa-search"></i> Developed and deployed AI models for data cleaning of Salesforce's customer databases</p>
+<ul>
+<li>Developed an algorithm to perform large-scale string comparison via an optimisation of sparse matrix multiplication (vectorization of names + cosine similarity computation) to compare clients names from Salesforce environments databases in order to detect duplicates client names into their database as well as linking client names from the database which have a specific relationship (parent/subsidiary relationship, same group, …)</li>
+<li>Deployment of algorithms developed on AWS: use of Appflows to get/send back the data (storage in S3), AWS EMR to make an initialisation process running, AWS lambda for batch processes, API endpoints construction for Salesforce, creation of AWS stacks on CloudFormation </li>
+<li>Product owner: worked on an Agile way (SCRUM) to define each task / the timeline / the difficulties on both projects described above</li>
+</ul>
+</div>
+<div class=cv-section>
+<h2>ING BANK, Leveraged Finance intern</h2>
+<p><i class="fas fa-calendar-alt"></i> January-June 2020</p>
+<p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+<p><i class="fas fa-search"></i> Prospected Private Equity funds: Analyzing the LBO-market news by realizing daily Press Reviews for the team, gathered information of potential LBO targets within a mapping indicating which funds is interested in which potential LBO target, realized ‘one-pagers’ for potential interesting companies which are sold/expected to be sold to give funds LBO ideas</p>
+<p><i class="fas fa-search"></i> Pitched funds on potential LBOs with business and market descriptions, financial analysis (P&L, Cashflow Statement, Budget, deleveraging profile, current trading and exit considerations analyses), potential upsides proposals, key investors’ concerns and key credit considerations</p>
+<p><i class="fas fa-search"></i> Built LBO models by challenging the Business Plan given by the management/sponsor by analyzing the assumptions taken</p>
+<p><i class="fas fa-search"></i> Took part in the Credit Modification process for ‘Prêts Garantis par l’Etat’ (PGE) and waivers (change of covenants’ rules in critical situations) assignations during the Covid-19 crisis</p>
+</div>
+<div class=cv-section>
+<h2>BNP PARIBAS, Leveraged Finance intern</h2>
+<p><i class="fas fa-calendar-alt"></i> July-December 2019</p>
+<p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+<p><i class="fas fa-search"></i> Pitched funds on potential LBOs (new LBO transaction, refinancing, extension, restructuring)</p>
+<p><i class="fas fa-search"></i> Analyzed LBO targets (comps, industry research, identified risks and mitigants, analyzed financials) and built LBO models</p>
+<p><i class="fas fa-search"></i> Took part in the Syndication process: Lender Presentations and Rating Presentations</p>
+</div>
+<div class=cv-section>
+<h2>AQUA ASSET MANAGEMENT, Front Office Intern in Private Equity and Asset Management</h2>
+<p><i class="fas fa-calendar-alt"></i> December 2018-March 2019</p>
+<p><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+<p><i class="fas fa-search"></i> Conducted industry research to find investment opportunities in German countries aligning the fund’s investment strategy through Factset and prepared business/financial presentations of potential targets (teasers) for my managers</p>
+</div>
+<div class=cv-section>
+<h2>FIDSUD AUDIT, Financial auditor intern</h2>
+<p><i class="fas fa-calendar-alt"></i> May-July 2018</p>
+<p><i class="fas fa-map-marker-alt"></i> Toulouse, France</p>
+<p><i class="fas fa-search"></i> Assisted in auditing 16 firms by identifying missing information, ambiguities in reports and resolved them accordingly</p>
+</div>
+<div class=cv-section-head>
+<h2>Skills</h2>
+</div>
+<div class=cv-section>
+<h2>Languages</h2>
+<p><span class="flag-icon flag-icon-fr"></span> Native <span class="flag-icon flag-icon-gb"></span> C2 <span class="flag-icon flag-icon-de"></span> B2</p>
+</div>
+<div class=cv-section>
+<h2>Programming</h2>
+<p><i class="devicon-python-plain colored"></i> Advanced <i class="devicon-java-plain colored"></i> Intermediate <i class="devicon-cplusplus-plain colored"></i> Basis</p>
+</div>
+<div class=cv-section>
+<h2>AI Libraries</h2>
+<p>Pytorch: Advanced, Tensorflow: Intermediate, Keras: Basis</p>
+<p>Transformers: Advanced, Langchain: Intermediate</p>
+</div>
+<div class=cv-section>
+<h2>Dev Skills</h2>
+<p><i class="devicon-github-plain colored"></i> Advanced <i class="devicon-docker-plain colored"></i> Intermediate <i class="devicon-linux-plain colored"></i> Advanced </p>
+</div>
+<div class=cv-section>
+<h2>Big Data tools / languages</h2>
+<p><i class="devicon-mongodb-plain colored"></i> Basis, <i class="devicon-mysql-plain colored"></i> Intermediate</p>
+</div>
+<div class=cv-section>
+<h2>Cloud Skills</h2>
+<p>AWS: Intermediate, GCP: Basis </p>
+</div>
+<div class=cv-section-head>
+<h2>Others</h2>
+</div>
+<div class=cv-section>
+<h2>HACKATLANTIQUE, CTF attendent</h2>
+<p><i class="fas fa-calendar-alt"></i> March 2022</p>
+<p><i class="fas fa-map-marker-alt"></i> Rennes, France</p>
+<p><i class="fas fa-search"></i> Attended the hacking championship organized by my school (specific piece of text to find hidden on the server / behind webpages, …)</p>
+</div>
+<div class=cv-section>
+<h2>COMU, Dancer</h2>
+<p><i class="fas fa-calendar-alt"></i> 2017-2018</p>
+<p><i class="fas fa-map-marker-alt"></i> Grenoble, France</p>
+<p><i class="fas fa-search"></i> Dancer at a Musical from Grenoble Ecole de Management (Cosa-Nostra)</p>
+</div>
+<a href=# class=scroll-down>
+<i class="fas fa-chevron-down"></i>
+</a>
+<div id=follower></div>
+<script src=/js/script.js></script>
+<script src=/js/scroll-animation.js></script>
+<script>document.addEventListener("DOMContentLoaded",function(){var a=new Typed("#typed-output",{strings:['Machine Learning Engineer','Machine Learning Researcher','Mother'],typeSpeed:50,backSpeed:40,loop:!0,showCursor:!0,cursorChar:'|'})}),document.querySelector('.scroll-down').addEventListener('click',function(a){a.preventDefault(),window.scrollBy({top:150,left:0,behavior:'smooth'})}),window.addEventListener('scroll',function(){var b=window.scrollY+window.innerHeight,c=document.documentElement.scrollHeight,a=document.querySelector('.scroll-down');b>=c-100?a.classList.add('hidden'):a.classList.remove('hidden')})</script>
 </body>
 </html>
