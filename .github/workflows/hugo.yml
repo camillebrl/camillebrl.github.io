@@ -44,19 +44,15 @@ jobs:
       - name: Display Hugo version
         run: hugo version
 
-      - name: List theme files
+      - name: List content files
         run: |
-          echo "Theme files:"
-          ls -R themes/PaperMod || echo "PaperMod theme not found in themes directory"
+          echo "Content files:"
+          ls -R content
 
-      - name: Display content of a theme file
+      - name: Display Hugo config
         run: |
-          if [ -f themes/PaperMod/layouts/_default/single.html ]; then
-            echo "Content of themes/PaperMod/layouts/_default/single.html:"
-            cat themes/PaperMod/layouts/_default/single.html
-          else
-            echo "themes/PaperMod/layouts/_default/single.html not found"
-          fi
+          echo "Hugo configuration:"
+          cat config.toml  # ou config.yaml si vous utilisez YAML
 
       - name: Build with Hugo
         env:
@@ -66,14 +62,20 @@ jobs:
           hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/" --verbose
 
       - name: List generated files
-        run: ls -R public
+        run: |
+          echo "Generated files:"
+          find public -type f
 
       - name: Debug Output
         run: |
-          echo "Content of index.html:"
-          cat public/index.html
-          echo "Content of a post:"
-          cat public/posts/first-post/index.html || echo "First post not found"
+          echo "Content of blog_content/index.html:"
+          cat public/blog_content/index.html || echo "File not found: public/blog_content/index.html"
+          
+          echo "Content of VLMs for Doc AI page:"
+          cat public/blog_content/literature_review/doc_ai/vlms_for_doc_ai/index.html || echo "File not found: public/blog_content/literature_review/doc_ai/vlms_for_doc_ai/index.html"
+          
+          echo "List of files in public/blog_content:"
+          ls -R public/blog_content
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
