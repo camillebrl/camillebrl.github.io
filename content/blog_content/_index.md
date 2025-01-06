@@ -3,7 +3,11 @@ title: "Blog Content"
 type: "section"
 ---
 
-## {{< posttitle >}}Hello and welcome to my blog!{{< /posttitle >}}
+{{< posttitle >}}Hello and welcome to my blog!{{< /posttitle >}}
+
+
+
+
 
 This space doesn't claim to be anything special—it's simply a {{< highlight >}}tool for organizing my thoughts, readings, and learnings.{{< /highlight >}} As you know, the world of deep learning evolves incredibly quickly. I find it very challenging to effectively process all the information, papers, and posts I come across. I needed a way to gather and manage all these insights efficiently, and that's why I created this blog.
 

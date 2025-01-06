@@ -15,8 +15,8 @@ Most of the current generative models we currently use (for image, text, video, 
 
 {{< red_colored >}}We are not talking here about the architecture of the generative models (transformers, cnn, etc), but the way those architectures are parametrized during training{{< /red_colored >}} (ie the way the weights are modified in the backpropagation process of the training process). Indeed, in current generative models (which are density models), when the some weights are modified in the backpropagation process (like {{< low_green_colored >}}pushing up the density over certain datapoints as presented in the figure in green{{< /low_green_colored >}}), we are {{< colored >}}forced to sacrifice the density over other regions{{< /colored >}} ({{< low_red_colored >}}pushing down the density over other datapoints as presented in the figure in red{{< /low_red_colored >}}), because the {{< colored >}}function is supposed to be normalized (probability which sums to 1){{< /colored >}}:
 
-![](/reflexions/generative_models/end_autoregressive_models/density_models.png)
-*Fitting a max likelihood density model to data, from [Antonio Torralba et al.'s book](https://mitpress.mit.edu/9780262048972/foundations-of-computer-vision/), p475*
+<img src="/reflexions/generative_models/end_autoregressive_models/density_models.png" alt="Fitting a max likelihood density model to data, from [Antonio Torralba et al.'s book](https://mitpress.mit.edu/9780262048972/foundations-of-computer-vision/), p475" />
+
 
 Therefore, other methods have emerged that are more "data-driven", which do {{< colored >}}not require full model specification from the start but focus solely on the data{{< /colored >}} (with few to no assumptions about the function to be learned to represent the data). 
 
