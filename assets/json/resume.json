@@ -101,9 +101,7 @@
       "startDate": "2018-12-01",
       "endDate": "2019-03-01",
       "summary": "Conducted financial analysis using FactSet for asset management operations.",
-      "highlights": [
-        "Financial analysis using FactSet platform"
-      ]
+      "highlights": ["Financial analysis using FactSet platform"]
     }
   ],
   "volunteer": [],
@@ -134,10 +132,7 @@
       "startDate": "2017-09-01",
       "endDate": "2021-07-01",
       "score": "",
-      "courses": [
-        "Finance",
-        "Economics"
-      ]
+      "courses": ["Finance", "Economics"]
     },
     {
       "institution": "University of Cambridge",
@@ -148,10 +143,7 @@
       "startDate": "2018-09-01",
       "endDate": "2018-12-01",
       "score": "",
-      "courses": [
-        "Finance",
-        "Economics"
-      ]
+      "courses": ["Finance", "Economics"]
     },
     {
       "institution": "Otto-Friedrich-Universität Bamberg",
@@ -162,10 +154,7 @@
       "startDate": "2019-04-01",
       "endDate": "2019-07-01",
       "score": "",
-      "courses": [
-        "Finance",
-        "Economics"
-      ]
+      "courses": ["Finance", "Economics"]
     },
     {
       "institution": "Pierre de Fermat",
@@ -254,11 +243,7 @@
       "name": "Finance",
       "level": "Intermediate",
       "icon": "fa-solid fa-chart-line",
-      "keywords": [
-        "LBO Modeling",
-        "Financial Analysis",
-        "FactSet"
-      ]
+      "keywords": ["LBO Modeling", "Financial Analysis", "FactSet"]
     }
   ],
   "languages": [
@@ -294,10 +279,7 @@
     {
       "name": "Dancing",
       "icon": "fa-solid fa-music",
-      "keywords": [
-        "Rock",
-        "Salsa"
-      ]
+      "keywords": ["Rock", "Salsa"]
     }
   ],
   "references": [],
