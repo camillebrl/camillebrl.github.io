@@ -7,7 +7,7 @@ tags: XAI
 categories: sample-posts
 maths: true
 giscus_comments: true
-thumbnail: assets/img/xai_llm.jpg
+thumbnail: assets/img/xai_llm.png
 images:
   lightbox2: true
   photoswipe: true
@@ -34,12 +34,11 @@ L'objectif est d'établir des liens causaux clairs entre ces sources de données
 
 ### Approches TDA (training data analysis) pour comprendre quelles connaissances apprises dans l'entraînement ont été influentes dans la génération de quels tokens
 1. **Si on cherche à estimer l'impact qu'aurait un exemple d'entraînement sur la perte d'un exemple de test à un exemple d'entraînement** (qu'il soit dans le jeu de données d'entraînement de base ou pas) :
-$\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)
-\Big|_{\varepsilon=0} = -\,g_{\mathrm{test}}^\top\,H_\theta^{-1}\,g_{\mathrm{train}}$. Voir les librairies [Kronfluence](https://github.com/pomonam/kronfluence) ou [TracIn](https://github.com/frederick0329/TracIn) ou [PINNfluence](https://github.com/aleks-krasowski/PINNfluence) ou [GraSS](https://github.com/TRAIS-Lab/GraSS). Des repo github proposent des tutos pour plusieurs de ces lib: cf [Influenciae](https://github.com/deel-ai/influenciae). Les fonctions d'influence permettent de répondre à ces questions:
+$\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)\Big|_{\varepsilon=0} = -\,g_{\mathrm{test}}^\top\,H_\theta^{-1}\,g_{\mathrm{train}}$. Voir les librairies [Kronfluence](https://github.com/pomonam/kronfluence) ou [TracIn](https://github.com/frederick0329/TracIn) ou [PINNfluence](https://github.com/aleks-krasowski/PINNfluence) ou [GraSS](https://github.com/TRAIS-Lab/GraSS). Des repo github proposent des tutos pour plusieurs de ces lib: cf [Influenciae](https://github.com/deel-ai/influenciae). Les fonctions d'influence permettent de répondre à ces questions:
     - Est-ce que je devrais ajouter cet exemple dans mon set d'apprentissage pour améliorer les performances de cette prédiction?
     - Quels exemples d'entraînement ont été utiles à la prédiction de mon modèle?
     - Le modèle s'est trompé: sur quels exemples d'entraînement s'est-il basé pour cette mauvaise prédiction?
-    - Quel serait l'effet d'une re-labélisation de ma donnée d'entraînement sur la prédiction? Quelles sont les données que je devrais re-labéliser pour améliorer ma prédiction? => Pour répondre à ces questions, il faut modifier un peu l'approche: $\mathrm{Influence}(\text{relabeling}(z_{\rm train})\!\to\!z_{\rm test}) = g_{\mathrm{test}}^\top\,H_\theta^{-1}\,\bigl[\nabla_\theta \mathcal{L}\bigl(z_{\text{train}}^{\text{modified}},\,\theta_\varepsilon\bigr)  \;-\;  \nabla_\theta \mathcal{L}\bigl(z_{\text{train}}^{\text{original}},\,\theta_\varepsilon\bigr)\bigr]$
+    - Quel serait l'effet d'une re-labélisation de ma donnée d'entraînement sur la prédiction? Quelles sont les données que je devrais re-labéliser pour améliorer ma prédiction? => Pour répondre à ces questions, il faut modifier un peu l'approche: $\mathrm{Influence}(\text{relabeling}(z_{\rm train}) \to z_{\rm test}) = g_{\mathrm{test}}^\top\,H_\theta^{-1}\,\bigl[\nabla_\theta \mathcal{L}\bigl(z_{\text{train}}^{\text{modified}},\,\theta_\varepsilon\bigr)  \;-\;  \nabla_\theta \mathcal{L}\bigl(z_{\text{train}}^{\text{original}},\,\theta_\varepsilon\bigr)\bigr]$
 
 ### Approches d'analyse du prompt (input donné au modèle) dans la génération de quels tokens
 
@@ -51,7 +50,9 @@ $\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{d
 
 ### 1.1 Introduction sur les fonctions d'influence
 Pour introduire les fonctions d'influence appliquées au deep learning, nous nous basons sur le le papier [Understanding Black-box Predictions via Influence Functions](https://arxiv.org/pdf/1703.04730), et notamment sur l'annexe A pour expliquer les différentes formules.
-> **L’influence de $z_{\rm train}$ sur $z_{\rm test}$ ($\mathrm{Influence}(z_{\rm train}\!\to\!z_{\rm test})$) se définit comme $\frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\ \theta_\varepsilon\bigr) \Big|_{\varepsilon=0}$. En d'autres termes, elle mesure la sensibilité de la loss de $z_{\rm test}$ (ou de n'importe quelle fonction $f(\theta)$ avec $\theta$ les poids du modèle : $\mathrm{Influence}(z_{\rm train}\!\to\!f(\theta))$) à l’"up-weight" infinitésimal (d'un $\varepsilon$ proche de 0) de la loss de $z_{\rm train}$. En gros, si modifiait le poids qu'on donne à la loss sur $z_{\rm train}$ dans le modèle, comment varierait la loss de $z_{\text{test}}$ (ou la fonction $f(\theta)$) ?**
+> **L’influence de** $z_{\rm train}$ **sur** $z_{\rm test}$ ($\mathrm{Influence}(z_{\rm train}\!\to\!z_{\rm test})$) **se définit comme** $\mathrm{Influence}(z_{\rm train}\to z_{\rm test})\;=\; \left.\frac{d}{d\varepsilon}\,\mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)\right|_{\varepsilon=0}$. En d’autres termes, elle mesure la sensibilité de la loss de $z_{\rm test}$ (ou de toute fonction $f(\theta)$) 
+à un « up-weight » infinitésimal de la loss de $z_{\rm train}$.  
+
 
 A noter: 
 - C'est l'**impact de l"up-weight" de la loss sur $z_\text{train}$ sur qqch qu'on mesure avec les fonctions d'influence**. En fait pour mesurer l'impact de l"up-weight" de $z_{\text{train}}$ dans la loss globale, on se pose la question: "on se pose la question : "**si je donnais un peu plus de poids à ce terme de loss dans l’objectif global, comment cela ferait-il bouger mes paramètres et, avec ces nouveaux paramètres, ma performance sur un point de test, ou sur une fonction?**". En effet, en deep learning, modifier le poids d'une donnée dans l'entraînement, c'est modifier le poids qu'on donne à sa loss dans l'apprentissage.
@@ -63,24 +64,59 @@ $$
 = I_{z_\text{test}}\bigl(z_{\mathrm{train}}\bigr)
 = -\,g_{\mathrm{test}}^\top\,H_\theta^{-1}\,g_{\mathrm{train}}.
 $$
+
 Avec:
 $$
 g_{\mathrm{test}} \;=\; \nabla_\theta \,\mathcal{L}\bigl(z_{\mathrm{test}},\,\theta_\varepsilon\bigr)\,.
 $$
+
 $$
 g_{\mathrm{train}} \;=\; \nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon)
 $$
+
 **Détaillon un peu comment on a obtenu cette formule...**
 
-On cherche $\frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\ \theta_\varepsilon\bigr) \Big|_{\varepsilon=0}$. On peut voir ça comme $\frac{d}{d\varepsilon} f(g(\varepsilon))$ avec $g(\varepsilon) = \theta_\varepsilon$ et $f(\theta_\varepsilon) = \mathcal{L}(z_{\rm test},\theta_\varepsilon)$, d'où, par chain rule: $f'(g(\varepsilon)) = f'\bigl(g(\varepsilon)\bigr)\,g'(\varepsilon)$.
+On cherche 
 
-Donc on a $\frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\ \theta_\varepsilon\bigr) \Big|_{\varepsilon=0}= \nabla_\theta \mathcal{L}(z_{\rm test}, \theta_\varepsilon)\Big|_{\varepsilon=0} \times \frac{d}{d\varepsilon} \theta_\varepsilon \Big|_{\varepsilon=0}$.
+$$
+\frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\ \theta_\varepsilon\bigr) \Big|_{\varepsilon=0}
+$$
 
-Du coup, dans un premier temps, il nous faut calculer $\frac{d}{d\varepsilon} \theta_\varepsilon \Big|_{\varepsilon=0}$. Et ensuite on le multipliera à $\nabla_\theta \mathcal{L}(z_{\rm test}, \theta_\varepsilon)\Big|_{\varepsilon=0}$ qu'on sait calculer vu que c'est au voisinage de $\theta$, les poids du modèle de base.
+On peut voir ça comme $\frac{d}{d\varepsilon} f(g(\varepsilon))$ avec $g(\varepsilon) = \theta_\varepsilon$ et $f(\theta_\varepsilon) = \mathcal{L}(z_{\rm test},\theta_\varepsilon)$, d'où, par chain rule :
 
-**D'abord, commençons par calculer $\frac{d}{d\varepsilon} \theta_\varepsilon \Big|_{\varepsilon=0}$, en gros: comment $\theta_\varepsilon$ varie autour de $\theta$ quand on up-weight très lélègement (voisinage de 0) la loss de notre loss de l'exemple $z_\text{train}$:**
+$$
+f'(g(\varepsilon)) = f'\bigl(g(\varepsilon)\bigr)\,g'(\varepsilon)
+$$
 
-> Pour faire cet "up-weight" de la loss de $z_{\text{train}}$ d'un tout petit $\varepsilon$, on perturbe la fonction de perte en ajoutant un petit coefficient $\varepsilon$ sur la perte de $z_{\rm train}$ et on voit comment les paramètres optimaux $\theta$ évoluent avec $\varepsilon$.
+Donc on a :
+
+$$
+\frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\ \theta_\varepsilon\bigr) \Big|_{\varepsilon=0} = \nabla_\theta \mathcal{L}(z_{\rm test}, \theta_\varepsilon)\Big|_{\varepsilon=0} \times \frac{d}{d\varepsilon} \theta_\varepsilon \Big|_{\varepsilon=0}
+$$
+
+Du coup, dans un premier temps, il nous faut calculer 
+
+$$
+\frac{d}{d\varepsilon} \theta_\varepsilon \Big|_{\varepsilon=0}
+$$
+
+Et ensuite on le multipliera à 
+
+$$
+\nabla_\theta \mathcal{L}(z_{\rm test}, \theta_\varepsilon)\Big|_{\varepsilon=0}
+$$
+
+qu'on sait calculer vu que c'est au voisinage de $\theta$, les poids du modèle de base.
+
+**D'abord, commençons par calculer** 
+
+$$
+\frac{d}{d\varepsilon} \theta_\varepsilon \Big|_{\varepsilon=0}
+$$
+
+**en gros : comment $\theta_\varepsilon$ varie autour de $\theta$ quand on up-weight très légèrement (voisinage de 0) la loss de notre exemple $z_\text{train}$ :**
+
+Pour faire cet "up-weight" de la loss de $z_{\text{train}}$ d'un tout petit $\varepsilon$, on perturbe la fonction de perte en ajoutant un petit coefficient $\varepsilon$ sur la perte de $z_{\rm train}$ et on voit comment les paramètres optimaux $\theta$ évoluent avec $\varepsilon$.
 
 On repart de ce que ça veut dire de "perturber la fonction de perte en ajoutant un petit coefficient $\varepsilon$ sur la perte de $z_{\rm train}$": on obtient une nouvelle la loss totale du modèle ($R_\varepsilon(\theta)$) avec les nouveau poid $\varepsilon$ donné à la loss de $z_{\text{train}}$:
 $$
@@ -115,40 +151,37 @@ $$
 f(x) \approx f(x_0) + f'(x_0)\,(x - x_0)
 $$
 
-D'où, en approximant avec Taylor à l'ordre 1 $\frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta_\varepsilon)
-\;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon)$ en $\theta$, on obtient:
+D'où, en approximant avec Taylor à l'ordre 1 $\frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta_\varepsilon)\;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon)$ en $\theta$, on obtient:
 
 $$
 [ \frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta)
 \;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta) ] \\
-+ \; \;(\theta_\varepsilon - \theta) \;\; [ \frac{1}{n}\sum_{i=1}^n \nabla²_\theta \mathcal{L}(z_i,\theta_\varepsilon)
-\;+\;\varepsilon\,\nabla²_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) ]
++ \; \;(\theta_\varepsilon - \theta) \;\; [ \frac{1}{n}\sum_{i=1}^n \nabla^2_\theta \mathcal{L}(z_i,\theta_\varepsilon)
+\;+\;\varepsilon\,\nabla^2_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) ]
 $$
 
-On a donc: 
+On a donc:
+
 $$
-[ \frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta)
-\;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta) ] \;\;
-+ \; \;(\theta_\varepsilon - \theta) \;\; [ \frac{1}{n}\sum_{i=1}^n \nabla²_\theta \mathcal{L}(z_i,\theta_\varepsilon)
-\;+\;\varepsilon\,\nabla²_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) ] \; = \; 0
+\left[ \frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta) + \varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta) \right] + (\theta_\varepsilon - \theta) \left[ \frac{1}{n}\sum_{i=1}^n \nabla^2_\theta \mathcal{L}(z_i,\theta_\varepsilon) + \varepsilon\,\nabla^2_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) \right] = 0
 $$
+
 D'où:
-$$
-(\theta_\varepsilon - \theta) = - [ \frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta)
-\;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta) ] \times  [ \frac{1}{n}\sum_{i=1}^n \nabla²_\theta \mathcal{L}(z_i,\theta_\varepsilon)
-\;+\;\varepsilon\,\nabla²_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) ]^{-1}
-$$
-
-Or, puisque $\theta$ sont les poids optimaux pour le modèle de base, $\frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta) = 0$ et $\varepsilon\,\nabla²_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) = 0$:
 
 $$
-(\theta_\varepsilon - \theta) = - \varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta)  \times  [\frac{1}{n}\sum_{i=1}^n \nabla²_\theta \mathcal{L}(z_i,\theta_\varepsilon)]^{-1}
+(\theta_\varepsilon - \theta) = - \left[ \frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta) + \varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta) \right] \times \left[ \frac{1}{n}\sum_{i=1}^n \nabla^2_\theta \mathcal{L}(z_i,\theta_\varepsilon) + \varepsilon\,\nabla^2_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) \right]^{-1}
+$$
+
+Or, puisque $\theta$ sont les poids optimaux pour le modèle de base, $\frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta) = 0$ et $\varepsilon\,\nabla^2_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon) = 0$:
+
+$$
+(\theta_\varepsilon - \theta) = - \varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta)  \times  [\frac{1}{n}\sum_{i=1}^n \nabla^2_\theta \mathcal{L}(z_i,\theta_\varepsilon)]^{-1}
 $$
 
 Et si on dérive par rapport à $\varepsilon$ on obtient:
 
 $$
-\frac{d}{d\varepsilon}(\theta_\varepsilon - \theta) = - \nabla_\theta \mathcal{L}(z_{\rm train},\theta)  \times  [\frac{1}{n}\sum_{i=1}^n \nabla²_\theta \mathcal{L}(z_i,\theta_\varepsilon)]^{-1} = - \nabla_\theta \mathcal{L}(z_{\rm train},\theta) H_\theta^{-1}
+\frac{d}{d\varepsilon}(\theta_\varepsilon - \theta) = - \nabla_\theta \mathcal{L}(z_{\rm train},\theta)  \times  [\frac{1}{n}\sum_{i=1}^n \nabla^2_\theta \mathcal{L}(z_i,\theta_\varepsilon)]^{-1} = - \nabla_\theta \mathcal{L}(z_{\rm train},\theta) H_\theta^{-1}
 $$
 
 Or $\frac{d}{d\varepsilon}(\theta_\varepsilon - \theta) = \frac{d}{d\varepsilon} \theta_\varepsilon$
@@ -262,11 +295,13 @@ $$\nabla_\theta L(z_m, \theta) = \sum_{t=1}^T(-\nabla_\theta \log p(z_{m,t} \mid
 Nous, $z_m$ est de taille 6 :
 
 $$
-\nabla_\theta L(z_m, \theta) = \\ -\nabla_\theta \log p(\text{le} \mid \text{[BOS]}, \theta) \\
-\quad - \nabla_\theta \log p(\text{chat} \mid \text{[[BOS], le]}, \theta) \\
-\quad - \nabla_\theta \log p(\text{est} \mid \text{[BOS], le, chat}, \theta) \\
-\quad - \nabla_\theta \log p(\text{gris} \mid \text{[BOS], le, chat, est}, \theta) \\
-\quad - \nabla_\theta \log p(\text{[EOS]} \mid \text{[BOS], le, chat, est, gris}, \theta) 
+\begin{align}
+\nabla_\theta L(z_m, \theta) &= -\nabla_\theta \log p(\text{le} \mid \text{[BOS]}, \theta) \\
+&\quad - \nabla_\theta \log p(\text{chat} \mid \text{[[BOS], le]}, \theta) \\
+&\quad - \nabla_\theta \log p(\text{est} \mid \text{[BOS], le, chat}, \theta) \\
+&\quad - \nabla_\theta \log p(\text{gris} \mid \text{[BOS], le, chat, est}, \theta) \\
+&\quad - \nabla_\theta \log p(\text{[EOS]} \mid \text{[BOS], le, chat, est, gris}, \theta)
+\end{align}
 $$
 
 #### 1.3.2 L'influence à l'échelle des tokens $t$ dans la phrase $z_m$
@@ -285,7 +320,7 @@ $$I_f(z_{m,t}) = \nabla_{\theta}f(\theta)^{T} H^{-1} \nabla_{\theta}\log p(z_{m,
 
 Prenons l'exemple suivant: on prend $f = \log p(\text{"hydrogen and oxygen"} \mid \text{"Water is composed of"})$ et $z_m$ qui est le texte ci-dessous. On peut afficher l'influence token par token dans le texte:
 
-
+![](assets/img/image.png)
 
 ### 1.4 Le cas des LLMs: beaucoup de données d'entraînement (eg. 36 trillions de tokens pour Qwen3) => query batching ou semantic matching pour ne pas calculer l'influence sur toutes les données (trop coûteux)
 Le papier [Studying Large Language Model Generalization with Influence Functions](https://arxiv.org/pdf/2308.03296) propose une approche pour éviter de calculer les gradients de tous les exemples d'entraînement candidats pour chaque requête d'influence. Pour cela, ils "filtrent" les données d'entraînement par rapport à la phrase test via un filtrage TF-IDF et une approche qu'ils introduisent de "query batching".
@@ -297,9 +332,9 @@ Ils retiennent les top 10,000 séquences selon le score TF-IDF Calcul d'influenc
 
 #### 1.4.2 Le Query-Batching
 
-Dans un LLM, on a beaucoup d'exemples $z_m$ d'entraînement. Donc, on calcule séparemment $∇_θ\mathcal{L}(z_m, \theta_\varepsilon)$ et $\nabla_{\theta} f(\theta_\varepsilon)^\top \, H^{-1}$ qui se calcule en une fois. 
+Dans un LLM, on a beaucoup d'exemples $z_m$ d'entraînement. Donc, on calcule séparemment $\nabla_\theta\mathcal{L}(z_m, \theta_\varepsilon)$ et $\nabla_{\theta} f(\theta_\varepsilon)^\top \, H^{-1}$ qui se calcule en une fois. 
 
-Pour stocker de nombreux gradients de requêtes en mémoire ($∇_θ\mathcal{L}(z_m, \theta_\varepsilon) \; \forall \; z_m$), ils approximent chaque matrice de gradient préconditionné comme étant de rang faible (rank-32 dans leurs expériences).
+Pour stocker de nombreux gradients de requêtes en mémoire ($\nabla_\theta\mathcal{L}(z_m, \theta_\varepsilon) \; \forall \; z_m$), ils approximent chaque matrice de gradient préconditionné comme étant de rang faible (rank-32 dans leurs expériences).
 
 Ainsi, pour chaque requête, ils n'ont pas à refaire les calculs! Ils ont juste à calculer $\nabla_{\theta} f(\theta_\varepsilon)$.
 
