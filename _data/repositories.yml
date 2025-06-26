@@ -1,14 +1,11 @@
 github_users:
-  - torvalds
-  - alshedivat
+  - camillebrl
 
-repo_description_lines_max: 2
+repo_description_lines_max: 10
 
 github_repos:
-  - alshedivat/al-folio
-  - jekyll/jekyll
-  - twbs/bootstrap
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - mathjax/MathJax
-  - jpswalsh/academicons
+  - camillebrl/doc_custom_kie
+  - camillebrl/mirage_ui
+  - camillebrl/colpali_mcp_server
+  - camillebrl/vlm_mcp_server
+  - camillebrl/transformers
