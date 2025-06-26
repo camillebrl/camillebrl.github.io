@@ -72,7 +72,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-a-post-with-plotly-js",
+            },{id: "post-les-approches-d-39-explicabilité-par-les-exemples-appliquées-aux-llms",
+        
+          title: "Les approches d&#39;explicabilité par les exemples appliquées aux LLMs",
+        
+        description: "Méthodes d&#39;explicabilité de la génération de texte par les LLMs",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/formatting-and-links/";
+          
+        },
+      },{id: "post-a-post-with-plotly-js",
         
           title: "a post with plotly.js",
         
@@ -400,17 +411,6 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2015/images/";
-          
-        },
-      },{id: "post-a-post-with-formatting-and-links",
-        
-          title: "a post with formatting and links",
-        
-        description: "march &amp; april, looking forward to summer",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2015/formatting-and-links/";
           
         },
       },{id: "books-the-godfather",
