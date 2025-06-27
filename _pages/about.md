@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://github.com/camillebrl'>Github</a>. <a href='https://huggingface.co/camillebrl'>Huggingface</a>. <a href='https://scholar.google.com/citations?user=pDIkfAEAAAAJ&hl=fr&oi=ao'>Google Scholar</a>. <a href='https://x.com/BarbouleCamille/'>X</a>. <a href='https://bsky.app/profile/camillebarboule.bsky.social'>BlueSky</a>.
+subtitle: Data Scientist at Orange Innovation specialized in NLP & IR
 
 profile:
   align: right
