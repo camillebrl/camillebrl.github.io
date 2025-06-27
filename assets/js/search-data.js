@@ -39,7 +39,7 @@ ninja.data = [{
           },
         },{id: "nav-cv",
           title: "cv",
-          description: "This is a description of the page. You can modify it in &#39;_pages/cv.md&#39;. You can also change or remove the top pdf download button.",
+          description: "You can find here my CV.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
@@ -96,11 +96,25 @@ ninja.data = [{
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
             },},{
+        id: 'social-bluesky',
+        title: 'Bluesky',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://bsky.app/profile/camillebarboule.bsky.social", "_blank");
+        },
+      },{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
         handler: () => {
-          window.open("mailto:%79%6F%75@%65%78%61%6D%70%6C%65.%63%6F%6D", "_blank");
+          window.open("mailto:%63%61%6D%69%6C%6C%65.%62%61%72%62%6F%75%6C%65@%67%6D%61%69%6C.%63%6F%6D", "_blank");
+        },
+      },{
+        id: 'social-github',
+        title: 'GitHub',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://github.com/camillebrl", "_blank");
         },
       },{
         id: 'social-inspire',
@@ -108,6 +122,20 @@ ninja.data = [{
         section: 'Socials',
         handler: () => {
           window.open("https://inspirehep.net/authors/1010907", "_blank");
+        },
+      },{
+        id: 'social-linkedin',
+        title: 'LinkedIn',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.linkedin.com/in/camille-barboule-353829147", "_blank");
+        },
+      },{
+        id: 'social-orcid',
+        title: 'ORCID',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://orcid.org/0009-0001-9182-7120", "_blank");
         },
       },{
         id: 'social-rss',
@@ -124,11 +152,25 @@ ninja.data = [{
           window.open("https://scholar.google.com/citations?user=qc6CJjYAAAAJ", "_blank");
         },
       },{
-        id: 'social-custom_social',
-        title: 'Custom_social',
+        id: 'social-semanticscholar',
+        title: 'Semantic Scholar',
         section: 'Socials',
         handler: () => {
-          window.open("https://www.alberteinstein.com/", "_blank");
+          window.open("https://www.semanticscholar.org/author/2336738897", "_blank");
+        },
+      },{
+        id: 'social-x',
+        title: 'X',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://twitter.com/BarbouleCamille", "_blank");
+        },
+      },{
+        id: 'social-zotero',
+        title: 'Zotero',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://www.zotero.org/", "_blank");
         },
       },{
       id: 'light-theme',
