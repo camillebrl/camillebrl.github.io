@@ -10,7 +10,7 @@ related_publications: false
 
 ## A Complete Pipeline for Document Information Extraction
 
-DocCustomKIE is an end-to-end solution for extracting key information from any type of document. The project provides a complete workflow from data annotation to model deployment, requiring minimal data and no GPU for training or inference.
+[DocCustomKIE](https://github.com/camillebrl/doc_custom_kie) is an end-to-end solution for extracting key information from any type of document. The project provides a complete workflow from data annotation to model deployment, requiring minimal data and no GPU for training or inference.
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">

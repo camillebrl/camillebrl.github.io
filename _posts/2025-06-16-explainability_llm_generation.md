@@ -34,7 +34,10 @@ L'objectif est d'établir des liens causaux clairs entre ces sources de données
 
 ### Approches TDA (training data analysis) pour comprendre quelles connaissances apprises dans l'entraînement ont été influentes dans la génération de quels tokens
 1. **Si on cherche à estimer l'impact qu'aurait un exemple d'entraînement sur la perte d'un exemple de test à un exemple d'entraînement** (qu'il soit dans le jeu de données d'entraînement de base ou pas) :
-$\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)\Big|_{\varepsilon=0} = -\,g_{\mathrm{test}}^\top\,H_\theta^{-1}\,g_{\mathrm{train}}$. Voir les librairies [Kronfluence](https://github.com/pomonam/kronfluence) ou [TracIn](https://github.com/frederick0329/TracIn) ou [PINNfluence](https://github.com/aleks-krasowski/PINNfluence) ou [GraSS](https://github.com/TRAIS-Lab/GraSS). Des repo github proposent des tutos pour plusieurs de ces lib: cf [Influenciae](https://github.com/deel-ai/influenciae). Les fonctions d'influence permettent de répondre à ces questions:
+$$
+\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)\Big|_{\varepsilon=0} = -\,g_{\mathrm{test}}^\top\,H_\theta^{-1}\,g_{\mathrm{train}}
+$$
+Voir les librairies [Kronfluence](https://github.com/pomonam/kronfluence) ou [TracIn](https://github.com/frederick0329/TracIn) ou [PINNfluence](https://github.com/aleks-krasowski/PINNfluence) ou [GraSS](https://github.com/TRAIS-Lab/GraSS). Des repo github proposent des tutos pour plusieurs de ces lib: cf [Influenciae](https://github.com/deel-ai/influenciae). Les fonctions d'influence permettent de répondre à ces questions:
     - Est-ce que je devrais ajouter cet exemple dans mon set d'apprentissage pour améliorer les performances de cette prédiction?
     - Quels exemples d'entraînement ont été utiles à la prédiction de mon modèle?
     - Le modèle s'est trompé: sur quels exemples d'entraînement s'est-il basé pour cette mauvaise prédiction?
