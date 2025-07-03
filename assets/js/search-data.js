@@ -96,13 +96,6 @@ ninja.data = [{
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
             },},{
-        id: 'social-bluesky',
-        title: 'Bluesky',
-        section: 'Socials',
-        handler: () => {
-          window.open("https://bsky.app/profile/camillebarboule.bsky.social", "_blank");
-        },
-      },{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
@@ -117,13 +110,6 @@ ninja.data = [{
           window.open("https://github.com/camillebrl", "_blank");
         },
       },{
-        id: 'social-inspire',
-        title: 'Inspire HEP',
-        section: 'Socials',
-        handler: () => {
-          window.open("https://inspirehep.net/authors/1010907", "_blank");
-        },
-      },{
         id: 'social-linkedin',
         title: 'LinkedIn',
         section: 'Socials',
@@ -131,25 +117,11 @@ ninja.data = [{
           window.open("https://www.linkedin.com/in/camille-barboule-353829147", "_blank");
         },
       },{
-        id: 'social-orcid',
-        title: 'ORCID',
-        section: 'Socials',
-        handler: () => {
-          window.open("https://orcid.org/0009-0001-9182-7120", "_blank");
-        },
-      },{
-        id: 'social-rss',
-        title: 'RSS Feed',
-        section: 'Socials',
-        handler: () => {
-          window.open("/feed.xml", "_blank");
-        },
-      },{
         id: 'social-scholar',
         title: 'Google Scholar',
         section: 'Socials',
         handler: () => {
-          window.open("https://scholar.google.com/citations?user=qc6CJjYAAAAJ", "_blank");
+          window.open("https://scholar.google.com/citations?user=pDIkfAEAAAAJ", "_blank");
         },
       },{
         id: 'social-semanticscholar',
@@ -166,11 +138,25 @@ ninja.data = [{
           window.open("https://twitter.com/BarbouleCamille", "_blank");
         },
       },{
+        id: 'social-orcid',
+        title: 'ORCID',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://orcid.org/0009-0001-9182-7120", "_blank");
+        },
+      },{
         id: 'social-zotero',
         title: 'Zotero',
         section: 'Socials',
         handler: () => {
-          window.open("https://www.zotero.org/", "_blank");
+          window.open("https://www.zotero.org/cambrl", "_blank");
+        },
+      },{
+        id: 'social-bluesky',
+        title: 'Bluesky',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://bsky.app/profile/camillebarboule.bsky.social", "_blank");
         },
       },{
       id: 'light-theme',
