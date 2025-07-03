@@ -9,3 +9,5 @@ github_repos:
   - camillebrl/colpali_mcp_server
   - camillebrl/vlm_mcp_server
   - camillebrl/transformers
+  - camillebrl/playwright_mcp_python
+  - camillebrl/llm_training_data_attribution
