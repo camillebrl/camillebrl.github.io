@@ -58,7 +58,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-biais-positionnels-dans-les-transformers-auto-régressifs",
+            },{id: "post-overview-de-toutes-les-approches-d-39-explicabilité-des-llms",
+        
+          title: "Overview de toutes les approches d&#39;explicabilité des LLMs",
+        
+        description: "Méthodes d&#39;explicabilité de la génération de texte des LLMs",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/llm_explainability/";
+          
+        },
+      },{id: "post-biais-positionnels-dans-les-transformers-auto-régressifs",
         
           title: "Biais Positionnels dans les transformers auto-régressifs",
         
