@@ -42,19 +42,25 @@ Voir les librairies [Kronfluence](https://github.com/pomonam/kronfluence) ou [Tr
     - Quels exemples d'entraînement ont été utiles à la prédiction de mon modèle?
     - Le modèle s'est trompé: sur quels exemples d'entraînement s'est-il basé pour cette mauvaise prédiction?
     - Quel serait l'effet d'une re-labélisation de ma donnée d'entraînement sur la prédiction? Quelles sont les données que je devrais re-labéliser pour améliorer ma prédiction? => Pour répondre à ces questions, il faut modifier un peu l'approche: $\mathrm{Influence}(\text{relabeling}(z_{\rm train}) \to z_{\rm test}) = g_{\mathrm{test}}^\top\,H_\theta^{-1}\,\bigl[\nabla_\theta \mathcal{L}\bigl(z_{\text{train}}^{\text{modified}},\,\theta_\varepsilon\bigr)  \;-\;  \nabla_\theta \mathcal{L}\bigl(z_{\text{train}}^{\text{original}},\,\theta_\varepsilon\bigr)\bigr]$
+  
+Dans ce [repo](https://github.com/camillebrl/llm_training_data_attribution), j'ai créé une interface pour calculer l'influence des données d'entraînement (de pre-training) de LLMs (base : modèles pré-entraînés uniquement) en 2 phases: d'abord en diminuant les données d'entraînement sur lesquelles calculer l'influence à l'aide d'elasticsearch pour identifier les 50 phrases les plus similaires au prompt et au texte généré par le LLM, ensuite en utilisant [Kronfluence](https://github.com/pomonam/kronfluence) pour calculer l'influence de ces données sur la génération en question. Les scores d'influence sont ensuite normalisés par la norme au carrée de la loss, comme réalisé dans les approches d'état de l'art.
 
-### Approches d'analyse du prompt (input donné au modèle) dans la génération de quels tokens
-
+### Approches de Context Attribution: effet du prompt (input donné au modèle) dans la génération de quels tokens
 2. **Si on veut estimer sur quelle partie de l'input le modèle s'est basé pour faire sa prédiction**, on utilise des approches de cartes de saillance. En gros, on mesure comment la sortie du modèle $f(x)$ varie si on modifie chaque composante $x_i$ de l’entrée. Pour se faire, des libraires comme [Captum](https://github.com/pytorch/captum) ou [Inseq](https://github.com/inseq-team/inseq) ou [Grad-cam](https://github.com/jacobgil/pytorch-grad-cam) ou [Investigate](https://github.com/albermax/innvestigate) ou [Alibi](https://github.com/SeldonIO/alibi) existent.
 
-3. **Si on veut mesurer la contribution de chaque feature / chaque pixel d'image / chaque token de texte à la prédiction finale du modèle**, on utilise les valeurs de Shapley. Les librairies qui permettent d'obtenir les valeurs de Shapley sont [Captum](https://github.com/pytorch/captum), [Alibi](https://github.com/SeldonIO/alibi), [SHAP](https://github.com/shap/shap).
+{% include figure.liquid loading="eager" path="assets/img/explainability_llms/mirage_illustration.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+
+J'ai créé un [repo github](https://github.com/camillebrl/mirage_ui) qui reproduit un [papier (MIRAGE)](https://aclanthology.org/2024.emnlp-main.347.pdf) d'explication de la génération du modèle à partir des éléments du prompt, découpés document par document (cas du RAG)
 
 ## 1. Estimation de l’impact d’un exemple d’entraînement sur la prédiction d’un exemple de test: Influence functions
 
 ### 1.1 Introduction sur les fonctions d'influence
 Pour introduire les fonctions d'influence appliquées au deep learning, nous nous basons sur le le papier [Understanding Black-box Predictions via Influence Functions](https://arxiv.org/pdf/1703.04730), et notamment sur l'annexe A pour expliquer les différentes formules.
 
-**L’influence de** $z_{\rm train}$ **sur** $z_{\rm test}$ ($\mathrm{Influence}(z_{\rm train}\!\to\!z_{\rm test})$) **se définit comme** $\mathrm{Influence}(z_{\rm train}\to z_{\rm test})\;=\; \left.\frac{d}{d\varepsilon}\,\mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)\right|_{\varepsilon=0}$. 
+**L’influence de** $z_{\rm train}$ **sur** $z_{\rm test}$ ($\mathrm{Influence}(z_{\rm train}\!\to\!z_{\rm test})$) **se définit comme** 
+$$
+\mathrm{Influence}(z_{\rm train}\to z_{\rm test})\;=\; \left.\frac{d}{d\varepsilon}\,\mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon\bigr)\right|_{\varepsilon=0}
+$$
 
 En d’autres termes, elle mesure la sensibilité de la loss de $z_{\rm test}$ (ou de toute fonction $f(\theta)$) à un « up-weight » infinitésimal de la loss de $z_{\rm train}$.  
 
@@ -209,15 +215,25 @@ $$
 = \frac{d}{d\varepsilon}\, f(\theta_\varepsilon) \Big|_{\varepsilon=0} = -\nabla_\theta \,f(\theta_\varepsilon)H_\theta^{-1}\nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon)
 $$
 
+### 1.2 "Corrections" des fonctions d'influence
+### 1.2.1 Données d'entraînement mal apprises prédominantes: comment corriger?
+A noter que le papier [Influence Functions in Deep Learning Are Fragile](https://arxiv.org/pdf/2006.14651) indique que les fonctions d'influence sont biaisées vers les exemples à forte perte. en effet, le gradient de la loss des points d'entraînement est plus élevé pour les exemples mal appris, entraînant un biais systématique vers ces exemples dans l’attribution d’influence, indépendamment de leur véritable effet sur la perte globale. Le papier propose de recalculer les scores d'influence en normalisant les gradients par leur norme, éliminant ainsi les gradients élevés pour des exemples mal appris (sans lien avec la fonction à maximiser).  
+
+$$
+\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{\frac{d}{d\varepsilon} \mathcal{L}\bigl(z_{\rm test},\theta_\varepsilon\bigr)}{||\nabla_\theta \mathcal{L}(z)||^2} \Big|_{\varepsilon=0} = \frac{-\nabla_\theta \,f(\theta_\varepsilon)H_\theta^{-1}\nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon)}{||\nabla_\theta \mathcal{L}(z)||^2}
+$$
+
+### 1.2.2 Mauvaise approximation du leave-one-out? Analyse du Proximal Bregman Response
+
 Le papier [If Influence Functions are the Answer, Then What is the Question?](https://arxiv.org/pdf/2209.05364) explique ensuite que les functions d'influence n’approximent pas fidèlement le retraining « leave-one-out », mais qu’elles correspondent en fait au proximal Bregman response function (PBRF). [A FINIR]
 
-### 1.2 Comment calcule-t-on l'inverse de la hessienne en deep learning
+### 1.3 Comment calcule-t-on l'inverse de la hessienne en deep learning
 
-#### 1.2.1 Hesienne pas forcément inversible...
+#### 1.3.1 Hesienne pas forcément inversible...
 
 Dans les réseaux de neurones, la loss d'entraînement n'est pas fortement convexe (le minimum local n'est pas forcément un minimum global...) donc la hessienne peut être non inversible. Donc, des approches ont été étudiées pour garantir l'inversibilité de la hessienne, en ajoutant notamment un terme dit de "damping" $\lambda >0$. 
 
-#### 1.2.2 Hessienne par rapport aux paramètres du réseau compliquée à calculer pour des réseaux avec un grand nombre de paramètres...
+#### 1.3.2 Hessienne par rapport aux paramètres du réseau compliquée à calculer pour des réseaux avec un grand nombre de paramètres...
 
 Le papier [If Influence Functions are the Answer, Then What is the Question?](https://arxiv.org/pdf/2209.05364)  propose d’approximer la Hessienne par la Hessienne de Gauss–Newton (GNH), notée $G_\theta$ :
 
@@ -252,7 +268,7 @@ $$
 $$
 
 
-#### 1.2.3 Factorisation par blocs de $G_\theta$ et factorisation en produit de Kronecker pour pourvoir stocker cette matrice & paralléliser les calculs entre couches
+#### 1.3.3 Factorisation par blocs de $G_\theta$ et factorisation en produit de Kronecker pour pourvoir stocker cette matrice & paralléliser les calculs entre couches
 
 Au lieu d’inverser directement la grande matrice $\,G_\theta+\lambda I$, le papier [Scalable Multi-Stage Influence Function for Large Language Models via Eigenvalue-Corrected Kronecker-Factored Parameterization](https://arxiv.org/pdf/2505.05017) exploite sa structure en blocs correspondant à chaque couche du réseau.  
 $$
@@ -282,10 +298,10 @@ Cette approche par blocs permet :
 C'est ce qui rend la méthode scalable pour les grands modèles comme les LLMs avec des milliards (plutôt même billions...) de paramètres.
 
 
-### 1.3 Le cas des LLMs: besoin d'une influence token-wise ou sentence-wise
+### 1.4 Le cas des LLMs: besoin d'une influence token-wise ou sentence-wise
 Le papier [Studying Large Language Model Generalization with Influence Functions](https://arxiv.org/pdf/2308.03296) présente l'application des fonctions d'influence aux LLMs. Dans le cas des LLMs, la loss est la negative log-vraisemblance. La première particularité d'un LLM, c'est le fait qu'un datapoint est un peu compliqué à définir. On peut supposer qu'il s'agit d'une phrase (et son label, le token suivant la phrase), ou on peut considérer le token lui-même (l'input étant la phrase le précédent, le label le token en question, par exemple). Mais il est important de bien définir de quoi on parle quand on parle de "datapoint".
 
-#### 1.3.1 L'influence à l'échelle de la phrase $z_m$
+#### 1.4.1 L'influence à l'échelle de la phrase $z_m$
 
 Supposons que $z_m$ soit cette phrase "le chat est gris", soit ce datapoint:
 
@@ -309,7 +325,7 @@ $$
 \end{align}
 $$
 
-#### 1.3.2 L'influence à l'échelle des tokens $t$ dans la phrase $z_m$
+#### 1.4.2 L'influence à l'échelle des tokens $t$ dans la phrase $z_m$
 
 On peut aussi considérer l'échelle du token, comme on l'a mis plus haut, en considérant l'input comme étant la phrase précédant ce token, et le label ce token en question.
 
@@ -325,17 +341,17 @@ $$I_f(z_{m,t}) = \nabla_{\theta}f(\theta)^{T} H^{-1} \nabla_{\theta}\log p(z_{m,
 
 Prenons l'exemple suivant: on prend $f = \log p(\text{"hydrogen and oxygen"} \mid \text{"Water is composed of"})$ et $z_m$ qui est le texte ci-dessous. On peut afficher l'influence token par token dans le texte:
 
-![](assets/img/image.png)
+{% include figure.liquid loading="eager" path="assets/img/explainability_llms/image.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 
-### 1.4 Le cas des LLMs: beaucoup de données d'entraînement (eg. 36 trillions de tokens pour Qwen3) => query batching ou semantic matching pour ne pas calculer l'influence sur toutes les données (trop coûteux)
+### 1.6 Le cas des LLMs: beaucoup de données d'entraînement (eg. 36 trillions de tokens pour Qwen3) => query batching ou semantic matching pour ne pas calculer l'influence sur toutes les données (trop coûteux)
 Le papier [Studying Large Language Model Generalization with Influence Functions](https://arxiv.org/pdf/2308.03296) propose une approche pour éviter de calculer les gradients de tous les exemples d'entraînement candidats pour chaque requête d'influence. Pour cela, ils "filtrent" les données d'entraînement par rapport à la phrase test via un filtrage TF-IDF et une approche qu'ils introduisent de "query batching".
 
-#### 1.4.1 Le filtrage TF-IDF
+#### 1.6.1 Le filtrage TF-IDF
 Le filtrage TF-IDF utilise une technique classique de recherche d'information pour présélectionner les séquences d'entraînement les plus susceptibles d'être influentes. L'intuition derrière est que les séquences pertinentes devraient avoir au moins un certain chevauchement de tokens avec la requête.
 
 Ils retiennent les top 10,000 séquences selon le score TF-IDF Calcul d'influence et calculent les influences uniquement sur ces séquences présélectionnées. 
 
-#### 1.4.2 Le Query-Batching
+#### 1.6.2 Le Query-Batching
 
 Dans un LLM, on a beaucoup d'exemples $z_m$ d'entraînement. Donc, on calcule séparemment $\nabla_\theta\mathcal{L}(z_m, \theta_\varepsilon)$ et $\nabla_{\theta} f(\theta_\varepsilon)^\top \, H^{-1}$ qui se calcule en une fois. 
 
@@ -343,7 +359,7 @@ Pour stocker de nombreux gradients de requêtes en mémoire ($\nabla_\theta\math
 
 Ainsi, pour chaque requête, ils n'ont pas à refaire les calculs! Ils ont juste à calculer $\nabla_{\theta} f(\theta_\varepsilon)$.
 
-### 1.5 Le cas des LLMs: plusieurs couches d'entraînement (pretraining, fine-tuning, alignement, ...) => multi-stage influence functions
+### 1.7 Le cas des LLMs: plusieurs couches d'entraînement (pretraining, fine-tuning, alignement, ...) => multi-stage influence functions
 
 Le papier [Scalable Multi-Stage Influence Function for Large Language Models via Eigenvalue-Corrected Kronecker-Factored Parameterization](https://arxiv.org/pdf/2505.05017) explique que la fonction d'influence classique $I_f(z_{m,t}) = \nabla_{\theta}f(\theta)^{T} H^{-1} \sum_{t=1}^T(-\nabla_\theta \log p(z_{m,t} \mid z_{m, <t}, \theta))$ permet de quantifier l'impact d'une phrase d'entraînement sur les prédictions du modèle. Cependant, on a des modèles qui sont passés par plusieurs phases d'entraînement pour les LLMs (avec plusieurs données différentes). En effet, les LLMs sont pré-entraînés (modèles "base"), puis instruct-tuné (modèles "chat"), puis passent par du reinforcement learning (ou du "faux" réinforcement learning (DPO, ...)) pour la phase d'alignement. Donc notre formule ne marche plus si on prend un modèle "chat" par exemple (les 3/4 des modèles qu'on trouve sur huggingface) et qu'on veut calculer l'influence d'une phrase du jeu de pre-entraînement par exemple. Or, ce sont ces données de pré-entraînement qui nous intéressent puisque la majorité des connaissances d'un LLM sont acquises pendant le pré-entraînement. Sans pouvoir les tracer, on ne peut pas expliquer d'où viennent les réponses du modèle.
 
@@ -374,9 +390,9 @@ Cette double inversion de Hessienne permet de :
 
 C'est comme si on "remontait" l'influence à travers deux étapes d'entraînement successives.
 
-### 1.6 Beaucoup de sujets récents de recherche utilisent les fonctions d'influence pour déterminer les données utiles (qu'on peut utiliser pour fine-tuner le modèle) pour améliorer la génération d'un LLM, ou ajouter une "connaissance" au modèle par exemple
+### 1.8 Beaucoup de sujets récents de recherche utilisent les fonctions d'influence pour déterminer les données utiles (qu'on peut utiliser pour fine-tuner le modèle) pour améliorer la génération d'un LLM, ou ajouter une "connaissance" au modèle par exemple
 
-
+TODO
 
 ## 2. Mesurer sur quelles parties de l'input le modèle s'est basé pour faire sa prédiction: les cartes de saillance (saliency maps)
 
@@ -392,8 +408,3 @@ C'est comme si on "remontait" l'influence à travers deux étapes d'entraînemen
   - Pour du texte, chaque $x_i$ est un token.
 
 Le résultat est une carte où chaque valeur $S_i(x)$ indique l’importance du pixel (ou du token) $i$ pour la prédiction du modèle.
-
-
-## 3. Mesurer la contribution de chaque feature de l'input sur la prédiction du modèle: Les valeurs de shapley
-
-[A FINIR]
