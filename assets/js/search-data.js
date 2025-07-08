@@ -58,15 +58,15 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-overview-de-toutes-les-approches-d-39-explicabilité-des-llms",
+            },{id: "post-les-approches-d-39-explicabilité-des-llms",
         
-          title: "Overview de toutes les approches d&#39;explicabilité des LLMs",
+          title: "Les approches d&#39;explicabilité des LLMs",
         
-        description: "Méthodes d&#39;explicabilité de la génération de texte des LLMs",
+        description: "Méthodes d&#39;explicabilité de la génération de texte par les LLMs",
         section: "Posts",
         handler: () => {
           
-            window.location.href = "/blog/2025/llm_explainability/";
+            window.location.href = "/blog/2025/explainability_llm_generation/";
           
         },
       },{id: "post-biais-positionnels-dans-les-transformers-auto-régressifs",
@@ -78,17 +78,6 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/blog/2025/positional_biais/";
-          
-        },
-      },{id: "post-les-approches-d-39-explicabilité-par-les-exemples-appliquées-aux-llms",
-        
-          title: "Les approches d&#39;explicabilité par les exemples appliquées aux LLMs",
-        
-        description: "Méthodes d&#39;explicabilité de la génération de texte par les LLMs",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/explainability_llm_generation/";
           
         },
       },{id: "books-foundations-of-computer-vision",
