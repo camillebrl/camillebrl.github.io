@@ -12,6 +12,44 @@
         {{ page._styles }}
       </style>
     {% endif %}
+    
+    <!-- TOC generation styles -->
+    <style>
+      .toc-list {
+        list-style: none;
+        padding-left: 0;
+      }
+      .toc-list ul {
+        list-style: none;
+        padding-left: 1.5em;
+      }
+      .toc-list li {
+        margin: 0.5em 0;
+      }
+      .toc-list a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .toc-list a:hover {
+        text-decoration: underline;
+      }
+      
+      /* Ajustement de l'espacement Distill */
+      d-article > *:first-child {
+        margin-top: 0 !important;
+      }
+      
+      /* Si le premier élément après d-contents est un header, réduire l'espace */
+      d-contents + h1,
+      d-contents + h2,
+      d-contents + h3,
+      d-contents + h4,
+      d-contents + h5,
+      d-contents + h6,
+      d-contents + p {
+        margin-top: 2rem !important;
+      }
+    </style>
   </head>
 
   <d-front-matter>
@@ -67,7 +105,18 @@
       {% endif %}
 
       <d-article>
-        {% if page.toc %}
+        <!-- TOC auto-génération si page.toc == true -->
+        {% if page.toc == true %}
+          <d-contents>
+            <nav class="l-text figcaption">
+              <h3>Contents</h3>
+              <div id="toc-container" class="toc-list">
+                <!-- La TOC sera générée ici par JavaScript -->
+              </div>
+            </nav>
+          </d-contents>
+        {% elsif page.toc %}
+          <!-- TOC manuelle (votre structure actuelle) -->
           <d-contents>
             <nav class="l-text figcaption">
               <h3>Contents</h3>
@@ -80,6 +129,24 @@
                     {% for subsection in section.subsections %}
                       <li>
                         <a href="#{{ subsection.name | slugify }}">{{ subsection.name }}</a>
+                        {% if subsection.subsubsections %}
+                          <ul>
+                            {% for subsubsection in subsection.subsubsections %}
+                              <li>
+                                <a href="#{{ subsubsection.name | slugify }}">{{ subsubsection.name }}</a>
+                                {% if subsubsection.subsubsubsections %}
+                                  <ul>
+                                    {% for subsubsubsection in subsubsection.subsubsubsections %}
+                                      <li>
+                                        <a href="#{{ subsubsubsection.name | slugify }}">{{ subsubsubsection.name }}</a>
+                                      </li>
+                                    {% endfor %}
+                                  </ul>
+                                {% endif %}
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
                       </li>
                     {% endfor %}
                   </ul>
@@ -109,5 +176,136 @@
 
     <!-- JavaScripts -->
     {% include distill_scripts.liquid %}
+    
+    <!-- Script pour auto-générer la TOC -->
+    {% if page.toc == true %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fonction pour créer un ID à partir du texte (compatible avec Jekyll slugify)
+        function createId(text) {
+          return text.trim()
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Enlever les accents
+            .replace(/[^\w\s-]/g, '') // Enlever les caractères spéciaux
+            .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+            .replace(/-+/g, '-') // Éviter les tirets multiples
+            .replace(/^-|-$/g, ''); // Enlever les tirets au début et à la fin
+        }
+        
+        // Fonction pour décoder et normaliser une ancre d'URL
+        function normalizeAnchor(anchor) {
+          try {
+            // Décoder l'URL
+            const decoded = decodeURIComponent(anchor);
+            // Appliquer la même normalisation que createId
+            return createId(decoded);
+          } catch (e) {
+            return anchor;
+          }
+        }
+        
+        // Récupérer tous les headers dans l'article
+        const article = document.querySelector('d-article');
+        const headers = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const tocContainer = document.getElementById('toc-container');
+        
+        if (headers.length === 0) return;
+        
+        // Filtrer les headers pour exclure ceux dans d-contents et d-title
+        const filteredHeaders = Array.from(headers).filter(header => {
+          return !header.closest('d-contents') && !header.closest('d-title');
+        });
+        
+        if (filteredHeaders.length === 0) return;
+        
+        // Structure pour construire la hiérarchie
+        let currentList = document.createElement('ul');
+        tocContainer.appendChild(currentList);
+        
+        let stack = [{level: 0, list: currentList}];
+        
+        filteredHeaders.forEach((header) => {
+          // Ajouter un ID au header s'il n'en a pas
+          if (!header.id) {
+            header.id = createId(header.textContent);
+          }
+          
+          // Déterminer le niveau (h1=1, h2=2, etc.)
+          const level = parseInt(header.tagName.substring(1));
+          
+          // Gérer la hiérarchie
+          while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+            stack.pop();
+          }
+          
+          // Si on descend dans la hiérarchie
+          if (stack[stack.length - 1].level < level) {
+            const newList = document.createElement('ul');
+            const lastItem = stack[stack.length - 1].list.lastElementChild;
+            if (lastItem) {
+              lastItem.appendChild(newList);
+            } else {
+              stack[stack.length - 1].list.appendChild(newList);
+            }
+            stack.push({level: level, list: newList});
+          }
+          
+          // Créer l'élément de liste
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + header.id;
+          link.textContent = header.textContent;
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          
+          listItem.appendChild(link);
+          stack[stack.length - 1].list.appendChild(listItem);
+        });
+        
+        // Nettoyer les listes vides
+        const emptyLists = tocContainer.querySelectorAll('ul:empty');
+        emptyLists.forEach(list => list.remove());
+        
+        // Gérer la navigation depuis l'URL
+        function navigateToHash() {
+          if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            const normalizedHash = normalizeAnchor(hash);
+            
+            // Essayer de trouver l'élément par ID normalisé
+            let targetElement = document.getElementById(normalizedHash);
+            
+            // Si pas trouvé, essayer avec le hash original
+            if (!targetElement) {
+              targetElement = document.getElementById(hash);
+            }
+            
+            // Si toujours pas trouvé, chercher dans tous les headers
+            if (!targetElement) {
+              filteredHeaders.forEach(header => {
+                if (createId(header.textContent) === normalizedHash) {
+                  targetElement = header;
+                }
+              });
+            }
+            
+            if (targetElement) {
+              setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 100);
+            }
+          }
+        }
+        
+        // Naviguer au chargement de la page
+        navigateToHash();
+        
+        // Écouter les changements de hash
+        window.addEventListener('hashchange', navigateToHash);
+      });
+    </script>
+    {% endif %}
   </body>
 </html>
