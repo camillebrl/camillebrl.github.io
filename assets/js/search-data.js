@@ -58,7 +58,29 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-les-approches-d-39-explicabilité-des-llms",
+            },{id: "post-tips-mathématiques-points-utiles-en-ia",
+        
+          title: "Tips mathématiques / points utiles en IA",
+        
+        description: "Tips mathématiques / points utiles en IA",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/tips_mathematics_for_ai/";
+          
+        },
+      },{id: "post-les-fonctions-d-39-influence-appliquées-aux-llms",
+        
+          title: "Les fonctions d&#39;influence appliquées aux LLMs",
+        
+        description: "Détail de ma compréhension des fonctions d&#39;influence appliquées aux LLMs",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/influence_functions_applied_to_llms/";
+          
+        },
+      },{id: "post-les-approches-d-39-explicabilité-des-llms",
         
           title: "Les approches d&#39;explicabilité des LLMs",
         
