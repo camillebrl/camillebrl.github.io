@@ -17,7 +17,7 @@ images:
 toc: true
 ---
 
-> J'ai eu l'opportunité au sein d'Orange d'explorer les fonctions d'influences appliquées au deep learning, un concept introduit notamment dans le papier [Understanding Black-box Predictions via Influence Functions](https://arxiv.org/pdf/1703.04730). En fait, Ces fonctions permettent de quantifier l'impact d'une donnée d'entraînement sur une prédiction du modèle. Elles approximent en fait la méthode "Leave-one-out" qui compare la prédiction du modèle avec et sans cet échantillon dans le dataset d'entraînement (en entraînant le modèle sans et avec). Cette approche m'a particulièrement intéressée dans le contexte des modèles de langage (LLMs). En travaillant sur l'adaptation d'un LLM à un domaine spécifique, j'ai été confrontée à une question cruciale : comment sélectionner les données de fine-tuning pour garantir que le modèle puisse répondre efficacement à des questions spécifiques? On s'était confronté à plusieurs défis dans le cadre de ce projet sur l'adaptation des LLMs à un domaine métier: Comment identifier quelles données permettent réellement d'améliorer les performances sur des tâches ciblées? Comment évaluer l'impact du "continual pretraining" de mon LLM sur un texte précis sur la performance du modèle final sur la tâche cible? Ainsi, j'ai décidé d'étudier un peu plus en détail les fonctions d'influence appliquées aux LLMs et j'ai trouvé ça facinant (et mathématiquement parlant très complexe). Donc je me suis dit que ça serait utile d'en faire un post, et de mettre un peu les différents papiers que j'ai lu (en diagonale ou de manière plus approfondie), ce que j'ai compris des formules, des approximations, des approches pour adaptées ces méthodes aux LLMs, etc. Ce post est un condensé de tout cela!
+> J'ai eu l'opportunité au sein d'Orange d'explorer les fonctions d'influences appliquées au deep learning, un concept introduit notamment dans le papier [Understanding Black-box Predictions via Influence Functions](https://arxiv.org/pdf/1703.04730). Ces fonctions permettent de quantifier l'impact d'une donnée d'entraînement sur une prédiction du modèle. Elles approximent en réalité la méthode "Leave-one-out" qui compare la prédiction du modèle avec et sans cet échantillon dans le dataset d'entraînement (en entraînant le modèle sans et avec). Cette approche m'a particulièrement intéressée dans le contexte des modèles de langage (LLMs). En travaillant sur l'adaptation d'un LLM à un domaine spécifique, j'ai été confrontée à une question cruciale : comment sélectionner les données de fine-tuning pour garantir que le modèle puisse répondre efficacement à des questions spécifiques? On s'était confronté à plusieurs défis dans le cadre de ce projet sur l'adaptation des LLMs à un domaine métier: Comment identifier quelles données permettent réellement d'améliorer les performances sur des tâches ciblées? Comment évaluer l'impact du "continual pretraining" de mon LLM sur un texte précis sur la performance du modèle final sur la tâche cible? Ainsi, j'ai décidé d'étudier un peu plus en détail les fonctions d'influence appliquées aux LLMs et j'ai trouvé ça facinant (et mathématiquement parlant très complexe). Donc je me suis dit que ça serait utile d'en faire un post, et de mettre un peu les différents papiers que j'ai lu (en diagonale ou de manière plus approfondie), ce que j'ai compris des formules, des approximations, des approches pour adaptées ces méthodes aux LLMs, etc. Ce post est un condensé de tout cela!
 
 # Introduction à ce post
 
@@ -334,7 +334,7 @@ Dans les réseaux de neurones, la loss d'entraînement n'est pas fortement conve
 
 ### 1.3.2 Hessienne par rapport aux paramètres du réseau compliquée à calculer pour des réseaux avec un grand nombre de paramètres...
 
-Le papier [If Influence Functions are the Answer, Then What is the Question?](https://arxiv.org/pdf/2209.05364)  propose d’approximer la Hessienne par la Hessienne de Gauss–Newton (GNH), notée $G_\theta$ :
+Le papier [If Influence Functions are the Answer, Then What is the Question?](https://arxiv.org/pdf/2209.05364) propose d’approximer la Hessienne par la Hessienne de Gauss–Newton (GNH), notée $G_\theta$ :
 
 $$
 G_\theta = J_{y\theta}^T \, H_y \, J_{y\theta}
@@ -361,10 +361,66 @@ avec:
   - $H_y$ : Matrice $k \times k$ avec $k =$ le nombre de tokens possibles (ex : 151936 pour Qwen)
 
 
-Là aussi je dois revoir d'où sort ce calcul (cf mes notes).
+On va essayer de décortiquer la hessienne pour retrouver cette formule:
 
+$$
+H_\theta = \frac{\partial ^2 \mathcal{L}}{\partial \theta}
+$$
 
-Afin de ne pas calculer les dérivées secondes à travers tout le réseau (ce qui est très coûteux quand on a beaucoup de paramètres), on utilise, pour l'ensemble des calculs d'influence (surtout pour les LLMs), ce résultat:
+Or, par chain rule, avec $\mathcal{L}$ qui est une fonction de perte (loss) qui dépend de la sortie du modèle $y$, $y$ qui est la sortie du modèle, qui dépend des paramètres du modèle $\theta$, d'où on a: $$\mathcal{L} = \mathcal{L}(y(\theta))$$
+
+**Rappel: $$\frac{\partial}{\partial x} f(g(x)) = f'(g(x)) \cdot g'(x)$$**
+
+D'où:
+
+$$
+\frac{\partial \mathcal{L}}{\partial \theta} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial \theta}
+$$
+
+Ainsi: 
+
+$$
+\begin{split}
+\frac{\partial ^2 \mathcal{L}}{\partial \theta} &= \frac{\partial}{\partial \theta} (\frac{\partial \mathcal{L}}{\partial \theta}) \\
+&= \frac{\partial}{\partial \theta} (\frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial \theta})
+\end{split}
+$$
+
+Par dérivée d'une multiplication de fonctions :
+**Rappel: $$(f \times g)' = f'g + g'f$$**
+
+Avec 
+- $$f = \frac{\partial \mathcal{L}}{\partial y}$$
+- $$g = \frac{\partial y}{\partial \theta}$$
+
+On a:
+
+$$
+\begin{split}
+H_\theta &= \frac{\partial ^2 \mathcal{L}}{\partial \theta} \\
+&= \frac{\partial}{\partial \theta} (\frac{\partial \mathcal{L}}{\partial y} \times \frac{\partial y}{\partial \theta}) \\
+&= \colorbox{lime}{$\displaystyle \underbrace{\frac{\partial}{\partial \theta} (\frac{\partial \mathcal{L}}{\partial y})}_{= f'}$} \times \colorbox{pink}{$\displaystyle \underbrace{\frac{\partial y}{\partial \theta}}_{= g} $} \;\; + \;\; \colorbox{brown}{$\displaystyle \underbrace{\frac{\partial}{\partial \theta} (\frac{\partial y}{\partial \theta})}_{= g' = \frac{\partial ^2 y}{\partial \theta ^2} = \nabla ^2_\theta y} \times \underbrace{\frac{\partial \mathcal{L}}{\partial y}}_{= f}$}
+\end{split}
+$$
+
+Concentrons-nous sur $$\frac{\partial}{\partial \theta} (\underbrace{\frac{\partial \mathcal{L}}{\partial y}}_{= h})$$:
+
+Par chain rule (car la dérivée de $h$ qu'on cherche dépend d’une variable intermédiaire (ici $y$), qui dépend elle-même de $\theta$)
+
+$$
+\begin{split}
+\colorbox{lime}{$\displaystyle \frac{\partial}{\partial \theta} \left( \frac{\partial \mathcal{L}}{\partial y} \right) $} &= \frac{\partial h}{\partial y} \cdot \frac{\partial y}{\partial \theta} \\
+&= \frac{\partial}{\partial y} (\frac{\partial \mathcal{L}}{\partial y}) \cdot \frac{\partial y}{\partial \theta} \\
+&= \underbrace{\frac{\partial^2 \mathcal{L}}{\partial y^2}}_{= H_y} \cdot \underbrace{\frac{\partial y}{\partial \theta}}_{= J_{y \theta}} \\
+\end{split}
+$$
+
+On se retrouve donc avec:
+$$
+H_\theta = \colorbox{pink}{$\displaystyle J_{y\theta}^T $} \, \colorbox{lime}{$\displaystyle H_y \, J_{y\theta} $} +  \colorbox{brown}{$\displaystyle \nabla_\theta^2 y \cdot \frac{\partial \mathcal{L}}{\partial y}$}
+$$
+
+Ainsi, afin de ne pas calculer les dérivées secondes à travers tout le réseau (ce qui est très coûteux quand on a beaucoup de paramètres), on utilise, pour l'ensemble des calculs d'influence (surtout pour les LLMs), ce résultat:
 
 $$
    H_\theta^{-1}(\hat{\theta})\approx \bigl(G_\theta + \lambda I\bigr)^{-1}.

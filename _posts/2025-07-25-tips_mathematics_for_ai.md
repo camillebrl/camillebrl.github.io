@@ -17,7 +17,7 @@ images:
 toc: true
 ---
 
-> Dans ce post, je vais mettre pas mal de <mark>rappels mathématiques</mark> (parfois très basiques, mais j'ai encore besoin de revenir aux bases des choses pour comprendre certains concepts...) <mark>qui m'ont été utiles pour comprendre certains papiers de recherche ou débloquer certains points dans mes recherches</mark>.
+> Dans ce post, je vais mettre pas mal de <mark>rappels mathématiques</mark> (je reviens aux bases des bases, mais j'ai encore besoin de revenir à ces bases des choses pour comprendre certains concepts...) <mark>qui m'ont été utiles pour comprendre certains papiers de recherche ou débloquer certains points dans mes recherches</mark>.
 
 # Quand on a l'inverse d'une somme: on peut toujours revenir à une somme des puissances!
 
