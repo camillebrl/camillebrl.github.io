@@ -181,7 +181,7 @@ Pour cette partie, on écrit pour simplifier $\theta_\varepsilon$ au lieu de $\t
 
 $$
 \frac{1}{n}\sum_{i=1}^n \nabla_\theta \mathcal{L}(z_i,\theta_\varepsilon)
-\;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon(z_\text{train}))
+\;+\;\varepsilon\,\nabla_\theta \mathcal{L}(z_{\rm train},\theta_\varepsilon)
 $$
 
 > Rappel de la formule de Taylor à l'ordre 1 en $\varepsilon = 0$:
