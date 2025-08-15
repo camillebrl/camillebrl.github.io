@@ -1,0 +1,397 @@
+<!DOCTYPE html> <html> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Explicabilité en deep learning | Camille Barboule </title> <meta name="author" content="Camille Barboule"> <meta name="description" content="Explcabilité des modèles de deep learning"> <meta name="keywords" content="NLP, IR, Agents, Deep-Learning, XAI"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%93%9A&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://camillebrl.github.io/blog/2025/explainable_deep_learning/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/css/lightbox.min.css" integrity="sha256-uypRbsAiJcFInM/ndyI/JHpzNe6DtUNXaWEUWEPfMGo=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.min.css" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/spotlight.js@0.7.8/dist/css/spotlight.min.css" integrity="sha256-Dsvkx8BU8ntk9Iv+4sCkgHRynYSQQFP6gJfBN5STFLY=" crossorigin="anonymous"> <link defer rel="stylesheet" href="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.css" integrity="sha256-ohJEB0/WsBOdBD+gQO/MGfyJSbTUI8OOLbQGdkxD6Cg=" crossorigin="anonymous"> <script src="/assets/js/distillpub/template.v2.js"></script> <script src="/assets/js/distillpub/transforms.v2.js"></script> <style>.toc-list{list-style:none;padding-left:0}.toc-list ul{list-style:none;padding-left:1.5em}.toc-list li{margin:.5em 0}.toc-list a{text-decoration:none;color:inherit}.toc-list a:hover{text-decoration:underline}d-article>*:first-child{margin-top:0!important}d-contents+h1,d-contents+h2,d-contents+h3,d-contents+h4,d-contents+h5,d-contents+h6,d-contents+p{margin-top:2rem!important}</style> </head> <body> <d-front-matter> <script async type="text/json">
+      {
+            "title": "Explicabilité en deep learning",
+            "description": "Explcabilité des modèles de deep learning",
+            "published": "August 15, 2025",
+            "authors": [
+              
+            ],
+            "katex": {
+              "delimiters": [
+                {
+                  "left": "$",
+                  "right": "$",
+                  "display": false
+                },
+                {
+                  "left": "$$",
+                  "right": "$$",
+                  "display": true
+                }
+              ]
+            }
+          }
+    </script> </d-front-matter> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/"> <span class="font-weight-bold">Camille</span> Barboule </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/repositories/">repositories </a> </li> <li class="nav-item "> <a class="nav-link" href="/cv/">cv </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/books/">bookshelf</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="post distill"> <d-title> <h1>Explicabilité en deep learning</h1> <p>Explcabilité des modèles de deep learning</p> </d-title> <d-article> <d-contents> <nav class="l-text figcaption"> <h3>Contents</h3> <div id="toc-container" class="toc-list"> </div> </nav> </d-contents> <h1 id="evaluation-de-la-robustesse-du-modèle">Evaluation de la robustesse du modèle</h1> <p>TODO : <a href="https://github.com/deel-ai/deel-lip" rel="external nofollow noopener" target="_blank">deel-lip de Deel-IA</a></p> <h1 id="explication-de-la-prédiction-du-modèle">Explication de la prédiction du modèle</h1> <p>Il existe plusieurs approches pour expliquer la génération d’un modèle de deep learning:</p> <h2 id="explication-de-la-génération-par-carte-dattribution-de-la-donnée-dentrée-pour-identifier-les-zones-dintérêt-sur-linput-portées-par-le-modèle-pour-quil-effectue-sa-génération">Explication de la génération par carte d’attribution de la donnée d’entrée pour identifier les zones d’intérêt sur l’input portées par le modèle pour qu’il effectue sa génération</h2> <p>Dépend du cas d’usage et du type de modèle et du type d’input.</p> <p>Certaines fonctions de la librairie sont applicables à tout type de modèle (pytorch via wrapper, tensorflow, keras) et tout type de données et use-case, comme la fonction Saliency.</p> <h3 id="la-méthode-saliency-de-xplain-de-deel-ai">La méthode <a href="https://github.com/deel-ai/xplique/blob/master/xplique/attributions/saliency.py" rel="external nofollow noopener" target="_blank">Saliency de Xplain de deel-ai</a> </h3> <p>La méthode Saliency calcule le gradient absolu de la sortie par rapport à l’entrée :</p> \[\forall \text{dimension } i \text{ de l'entrée x (pixel, l'embedding d'un token, etc):} S_i = \left| \frac{\partial f(x)}{\partial x_i} \right|\] <p>A notée qu’ici, chaque dimension de l’entrée peut elle-même être de plusieurs dimensions (exemple d’un pixel en 3 dimensions (R,G,B), ou d’un token en dim_model dimensions). Dans ce cas, soit on prend le maximum des gradients de la prédiction du modèle par rapport à chaque dimension de l’embedding du token d’entrée ou du pixel d’entrée, soit on prend la norme L2 des gradients des dimensions (exemple du papier https://aclanthology.org/2024.emnlp-main.347.pdf), soit on prend la moyenne, …</p> <p>Dans le code https://github.com/deel-ai/xplique/blob/master/xplique/attributions/saliency.py:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Saliency</span><span class="p">(</span><span class="n">WhiteBoxExplainer</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span>
+                 <span class="n">model</span><span class="p">:</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">Model</span><span class="p">,</span>
+                 <span class="n">output_layer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+                 <span class="n">operator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tasks</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">OperatorSignature</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                 <span class="n">reducer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="sh">"</span><span class="s">max</span><span class="sh">"</span><span class="p">,):</span>
+        <span class="nf">super</span><span class="p">().</span><span class="nf">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">output_layer</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">reducer</span><span class="p">)</span>
+
+    <span class="nd">@sanitize_input_output</span> <span class="c1"># Cette fonction s'assure que les inputs et outputs du modèle sont des tf.Tensors
+</span>    <span class="nd">@WhiteBoxExplainer._harmonize_channel_dimension</span>
+
+    <span class="k">def</span> <span class="nf">explain</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># 1. Calcul du gradient via backpropagation
+</span>        <span class="n">gradients</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">batch_gradient</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">batch_size</span><span class="p">)</span>
+        
+        <span class="c1"># 2. Application de la valeur absolue
+</span>        <span class="n">gradients</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="nf">abs</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
+        
+        <span class="c1"># 3. Pour les images RGB, réduction sur les canaux (max par défaut)
+</span>        <span class="c1"># Cela donne l'importance maximale parmi R, G, B pour chaque pixel
+</span>        <span class="k">return</span> <span class="n">gradients</span>
+</code></pre></div></div> <p>Exemple d’application:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">torch</span>
+<span class="kn">import</span> <span class="n">torchvision.models</span> <span class="k">as</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="n">xplique.wrappers</span> <span class="kn">import</span> <span class="n">TorchWrapper</span>
+<span class="kn">from</span> <span class="n">xplique.attributions</span> <span class="kn">import</span> <span class="n">Saliency</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c1"># Exemple avec un modèle pytorch
+</span><span class="n">model_pt</span> <span class="o">=</span> <span class="n">models</span><span class="p">.</span><span class="nf">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">model_pt</span><span class="p">.</span><span class="nf">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="sh">'</span><span class="s">mon_modele.pt</span><span class="sh">'</span><span class="p">))</span>
+<span class="n">model_pt</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="sh">'</span><span class="s">cuda</span><span class="sh">'</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="nf">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="sh">'</span><span class="s">cpu</span><span class="sh">'</span>
+<span class="n">wrapped_model</span> <span class="o">=</span> <span class="nc">TorchWrapper</span><span class="p">(</span><span class="n">model_pt</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span> <span class="c1"># pas besoin pour un modèle tensorflow
+</span>
+<span class="n">explainer</span> <span class="o">=</span> <span class="nc">Saliency</span><span class="p">(</span><span class="n">wrapped_model</span><span class="p">,</span> <span class="n">reducer</span><span class="o">=</span><span class="sh">"</span><span class="s">max</span><span class="sh">"</span><span class="p">)</span> <span class="c1"># reducer pour le traitement d'un input de plusieurs dimensions (exemple R, G, B pour des pixels)
+</span>
+<span class="n">attributions</span> <span class="o">=</span> <span class="nf">explainer</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span> <span class="c1"># les inputs et targets peuvent être en numpy array
+</span></code></pre></div></div> <p>A noter que cette approche a plusieurs limites, notamment:</p> <ul> <li>Quand les unités d’entrée sont de haute dimension ; pour les images, il s’agit des pixels, qui sont de faibles dimensions (R, G, B uniquement), donc “faciles” à aggréger pour obtenir un score unique de saillance par unité (pixel) d’entrée. Par contre, quand on a des unités de l’input qui sont de haute dimension, cela peut être compliqué. C’est par exemple le cas pour les modèles de langue, où l’unité d’un input est un token, plus précisément l’embedding d’un token, qui lui est de très grande dimension (en fonction du modèle). Ainsi, il est compliqué d’agréger les D (D = dim_model) gradients obtenus pour avoir un score unique par unité de l’input.</li> <li>La valeur absolue du gradient de la prédiction du modèle par rapport aux unités de l’input ne permet pas de distinguer les unités de l’input qui ont un impact négatifs de ceux qui ont un impact positif sur la prédiction modèle</li> <li>Le gradient de la prédiction par rapport aux unités d’entrée n’a pas forcément de sens en termes absolu: un gradient petit n’implique pas forcément que l’unité de l’input n’est pas important: une unité peut être très influente mais avoir un gradient (local) faible. $\nabla_{x_i}(f(x))$ approxime l’effet de micro-perturbations de l’unité $i$ de l’input, pas le remplacement de cette unité (opération discrète et non-locale). Une unité peut être cruciale pour la classe, tout en ayant un gradient local faible. En effet, Le gradient est une pente locale. Si, autour de l’unité $i$ de l’input, la fonction “s’aplatit”, alors la pente est proche de 0, donc le gradient local est faible, même si l’unité $i$ porte une info décisive pour la prédiction.</li> </ul> <p>D’autres approches permettent de combler l’effet “local” du gradient, notamment les approches d’Integrated Gradients, ou de Gradient x Input.</p> <h3 id="la-méthode-des-gradients-intégrés-de-xplain-de-deel-ai">La méthode des <a href="https://github.com/deel-ai/xplique/blob/master/xplique/attributions/integrated_gradients.py" rel="external nofollow noopener" target="_blank">Gradients Intégrés de Xplain de deel-ai</a> </h3> <p>Les <strong>gradients intégrés (IG)</strong> attribuent à chaque caractéristique $i$ une contribution <strong>cumulative</strong> le long d’un chemin qui relie une <strong>référence (baseline)</strong> $x’$ à l’entrée $x$. En choisissant le <strong>chemin linéaire</strong> $\gamma(\alpha)=x’ + \alpha\,(x-x’)$, $\alpha \in [0,1]$, l’attribution IG pour la $i$-ème dimension est \(\boxed{\;\mathrm{IG}_i(x; x') \;=\; (x_i - x'_i)\,\int_{0}^{1} \frac{\partial F\big(\gamma(\alpha)\big)}{\partial x_i}\, d\alpha\;}\) et, en pratique, on l’approxime par une somme de Riemann avec $m$ pas : \(\mathrm{IG}_i(x; x') \;\approx\; (x_i - x'_i)\,\frac{1}{m}\sum_{k=1}^{m} \left.\frac{\partial F(z)}{\partial x_i}\right|_{z\,=\,x' + \tfrac{k}{m}(x-x')}.\) En <strong>NLP</strong>, on applique IG sur l’<strong>espace d’embedding</strong> : si $e(x)\in\mathbb{R}^{d}$ est l’entrée réelle du réseau (concaténation des embeddings par token), on interpole $e’ + \alpha\,(e-e’)$ et on dérive $F$ par rapport aux composantes d’<strong>embedding</strong> (la baseline $e’$ est souvent le vecteur nul, un token [PAD], ou un embedding « neutre »).</p> <p>IG contourne le biais <strong>local</strong> des approches de gradient pur en <strong>agrégeant</strong> l’information de gradient <strong>le long du chemin</strong> $\gamma(\alpha)$ depuis la baseline $x’$ (où la sortie est « neutre ») vers $x$. Intuitivement, même si $\nabla F(x)\approx 0$, il existe souvent des $\alpha\in(0,1)$ où $\nabla F(\gamma(\alpha))$ est <strong>grand</strong> (région non saturée) ; l’intégrale \(\int_{0}^{1} \frac{\partial F\big(x' + \alpha(x-x')\big)}{\partial x_i}\, d\alpha\) <strong>accumule</strong> ces contributions, produisant une attribution fidèle au <strong>chemin causal continu</strong> qui mène de $x’$ à $x$. IG est ainsi une version <strong>chemin-intégrée</strong> du gradient, reliée à la <strong>valeur d’Aumann–Shapley</strong> (analogue continu des valeurs de Shapley), et hérite d’une interprétation en termes de <strong>coût marginal moyen</strong> le long de l’activation du feature $i$.</p> <p>A noter que le choix de la baseline $x’$ est majeur: il doit représenter une <strong>entrée de référence</strong> « absence d’information » (image noire, bruit faible, embedding nul/[\mathrm{PAD}], etc.). Le résultat dépend de ce choix, mais la <strong>complétude</strong> garantit $\sum_i \mathrm{IG}_i = F(x)-F(x’)$.</p> <p>Exemple d’application:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">xplique.attributions</span> <span class="kn">import</span> <span class="n">IntegratedGradients</span>
+
+<span class="n">explainer</span> <span class="o">=</span> <span class="nc">IntegratedGradients</span><span class="p">(</span>
+    <span class="n">wrapped_model</span><span class="p">,</span>
+    <span class="n">steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="c1"># Nombre de points d'interpolation
+</span>    <span class="n">baseline_value</span><span class="o">=</span><span class="mf">0.0</span> <span class="c1"># Valeur de référence pour la baseline
+</span><span class="p">)</span>
+<span class="n">attributions</span> <span class="o">=</span> <span class="nf">explainer</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+</code></pre></div></div> <p>Attention en revanche: Dans la librairie Xplique, on approxime l’intégrale continue $I_i=\int_0^1 g_i(\alpha)\,d\alpha$ — i.e. la moyenne du gradient $g_i(\alpha)=\frac{\partial F(x’+\alpha(x-x’))}{\partial x_i}$ le long du chemin $\gamma(\alpha)=x’+\alpha(x-x’)$ avec la règle du trapèze. Comme on ne dispose pas d’une primitive explicite pour un réseau de neurones, on discrétise l’intégrale en une somme finie sur $m$ points. Plusieurs schémas sont possibles :</p> <ul> <li> <strong>Riemann (rectangle)</strong> : $I_i \approx \frac{1}{m}\sum_{k=1}^{m} g_i!\big(\tfrac{k}{m}\big)$ (erreur $O(1/m)$) ;</li> <li> <strong>Milieu (midpoint)</strong> : $I_i \approx \frac{1}{m}\sum_{k=1}^{m} g_i!\big(\tfrac{k-\tfrac12}{m}\big)$ (erreur $O(1/m^2)$) ;</li> <li> <strong>Trapèze (composite)</strong> : $I_i \approx \frac{1}{m}!\Big[\tfrac12 g_i(0)+\sum_{k=1}^{m-1} g_i!\big(\tfrac{k}{m}\big)+\tfrac12 g_i(1)\Big]$ (erreur $O(1/m^2)$, plus précis et plus symétrique) ;</li> </ul> <p>La librairie Xplique utilise la règle du trapèze, qui offre une meilleure précision (et respecte mieux la propriété de complétude $\sum_i \mathrm{IG}_i \approx F(x)-F(x’)$) à coût identique.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">IntegratedGradients</span><span class="p">(</span><span class="n">WhiteBoxExplainer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span>
+                 <span class="n">model</span><span class="p">:</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">Model</span><span class="p">,</span>
+                 <span class="n">output_layer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+                 <span class="n">operator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tasks</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">OperatorSignature</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                 <span class="n">reducer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="sh">"</span><span class="s">mean</span><span class="sh">"</span><span class="p">,</span>
+                 <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+                 <span class="n">baseline_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">.</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">().</span><span class="nf">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">output_layer</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">reducer</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">steps</span> <span class="o">=</span> <span class="n">steps</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">baseline_value</span> <span class="o">=</span> <span class="n">baseline_value</span>
+
+    <span class="nd">@sanitize_input_output</span>
+    <span class="nd">@WhiteBoxExplainer._harmonize_channel_dimension</span>
+    <span class="k">def</span> <span class="nf">explain</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="c1"># Créer la baseline (point de référence neutre)
+</span>        <span class="n">baseline</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="nf">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">self</span><span class="p">.</span><span class="n">baseline_value</span>
+        
+        <span class="c1"># Créer le chemin interpolé
+</span>        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">steps</span><span class="p">):</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="n">self</span><span class="p">.</span><span class="n">steps</span>
+            <span class="n">interpolated</span> <span class="o">=</span> <span class="n">baseline</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">-</span> <span class="n">baseline</span><span class="p">)</span>
+            
+        <span class="c1"># Calculer les gradients pour chaque point
+</span>        <span class="n">interpolated_gradients</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">batch_gradient</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">interpolated_inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        
+        <span class="c1"># Moyenner avec la règle trapézoïdale
+</span>        <span class="n">trapezoidal_gradients</span> <span class="o">=</span> <span class="n">gradients</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">gradients</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">averaged_gradients</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="nf">reduce_mean</span><span class="p">(</span><span class="n">trapezoidal_gradients</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+        
+        <span class="c1"># Multiplier par la différence input-baseline
+</span>        <span class="n">integrated_gradients</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">-</span> <span class="n">baseline</span><span class="p">)</span> <span class="o">*</span> <span class="n">averaged_gradients</span>
+        
+        <span class="k">return</span> <span class="n">integrated_gradients</span>
+</code></pre></div></div> <h3 id="détection-dobjets-sur-des-images-exemple-de-lard">Détection d’objets sur des images (exemple de LARD)</h3> <p>Exemple de Yolov8 fine-tuné sur la détection de pistes d’atterrissage (LARD_train_BIRK_LFST: https://entrepot.recherche.data.gouv.fr/dataset.xhtml?persistentId=doi:10.57745/MZSH2Y). Le modèle utilisé est https://github.com/AnnabellePundaky/runway-bounding-box-detection-NEW.</p> <h3 id="classification-de-texte">Classification de texte</h3> <p>Exemple de <a href="https://huggingface.co/answerdotai/ModernBERT-base" rel="external nofollow noopener" target="_blank">ModernBert</a> fine-tuné sur la classification de <a href="https://huggingface.co/datasets/DEEL-AI/NOTAM" rel="external nofollow noopener" target="_blank">NOTAMS</a>. Voici quelques métriques d’entraînement:</p> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/explainable_deeplearning/modernbert_notam-480.webp 480w,/assets/img/explainable_deeplearning/modernbert_notam-800.webp 800w,/assets/img/explainable_deeplearning/modernbert_notam-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/explainable_deeplearning/modernbert_notam.png" class="img-fluid rounded z-depth-1" width="100%" height="auto" data-zoomable="" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"> </picture> </figure> <h4 id="exemple-de-lapproche-saliency-de-la-lib-xplain-de-deel-ai">Exemple de l’approche <a href="https://github.com/deel-ai/xplique/blob/master/xplique/attributions/saliency.py" rel="external nofollow noopener" target="_blank">Saliency de la lib Xplain de deel-ai</a> </h4> <p>On utilise <a href="https://github.com/deel-ai/xplique/blob/master/xplique/attributions/saliency.py" rel="external nofollow noopener" target="_blank">Saliency de Xplain</a> pour calculer le gradient absolu de la prédiction (classe de NOTAM, one-hot) du modèle par rapport à chaque dimension de chaque token d’entrée et qu’on applique une norme L2 sur les gradients de chaque dimension d’un token pour obtenir une valeur de saliency par token.</p> <h5 id="code-dimplémentation-de-cette-approche-dexplicabilité-sur-un-modèle-de-classification-de-texte">Code d’implémentation de cette approche d’explicabilité sur un modèle de classification de texte</h5> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">torch</span><span class="p">,</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="n">xplique.wrappers</span> <span class="kn">import</span> <span class="n">TorchWrapper</span>
+<span class="kn">from</span> <span class="n">xplique.attributions</span> <span class="kn">import</span> <span class="n">Saliency</span>
+<span class="kn">import</span> <span class="n">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="n">torch.nn.functional</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="n">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">from</span> <span class="n">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSequenceClassification</span>
+<span class="kn">import</span> <span class="n">torch</span>
+
+<span class="c1"># Le modèle: c'est un modèle de langue donc il faut loader le modèle et le tokenizer avec la lib transformers
+</span><span class="n">MAX_LENGTH</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">OUTPUT_DIR</span> <span class="o">=</span> <span class="sh">"</span><span class="s">./modernbert_notam</span><span class="sh">"</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">device</span><span class="p">(</span><span class="sh">"</span><span class="s">cuda</span><span class="sh">"</span> <span class="k">if</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="nf">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="sh">"</span><span class="s">cpu</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">pad_token</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">tokenizer</span><span class="p">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">eos_token</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSequenceClassification</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="nf">eval</span><span class="p">()</span>
+<span class="n">model</span><span class="p">.</span><span class="nf">eval</span><span class="p">().</span><span class="nf">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="c1"># Wrapper qui attend des embeddings et injecte le mask pour être adapté aux requirements de TorchWrapper de xplain
+</span><span class="k">class</span> <span class="nc">ModernBERTEmbedsWrapper</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">base_model</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">):</span>
+        <span class="nf">super</span><span class="p">().</span><span class="nf">__init__</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">base_model</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">register_buffer</span><span class="p">(</span><span class="sh">"</span><span class="s">am</span><span class="sh">"</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">base</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span> <span class="c1"># On s'assure que le modèle interne est en eval
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">train</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span> <span class="c1"># Et on met aussi le wrapper en eval
+</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">base</span><span class="p">(</span><span class="n">inputs_embeds</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">attention_mask</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">am</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span><span class="p">.</span><span class="n">logits</span>
+
+<span class="c1"># le dataset de test
+</span><span class="n">dataset</span> <span class="o">=</span> <span class="nf">load_dataset</span><span class="p">(</span><span class="sh">"</span><span class="s">DEEL-AI/NOTAM</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">unique_labels</span> <span class="o">=</span> <span class="nf">set</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="sh">'</span><span class="s">train</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">label</span><span class="sh">'</span><span class="p">])</span>
+<span class="n">num_labels</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">unique_labels</span><span class="p">)</span>
+<span class="n">label2id</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="nf">sorted</span><span class="p">(</span><span class="n">unique_labels</span><span class="p">))}</span>
+<span class="n">id2label</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">label</span> <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">label2id</span><span class="p">.</span><span class="nf">items</span><span class="p">()}</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">16</span> <span class="c1"># batch_size
+</span><span class="n">texts</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="sh">'</span><span class="s">test</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">text</span><span class="sh">'</span><span class="p">][:</span><span class="n">k</span><span class="p">]</span>
+<span class="n">labels_str</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="sh">'</span><span class="s">test</span><span class="sh">'</span><span class="p">][</span><span class="sh">'</span><span class="s">label</span><span class="sh">'</span><span class="p">][:</span><span class="n">k</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">tensor</span><span class="p">([</span><span class="n">label2id</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">labels_str</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>  <span class="c1"># shape (batch_size, )
+</span><span class="n">tok</span> <span class="o">=</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="sh">"</span><span class="s">pt</span><span class="sh">"</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="n">MAX_LENGTH</span><span class="p">)</span>
+<span class="n">input_ids</span> <span class="o">=</span> <span class="n">tok</span><span class="p">[</span><span class="sh">"</span><span class="s">input_ids</span><span class="sh">"</span><span class="p">].</span><span class="nf">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="c1"># shape (batch_size, amount of tokens per sentence)
+</span><span class="n">attention_mask</span> <span class="o">=</span> <span class="n">tok</span><span class="p">[</span><span class="sh">"</span><span class="s">attention_mask</span><span class="sh">"</span><span class="p">].</span><span class="nf">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="c1"># shape (batch_size, amount of tokens per sentence)
+# Embeddings d'entrée de shape (batch_size, amount of tokens per sentence, model_dim)
+</span><span class="n">emb_layer</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="nf">get_input_embeddings</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
+    <span class="n">embeds</span> <span class="o">=</span> <span class="nf">emb_layer</span><span class="p">(</span><span class="n">input_ids</span><span class="p">)</span> <span class="c1"># shape (batch_size, amount of tokens per sentence, model_dim)
+</span>
+<span class="c1"># On wrap le modèle avec le TorchWrapper de xplain
+</span><span class="n">wrap</span> <span class="o">=</span> <span class="nc">ModernBERTEmbedsWrapper</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">attention_mask</span><span class="p">).</span><span class="nf">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">wrapped</span> <span class="o">=</span> <span class="nc">TorchWrapper</span><span class="p">(</span><span class="n">wrap</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># On appliquer la classe Saliency
+</span><span class="n">explainer</span> <span class="o">=</span> <span class="nc">Saliency</span><span class="p">(</span><span class="n">wrapped</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="sh">"</span><span class="s">classification</span><span class="sh">"</span><span class="p">)</span>
+<span class="c1"># Xplique attend des targets en format numpy arrays (ici, des one-hot (batch_size, num_labels))
+</span><span class="n">num_labels</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">id2label</span><span class="p">)</span>
+<span class="n">targets</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="nf">one_hot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">num_labels</span><span class="p">).</span><span class="nf">float</span><span class="p">().</span><span class="nf">cpu</span><span class="p">().</span><span class="nf">numpy</span><span class="p">()</span>
+<span class="c1"># Explanations: saliency sur les embeddings des tokens d'entrée (batch_size, amount of tokens per sentence, model_dim)
+</span><span class="n">embeds_np</span> <span class="o">=</span> <span class="n">embeds</span><span class="p">.</span><span class="nf">detach</span><span class="p">().</span><span class="nf">cpu</span><span class="p">().</span><span class="nf">float</span><span class="p">().</span><span class="nf">numpy</span><span class="p">()</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">explainer</span><span class="p">.</span><span class="nf">explain</span><span class="p">(</span><span class="n">embeds_np</span><span class="p">,</span> <span class="n">targets</span><span class="p">).</span><span class="nf">numpy</span><span class="p">()</span>
+<span class="c1"># Obtention d'un score de saillance par token (norme L2 des gradients par rapport à chaque dim_model des tokens) + masquage padding -&gt; (shape (batch_size, amount of tokens per sentence)
+</span><span class="n">token_scores</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linalg</span><span class="p">.</span><span class="nf">norm</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># norme L2 sur dim_model (sur les dim_model gradients)
+</span><span class="n">token_scores</span> <span class="o">=</span> <span class="n">token_scores</span> <span class="o">*</span> <span class="n">attention_mask</span><span class="p">.</span><span class="nf">cpu</span><span class="p">().</span><span class="nf">numpy</span><span class="p">()</span>
+</code></pre></div></div> <p>Et maintenant on peut afficher les cartes de saillance sur les tokens pour les exemples test:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="n">texts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># on affiche pour le premier exemple du test set
+</span>
+<span class="n">enc</span> <span class="o">=</span> <span class="nf">tokenizer</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">,</span>
+    <span class="n">add_special_tokens</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">truncation</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="o">=</span><span class="n">MAX_LENGTH</span><span class="p">,</span>
+    <span class="n">return_offsets_mapping</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">return_attention_mask</span><span class="o">=</span><span class="bp">True</span>
+<span class="p">)</span>
+
+<span class="n">ids_single</span> <span class="o">=</span> <span class="n">enc</span><span class="p">[</span><span class="sh">"</span><span class="s">input_ids</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">offsets</span> <span class="o">=</span> <span class="n">enc</span><span class="p">[</span><span class="sh">"</span><span class="s">offset_mapping</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">mask_single</span> <span class="o">=</span> <span class="n">enc</span><span class="p">[</span><span class="sh">"</span><span class="s">attention_mask</span><span class="sh">"</span><span class="p">]</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">token_scores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<span class="c1"># Normalisation (pour avoir des scores entre 0 et 1)
+</span><span class="n">smin</span><span class="p">,</span> <span class="n">smax</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">scores</span><span class="p">.</span><span class="nf">min</span><span class="p">()),</span> <span class="nf">float</span><span class="p">(</span><span class="n">scores</span><span class="p">.</span><span class="nf">max</span><span class="p">())</span>
+<span class="n">denom</span> <span class="o">=</span> <span class="p">(</span><span class="n">smax</span> <span class="o">-</span> <span class="n">smin</span><span class="p">)</span> <span class="nf">if </span><span class="p">(</span><span class="n">smax</span> <span class="o">-</span> <span class="n">smin</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-12</span> <span class="k">else</span> <span class="mf">1.0</span>
+<span class="n">scores_norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">scores</span> <span class="o">-</span> <span class="n">smin</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span>
+
+<span class="c1"># Construit l'HTML avec un &lt;span&gt; par token non-spécial
+</span><span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">T_use</span> <span class="o">=</span> <span class="nf">min</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ids_single</span><span class="p">),</span> <span class="nf">len</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span> <span class="c1"># sécurité si longueurs diffèrent
+</span>
+<span class="k">for</span> <span class="n">t_idx</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">T_use</span><span class="p">):</span>
+    <span class="n">tok_id</span> <span class="o">=</span> <span class="n">ids_single</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span>
+    <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="o">=</span> <span class="n">offsets</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mask_single</span><span class="p">[</span><span class="n">t_idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># padding atteint
+</span>        <span class="k">break</span>
+    <span class="k">if</span> <span class="n">tok_id</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">all_special_ids</span><span class="p">:</span> <span class="c1"># saute [CLS], [SEP], etc.
+</span>        <span class="k">continue</span>
+    <span class="k">if</span> <span class="n">e</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">:</span>  <span class="c1"># parfois des offsets vides
+</span>        <span class="k">continue</span>
+
+    <span class="c1"># Ajoute tout "trou" éventuel non couvert par les offsets (espaces, etc.)
+</span>    <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">cursor</span><span class="p">:</span>
+        <span class="n">parts</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">cursor</span><span class="p">:</span><span class="n">s</span><span class="p">])</span>
+
+    <span class="c1"># Couleur = rouge avec alpha = score normalisé
+</span>    <span class="n">alpha</span> <span class="o">=</span> <span class="nf">float</span><span class="p">(</span><span class="n">scores_norm</span><span class="p">[</span><span class="n">t_idx</span><span class="p">])</span>
+    <span class="n">bg</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">rgba(255, 0, 0, </span><span class="si">{</span><span class="n">alpha</span><span class="si">:</span><span class="p">.</span><span class="mi">3</span><span class="n">f</span><span class="si">}</span><span class="s">)</span><span class="sh">"</span>
+
+    <span class="n">seg</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">s</span><span class="p">:</span><span class="n">e</span><span class="p">]</span>
+    <span class="n">parts</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span>
+        <span class="sa">f</span><span class="sh">'</span><span class="s">&lt;span title=</span><span class="sh">"</span><span class="s">score=</span><span class="si">{</span><span class="nf">float</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">t_idx</span><span class="p">])</span><span class="si">:</span><span class="p">.</span><span class="mi">6</span><span class="n">f</span><span class="si">}</span><span class="sh">"</span><span class="s"> </span><span class="sh">'</span>
+        <span class="sa">f</span><span class="sh">'</span><span class="s">style=</span><span class="sh">"</span><span class="s">background-color:</span><span class="si">{</span><span class="n">bg</span><span class="si">}</span><span class="s">; border-radius:4px; padding:2px 1px;</span><span class="sh">"</span><span class="s">&gt;</span><span class="sh">'</span>
+        <span class="sa">f</span><span class="sh">'</span><span class="si">{</span><span class="n">seg</span><span class="si">}</span><span class="sh">'</span>
+        <span class="sa">f</span><span class="sh">'</span><span class="s">&lt;/span&gt;</span><span class="sh">'</span>
+    <span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">e</span>
+
+<span class="c1"># Ajoute la fin de phrase si besoin
+</span><span class="k">if</span> <span class="n">cursor</span> <span class="o">&lt;</span> <span class="nf">len</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">parts</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">cursor</span><span class="p">:])</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sh">'</span><span class="s">&lt;div style=</span><span class="sh">"</span><span class="s">font-family: ui-monospace, SFMono-Regular, Menlo, monospace; </span><span class="sh">'</span>
+    <span class="sh">'</span><span class="s">line-height:1.8; font-size:14px;</span><span class="sh">"</span><span class="s">&gt;</span><span class="sh">'</span>
+    <span class="o">+</span> <span class="sh">''</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">+</span>
+    <span class="sh">'</span><span class="s">&lt;/div&gt;</span><span class="sh">'</span>
+    <span class="sh">'</span><span class="s">&lt;div style=</span><span class="sh">"</span><span class="s">margin-top:8px; font-size:12px; color:#555;</span><span class="sh">"</span><span class="s">&gt;</span><span class="sh">'</span>
+    <span class="sh">'</span><span class="s">Plus c’est &lt;b&gt;rouge&lt;/b&gt;, plus le token est important (Saliency). </span><span class="sh">'</span>
+    <span class="sh">'</span><span class="s">On peut passer la souris pour voir le score de saillance de chaque token.</span><span class="sh">'</span>
+    <span class="sh">'</span><span class="s">&lt;/div&gt;</span><span class="sh">'</span>
+<span class="p">)</span>
+
+<span class="nf">display</span><span class="p">(</span><span class="nc">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+</code></pre></div></div> <figure> <picture> <source class="responsive-img-srcset" srcset="/assets/img/explainable_deeplearning/example_notam-480.webp 480w,/assets/img/explainable_deeplearning/example_notam-800.webp 800w,/assets/img/explainable_deeplearning/example_notam-1400.webp 1400w," type="image/webp" sizes="95vw"></source> <img src="/assets/img/explainable_deeplearning/example_notam.png" class="img-fluid rounded z-depth-1" width="100%" height="auto" data-zoomable="" loading="eager" onerror="this.onerror=null; $('.responsive-img-srcset').remove();"> </picture> </figure> <h5 id="les-limites-de-cette-approche">Les limites de cette approche</h5> <ul> <li>La valeur absolue du gradient de la prédiction du modèle par rapport aux dimensions de l’embedding du token d’entrée: ça ne permet pas de distinguer les dimensions des tokens qui ont un impact négatifs de ceux qui ont un impact positif sur la prédiction modèle</li> <li>Norme L2 des gradients de chaque dimensions de l’embedding des tokens d’entrée: est-ce une bonne approche? <em>(on peut penser notamment à deux ou plusieurs dimensions qui sont très corrélées, alors leurs composantes de gradient pointent en général dans la même direction, et quand on fait la somme des carrés, ces contributions s’additionnent comme si c’étaient deux informations indépendantes, alors qu’elles portent le même signal, du coup la norme L2 des gradients par rapport à chaque dimension du modèle n’est pas forcément optimale)</em> </li> <li>Le gradient de la prédiction par rapport aux tokens d’entrée n’a pas forcément de sens en termes absolu: un gradient petit n’implique pas forcément que le token n’est pas important: un token peut être très influent mais avoir un gradient (local) faible. $\nabla_{x_i}(f(x))$ approxime l’effet de micro-perturbations de l’embedding du token $i$, pas le remplacement de ce token (opération discrète et non-locale). Un token peut être crucial pour la classe, tout en ayant un gradient local faible. En effet, Le gradient est une pente locale. Si, autour du token d’entrée $i$, la fonction “s’aplatit”, alors la pente est proche de 0, donc le gradient local est faible, même si le token $i$ porte une info décisive pour la prédiction.</li> </ul> <p>D’autres approches permettent de combler l’effet “local” du gradient, notamment les approches d’Integrated Gradients, ou de Gradient x Input.</p> <h4 id="exemple-de-lapproche-des-gradients-intégrés-de-la-lib-xplain-de-deel-ai">Exemple de l’approche des <a href="https://github.com/deel-ai/xplique/blob/master/xplique/attributions/integrated_gradients.py" rel="external nofollow noopener" target="_blank">Gradients intégrés de la lib Xplain de deel-ai</a> </h4> <p>Dans Xplique, IntegratedGradients accepte un argument baselines dans explain. Si on ne fournit rien, le comportement standard est d’utiliser un tenseur de zéros de même forme que l’entrée (baseline “no-signal”). Sauf que pour le NLP, un tenseur de 0 n’a pas forcément de sens. Une baseline “neutre” serait plutôt par exemple des [PAD] tokens.</p> <p>TODO: tester IG avec 0 et [PAD] tokens</p> <h3 id="classification-dimages">Classification d’images</h3> <h4 id="avec-un-réseau-à-base-de-convolutions-type-resnet">Avec un réseau à base de convolutions (type ResNet)</h4> <p>Resnet-18 entraîné sur http://cs231n.stanford.edu/tiny-imagenet-200.zip</p> <ul> <li>GradCam de la librairie xplique : https://github.com/deel-ai/xplique/blob/master/xplique/attributions/grad_cam.py</li> <li>SmoothGrad</li> </ul> <h4 id="avec-un-vit">Avec un ViT</h4> <h3 id="exemple-pour-une-entrée-multimodale-texte--image">Exemple pour une entrée multimodale (texte + image)</h3> <p>TODO - cas layoutlmv3</p> <h2 id="explication-de-la-génération-du-modèle-par-attribution-de-sa-génération-aux-données-dentraînements-quil-a-vu-qui-ont-positivement-ou-négativement-influencées-sa-prédiction">Explication de la génération du modèle par attribution de sa génération aux données d’entraînements qu’il a vu qui ont positivement ou négativement influencées sa prédiction</h2> <p>Si on cherche à estimer l’<mark>impact qu'aurait un exemple d'entraînement sur la perte d'un exemple de test (ou sur plusieurs résultats du modèle sur un jeu de données test) à un exemple d'entraînement</mark> (qu’il soit dans le jeu de données d’entraînement de base ou pas), on peut utiliser les fonctions d’influence.</p> \[\mathrm{Influence}\bigl(z_{\mathrm{train}}\to z_{\mathrm{test}}\bigr) = \frac{d}{d\varepsilon}\, \mathcal{L}\bigl(z_{\rm test},\,\theta_\varepsilon(z_\text{train})\bigr)\Big|_{\varepsilon=0} = -\nabla_\theta \,\mathcal{L}\bigl(z_{\mathrm{test}},\,\hat{\theta} \bigr)\,H_\theta^{-1}(\hat{\theta})\,\nabla_\theta \mathcal{L}(z_{\rm train},\hat{\theta})\] \[\mathrm{Influence}\bigl(z_{\mathrm{train}}\to f(x)\bigr) = \left.\frac{d}{d\varepsilon}\bigl(f_{\theta_{\varepsilon}(z_{\mathrm{train}})}(x)\bigr)\right|_{\varepsilon=0} = - \nabla_\theta f_{\hat{\theta}}(x)^\top \, H_\theta(\hat{\theta})^{-1} \, \nabla_\theta \mathcal{L}\bigl(x_{\mathrm{train}},\hat{\theta}\bigr)\] <p>Pour voir l’explication de la formule et plus de détails sur comment c’est utilisé dans les LLMs, vous pouvez aller voir <a href="camillebrl.github.io/blog/2025/influence_functions_applied_to_llms/">ce post</a>.</p> <p>Une des librairies possibles pour calculer l’influence est <a href="https://github.com/deel-ai/influenciae" rel="external nofollow noopener" target="_blank">Influenciae de Deel-AI</a>. TODO</p> <h2 id="explication-de-la-génération-du-modèle-par-la-façon-dont-le-modèle-couche-par-couche-neurone-par-neurone-etc-a-traité-lentrée-pour-effectuer-sa-prédiction-quels-concepts-intermédiaires-a-t-il-représenté-etc">Explication de la génération du modèle par la façon dont le modèle (couche par couche, neurone par neurone, etc) a traité l’entrée pour effectuer sa prédiction (quels concepts intermédiaires a-t-il représenté, etc)</h2> <p>Une des librairies qui explique les concepts d’un modèle de vision est <a href="https://github.com/deel-ai/Craft" rel="external nofollow noopener" target="_blank">Craft de Deel-AI</a> TODO</p> </d-article> <d-appendix> <d-footnote-list></d-footnote-list> <d-citation-list></d-citation-list> </d-appendix> <d-bibliography src="/assets/bibliography/"></d-bibliography> <div id="giscus_thread" style="max-width: 930px; margin: 0 auto;"> <script>
+      let giscusTheme = determineComputedTheme();
+      let giscusAttributes = {
+        src: 'https://giscus.app/client.js',
+        'data-repo': 'camillebrl/camillebrl.github.io',
+        'data-repo-id': '',
+        'data-category': 'Comments',
+        'data-category-id': '',
+        'data-mapping': 'title',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': giscusTheme,
+        'data-lang': 'en',
+        crossorigin: 'anonymous',
+        async: '',
+      };
+
+      let giscusScript = document.createElement('script');
+      Object.entries(giscusAttributes).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+      document.getElementById('giscus_thread').appendChild(giscusScript);
+    </script> <noscript>Please enable JavaScript to view the <a href="http://giscus.app/?ref_noscript" rel="external nofollow noopener" target="_blank">comments powered by giscus.</a> </noscript> </div> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Camille Barboule. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.5/dist/js/lightbox.min.js" integrity="sha256-A6jI5V9s1JznkWwsBaRK8kSeXLgIqQfxfnvdDOZEURY=" crossorigin="anonymous"></script> <script defer src="/assets/js/photoswipe-setup.js" type="module"></script> <script defer src="https://cdn.jsdelivr.net/npm/spotlight.js@0.7.8/dist/spotlight.bundle.min.js" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/venobox@2.1.8/dist/venobox.min.js" integrity="sha256-LsGXHsHMMmTcz3KqTaWvLv6ome+7pRiic2LPnzTfiSo=" crossorigin="anonymous"></script> <script defer src="/assets/js/venobox-setup.js?897c1d9c0b6fcf82b949511c1609d055" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Fonction pour créer un ID à partir du texte (compatible avec Jekyll slugify)
+        function createId(text) {
+          return text.trim()
+            .toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Enlever les accents
+            .replace(/[^\w\s-]/g, '') // Enlever les caractères spéciaux
+            .replace(/\s+/g, '-') // Remplacer les espaces par des tirets
+            .replace(/-+/g, '-') // Éviter les tirets multiples
+            .replace(/^-|-$/g, ''); // Enlever les tirets au début et à la fin
+        }
+        
+        // Fonction pour décoder et normaliser une ancre d'URL
+        function normalizeAnchor(anchor) {
+          try {
+            // Décoder l'URL
+            const decoded = decodeURIComponent(anchor);
+            // Appliquer la même normalisation que createId
+            return createId(decoded);
+          } catch (e) {
+            return anchor;
+          }
+        }
+        
+        // Récupérer tous les headers dans l'article
+        const article = document.querySelector('d-article');
+        const headers = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const tocContainer = document.getElementById('toc-container');
+        
+        if (headers.length === 0) return;
+        
+        // Filtrer les headers pour exclure ceux dans d-contents et d-title
+        const filteredHeaders = Array.from(headers).filter(header => {
+          return !header.closest('d-contents') && !header.closest('d-title');
+        });
+        
+        if (filteredHeaders.length === 0) return;
+        
+        // Structure pour construire la hiérarchie
+        let currentList = document.createElement('ul');
+        tocContainer.appendChild(currentList);
+        
+        let stack = [{level: 0, list: currentList}];
+        
+        filteredHeaders.forEach((header) => {
+          // Ajouter un ID au header s'il n'en a pas
+          if (!header.id) {
+            header.id = createId(header.textContent);
+          }
+          
+          // Déterminer le niveau (h1=1, h2=2, etc.)
+          const level = parseInt(header.tagName.substring(1));
+          
+          // Gérer la hiérarchie
+          while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+            stack.pop();
+          }
+          
+          // Si on descend dans la hiérarchie
+          if (stack[stack.length - 1].level < level) {
+            const newList = document.createElement('ul');
+            const lastItem = stack[stack.length - 1].list.lastElementChild;
+            if (lastItem) {
+              lastItem.appendChild(newList);
+            } else {
+              stack[stack.length - 1].list.appendChild(newList);
+            }
+            stack.push({level: level, list: newList});
+          }
+          
+          // Créer l'élément de liste
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + header.id;
+          link.textContent = header.textContent;
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          
+          listItem.appendChild(link);
+          stack[stack.length - 1].list.appendChild(listItem);
+        });
+        
+        // Nettoyer les listes vides
+        const emptyLists = tocContainer.querySelectorAll('ul:empty');
+        emptyLists.forEach(list => list.remove());
+        
+        // Gérer la navigation depuis l'URL
+        function navigateToHash() {
+          if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            const normalizedHash = normalizeAnchor(hash);
+            
+            // Essayer de trouver l'élément par ID normalisé
+            let targetElement = document.getElementById(normalizedHash);
+            
+            // Si pas trouvé, essayer avec le hash original
+            if (!targetElement) {
+              targetElement = document.getElementById(hash);
+            }
+            
+            // Si toujours pas trouvé, chercher dans tous les headers
+            if (!targetElement) {
+              filteredHeaders.forEach(header => {
+                if (createId(header.textContent) === normalizedHash) {
+                  targetElement = header;
+                }
+              });
+            }
+            
+            if (targetElement) {
+              setTimeout(() => {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 100);
+            }
+          }
+        }
+        
+        // Naviguer au chargement de la page
+        navigateToHash();
+        
+        // Écouter les changements de hash
+        window.addEventListener('hashchange', navigateToHash);
+      });
+    </script> </body> </html>

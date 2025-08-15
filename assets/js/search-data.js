@@ -58,7 +58,18 @@ ninja.data = [{
               handler: () => {
                 window.location.href = "/blog/";
               },
-            },{id: "post-tips-mathématiques-points-utiles-en-ia",
+            },{id: "post-explicabilité-en-deep-learning",
+        
+          title: "Explicabilité en deep learning",
+        
+        description: "Explcabilité des modèles de deep learning",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/explainable_deep_learning/";
+          
+        },
+      },{id: "post-tips-mathématiques-points-utiles-en-ia",
         
           title: "Tips mathématiques / points utiles en IA",
         
